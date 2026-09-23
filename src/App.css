@@ -147,11 +147,12 @@
   box-sizing: border-box;
   min-height: 100vh;
   margin-left: 250px;
+  padding-top: 56px;
   background: #0d0d0c;
 }
 
 .hero-top-rule {
-  width: min(1000.5px, calc(100% - 48px));
+  width: 1000.5px;
   height: 0.3px;
   margin: 0 auto;
   border-radius: 1px;
@@ -160,15 +161,81 @@
 
 .hero-container {
   position: relative;
-  min-height: 120px;
+  min-height: 550px;
   margin-top: 56px;
   background: #0d0d0c;
 }
 
-.action-button {
+.hero-actions {
   position: absolute;
   top: 12px;
   left: 822px;
+}
+
+.hero-copy {
+  position: absolute;
+  top: 90px;
+  left: 0;
+  width: 630px;
+  height: 460px;
+  background: #0d0d0c;
+}
+
+.hero-kicker {
+  position: absolute;
+  top: 33px;
+  left: 45px;
+  width: 395px;
+  height: 28px;
+  margin: 0;
+  color: #c9a84c;
+  font: 300 24px/28px var(--font-rubik);
+}
+
+.hero-title {
+  position: absolute;
+  top: 90px;
+  left: 42px;
+  width: 566px;
+  height: 184px;
+  margin: 0;
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.hero-title-lead {
+  color: #fff;
+  font-family: var(--font-rubik);
+  font-weight: 300;
+}
+
+.hero-title-accent {
+  color: #c9a84c;
+  font-family: var(--font-raleway);
+  font-weight: 400;
+}
+
+.hero-description {
+  position: absolute;
+  top: 276px;
+  left: 45px;
+  width: 539px;
+  height: 75px;
+  margin: 0;
+  color: #fff;
+  font: 400 24px/1.55 var(--font-raleway);
+}
+
+.hero-copy > .action-button {
+  position: absolute;
+  top: 382px;
+  left: 45px;
+}
+
+.action-button {
+  position: relative;
   box-sizing: border-box;
   width: 190px;
   height: 59px;
@@ -210,12 +277,14 @@
 
 .action-button--yellow {
   border-color: #0d0d0c;
+  color: #0d0d0c;
   background: #c9a84c;
 }
 
 .action-button--yellow:hover {
   border-width: 1px;
   border-color: #c9a84c;
+  color: #fff;
   background: #0d0d0c;
 }
 

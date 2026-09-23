@@ -146,5 +146,80 @@
 .main-content {
   box-sizing: border-box;
   min-height: 100vh;
-  margin-left: 240px;
+  margin-left: 250px;
+  background: #0d0d0c;
+}
+
+.hero-top-rule {
+  width: min(1000.5px, calc(100% - 48px));
+  height: 0.3px;
+  margin: 0 auto;
+  border-radius: 1px;
+  background: rgba(138, 138, 122, 0.3);
+}
+
+.hero-container {
+  position: relative;
+  min-height: 120px;
+  margin-top: 56px;
+  background: #0d0d0c;
+}
+
+.action-button {
+  position: absolute;
+  top: 12px;
+  left: 822px;
+  box-sizing: border-box;
+  width: 190px;
+  height: 59px;
+  padding: 0 23px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 2px solid #c9a84c;
+  border-radius: 50px;
+  color: #fff;
+  background: #0d0d0c;
+  font: 400 18px/1 var(--font-raleway);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.action-button-icon {
+  flex: 0 0 32px;
+  color: #fff;
+}
+
+.action-button-leading-icon {
+  flex: 0 0 20px;
+  color: currentColor;
+}
+
+.action-button.has-leading-icon {
+  width: max-content;
+  min-width: 190px;
+}
+
+.action-button--dark:hover {
+  border-width: 2px;
+  border-color: #0d0d0c;
+  background: #c9a84c;
+}
+
+.action-button--yellow {
+  border-color: #0d0d0c;
+  background: #c9a84c;
+}
+
+.action-button--yellow:hover {
+  border-width: 1px;
+  border-color: #c9a84c;
+  background: #0d0d0c;
+}
+
+.action-button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
 }

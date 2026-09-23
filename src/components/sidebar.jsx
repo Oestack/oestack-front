@@ -15,7 +15,6 @@ function Sidebar() {
       <div className="sidebar-top">
         <div className="sidebar-brand">
           <a className="sidebar-logo" href="#inicio">OESTACK</a>
-          <Menu className="sidebar-menu-icon" size={18} strokeWidth={1.7} aria-hidden="true" />
         </div>
 
         <a

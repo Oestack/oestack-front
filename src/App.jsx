@@ -21,8 +21,9 @@ function App() {
   }
 
   return (
+    // SIDEBAR Y HERO
     <div className="app-layout">
-      <Sidebar />
+      <Sidebar /> 
       <main className="main-content" aria-label="Contenido principal">
         <div className="hero-top-rule" aria-hidden="true" />
         <section className="hero-container" aria-label="Presentación">
@@ -81,6 +82,9 @@ function App() {
         <div className="hero-bottom-rule" aria-hidden="true" />
       </main>
     </div>
+
+    // SECCIÓN SERVICIOS
+
   )
 }
 

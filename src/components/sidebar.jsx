@@ -1,4 +1,4 @@
-import { Menu, Home, BriefcaseBusiness, Users, FolderKanban, Mail } from 'lucide-react'
+import { Home, BriefcaseBusiness, Users, FolderKanban, Mail } from 'lucide-react'
 import SidebarItems from './sidebar-items.jsx'
 
 const navigationItems = [

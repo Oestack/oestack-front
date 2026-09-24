@@ -1,13 +1,53 @@
-import { useState } from 'react'
-import { CircleArrowLeft, CircleArrowRight } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { CircleArrowLeft, CircleArrowRight, ArrowRight } from 'lucide-react'
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
+import heroImg from './assets/hero.png'
 import './App.css'
 
+const servicesData = [
+  {
+    id: 'web',
+    tag: 'Web & E-Commerce',
+    title: 'Desarrollo Web & Plataformas',
+    description: 'Creamos sitios web institucionales, e-commerce y aplicaciones web modernas, rápidas y adaptadas a cualquier dispositivo con la mejor optimización SEO.',
+    image: img1,
+  },
+  {
+    id: 'software',
+    tag: 'Sistemas a Medida',
+    title: 'Software & Automatizaciones',
+    description: 'Arquitecturas escalables, sistemas de gestión interna y herramientas digitales diseñadas específicamente para resolver la operativa real de tu negocio.',
+    image: img2,
+  },
+  {
+    id: 'uiux',
+    tag: 'Diseño UX / UI',
+    title: 'Diseño UI / UX & Prototipado',
+    description: 'Diseñamos interfaces atractivas, modernas e intuitivas centradas en el usuario que transforman experiencias y potencian la tasa de conversión.',
+    image: img3,
+  },
+  {
+    id: 'cloud',
+    tag: 'Cloud & DevOps',
+    title: 'Infraestructura & Soluciones Cloud',
+    description: 'Despliegues continuos, entornos seguros, integración de APIs y administración en la nube para garantizar alta disponibilidad y tolerancia a fallos.',
+    image: heroImg,
+  },
+  {
+    id: 'consultoria',
+    tag: 'Consultoría & Soporte',
+    title: 'Mantenimiento & Optimización',
+    description: 'Auditoría de código, optimización de velocidad de carga, modernización tecnológica y soporte continuo para que tus productos sigan escalando.',
+    image: img2,
+  },
+]
+
 function App() {
+  // Hero Carousel State
   const [activeImage, setActiveImage] = useState(0)
   const images = [img1, img2, img3]
   const imagePositions = [
@@ -20,12 +60,145 @@ function App() {
     setActiveImage((current) => (current + direction + images.length) % images.length)
   }
 
+  // Servicios Carousel State
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [activeCard, setActiveCard] = useState(0)
+  const [isServicesHovered, setIsServicesHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const servicesTrackRef = useRef(null)
+  const dragStartX = useRef(0)
+  const dragScrollLeft = useRef(0)
+  const hasDragged = useRef(false)
+
+  const scrollCarousel = (direction) => {
+    const track = servicesTrackRef.current
+    if (!track) return
+    const cardStep = 332 // Ancho de tarjeta (310px) + gap (22px)
+    track.scrollBy({ left: direction * cardStep, behavior: 'smooth' })
+  }
+
+  const handleTrackScroll = () => {
+    const track = servicesTrackRef.current
+    if (!track) return
+    const maxScroll = track.scrollWidth - track.clientWidth
+    if (maxScroll > 0) {
+      const progress = (track.scrollLeft / maxScroll) * 100
+      setScrollProgress(Math.min(100, Math.max(0, progress)))
+    }
+
+    const trackCenter = track.scrollLeft + track.clientWidth / 2
+    let closestIndex = 0
+    let minDistance = Infinity
+    Array.from(track.children).forEach((child, index) => {
+      const childCenter = child.offsetLeft + child.clientWidth / 2
+      const dist = Math.abs(trackCenter - childCenter)
+      if (dist < minDistance) {
+        minDistance = dist
+        closestIndex = index
+      }
+    })
+    setActiveCard(closestIndex)
+  }
+
+  const handleSliderInput = (e) => {
+    const val = parseFloat(e.target.value)
+    setScrollProgress(val)
+    const track = servicesTrackRef.current
+    if (track) {
+      const maxScroll = track.scrollWidth - track.clientWidth
+      track.scrollLeft = (val / 100) * maxScroll
+    }
+  }
+
+  const handleMouseDown = (e) => {
+    const track = servicesTrackRef.current
+    if (!track) return
+    setIsDragging(true)
+    dragStartX.current = e.pageX - track.offsetLeft
+    dragScrollLeft.current = track.scrollLeft
+    hasDragged.current = false
+  }
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return
+    const track = servicesTrackRef.current
+    if (!track) return
+    e.preventDefault()
+    const x = e.pageX - track.offsetLeft
+    const distance = (x - dragStartX.current) * 1.3
+    if (Math.abs(distance) > 5) {
+      hasDragged.current = true
+    }
+    track.scrollLeft = dragScrollLeft.current - distance
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  const handleMouseLeave = () => {
+    setIsDragging(false)
+  }
+
+  const handleCardSelect = (index) => {
+    if (hasDragged.current) return
+    setActiveCard(index)
+    const track = servicesTrackRef.current
+    if (!track) return
+    const card = track.children[index]
+    if (card) {
+      const targetScroll = card.offsetLeft - (track.clientWidth / 2) + (card.clientWidth / 2)
+      track.scrollTo({ left: targetScroll, behavior: 'smooth' })
+    }
+  }
+
+  // Scroll horizontal con rueda del mouse sobre el carrusel
+  useEffect(() => {
+    const track = servicesTrackRef.current
+    if (!track) return
+
+    const onWheel = (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const maxScroll = track.scrollWidth - track.clientWidth
+        if (maxScroll > 0) {
+          const canScrollLeft = track.scrollLeft > 0 && e.deltaY < 0
+          const canScrollRight = track.scrollLeft < maxScroll - 1 && e.deltaY > 0
+          if (canScrollLeft || canScrollRight) {
+            e.preventDefault()
+            track.scrollLeft += e.deltaY * 0.95
+          }
+        }
+      }
+    }
+
+    track.addEventListener('wheel', onWheel, { passive: false })
+    return () => track.removeEventListener('wheel', onWheel)
+  }, [])
+
+  // Detener drag global si el usuario suelta el mouse fuera del track
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      setIsDragging(false)
+    }
+    window.addEventListener('mouseup', handleGlobalMouseUp)
+    return () => window.removeEventListener('mouseup', handleGlobalMouseUp)
+  }, [])
+
   return (
-    // SIDEBAR Y HERO
     <div className="app-layout">
-      <Sidebar /> 
+      {/* Overlay esmerilado/blureado de fondo cuando se hace hover sobre el 3er contenedor */}
+      <div
+        className={`services-backdrop-blur ${isServicesHovered ? 'services-backdrop-blur--active' : ''}`}
+        aria-hidden="true"
+      />
+
+      <Sidebar />
+
       <main className="main-content" aria-label="Contenido principal">
         <div className="hero-top-rule" aria-hidden="true" />
+
+        {/* HERO SECTION */}
         <section className="hero-container" aria-label="Presentación">
           <div className="hero-actions">
             <Button variant="dark">Contactanos</Button>
@@ -79,13 +252,140 @@ function App() {
             </div>
           </div>
         </section>
+
         <div className="hero-bottom-rule" aria-hidden="true" />
+
+        {/* SECCIÓN SERVICIOS */}
+        <section
+          className={`services-section ${isServicesHovered ? 'services-section--hovered' : ''}`}
+          id="servicios"
+          aria-label="Servicios"
+        >
+          {/* 1er Contenedor: Título / Subtítulo "Servicios" */}
+          <div className="services-title">
+            <p className="services-title-accent">Servicios</p>
+          </div>
+
+          {/* 2do Contenedor: Subtítulo "Transformo ideas y desarrollamos soluciones" */}
+          <div className="services-container-two">
+            <h2 className="services-title">
+              <span className="services-title-lead">Transformo ideas y </span> <br />
+              <span className="services-title-accent">desarrollamos soluciones</span>
+            </h2>
+          </div>
+
+          {/* 3er Contenedor: Carrusel de tarjetas de servicios */}
+          <div
+            className="services-container-three"
+            onMouseEnter={() => setIsServicesHovered(true)}
+            onMouseLeave={() => setIsServicesHovered(false)}
+          >
+            {/* Header del 3er contenedor con navegación por flechas */}
+            <div className="services-carousel-header">
+              <div className="services-carousel-header-info">
+                <span className="services-carousel-counter">
+                  0{activeCard + 1} <span className="services-counter-divider">/</span> 0{servicesData.length}
+                </span>
+                <span className="services-carousel-hint">Deslizá o arrastrá para explorar</span>
+              </div>
+              <div className="services-carousel-arrows">
+                
+              </div>
+            </div>
+
+            {/* Track deslizable de tarjetas */}
+            <div
+              ref={servicesTrackRef}
+              className={`services-cards-track ${isDragging ? 'is-dragging' : ''}`}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
+              onScroll={handleTrackScroll}
+            >
+              {servicesData.map((service, index) => (
+                <article
+                  key={service.id}
+                  className={`service-card ${activeCard === index ? 'service-card--active' : ''}`}
+                  onClick={() => handleCardSelect(index)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Servicio: ${service.title}`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleCardSelect(index)
+                    }
+                  }}
+                >
+                  <div className="service-card-media">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="service-card-image"
+                      draggable="false"
+                    />
+                    <span className="service-card-tag">{service.tag}</span>
+                  </div>
+                  <div className="service-card-content">
+                    <h3 className="service-card-title">{service.title}</h3>
+                    <p className="service-card-description">{service.description}</p>
+                    <div className="service-card-footer">
+                      <span className="service-card-link">
+                        Conocer más
+                        <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {/* Slider bar horizontal inferior para deslizar hacia los costados */}
+            <div className="services-slider-container">
+              <button
+                type="button"
+                className="services-slider-btn"
+                aria-label="Deslizar hacia la izquierda"
+                onClick={() => scrollCarousel(-1)}
+              >
+                <CircleArrowLeft size={22} strokeWidth={2} aria-hidden="true" />
+              </button>
+
+              <div className="services-slider-wrapper">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  value={scrollProgress}
+                  onChange={handleSliderInput}
+                  className="services-slider-input"
+                  aria-label="Control deslizante horizontal de servicios"
+                />
+                <div
+                  className="services-slider-fill"
+                  style={{ width: `${scrollProgress}%` }}
+                />
+              </div>
+
+              <button
+                type="button"
+                className="services-slider-btn"
+                aria-label="Deslizar hacia la derecha"
+                onClick={() => scrollCarousel(1)}
+              >
+                <CircleArrowRight size={22} strokeWidth={2} aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <div className="hero-bottom-rule" aria-hidden="true" style={{ marginTop: '72px', marginBottom: '48px' }} />
       </main>
     </div>
-
-    // SECCIÓN SERVICIOS
-
   )
 }
 
 export default App
+

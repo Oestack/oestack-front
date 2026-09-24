@@ -169,8 +169,11 @@
 
 .hero-container {
   position: relative;
+  box-sizing: border-box;
+  width: 1050px;
+  max-width: calc(100% - 48px);
   min-height: 527px;
-  margin-top: 48px;
+  margin: 48px auto 0;
   background: #0d0d0c;
 }
 
@@ -435,9 +438,10 @@
 .services-section {
   position: relative;
   box-sizing: border-box;
-  max-width: 1040px;
+  width: 1050px;
+  max-width: calc(100% - 48px);
   margin: 64px auto 0;
-  padding: 0 24px;
+  padding: 0 45px;
   scroll-margin-top: 30px;
 }
 
@@ -448,45 +452,53 @@
   opacity: 0.25;
 }
 
-/* 1er Contenedor: Título / Subtítulo "Servicios" */
+/* 1er Contenedor: Título "Servicios" (Mismo estilo y formato que Proyectos) */
 .services-container-one {
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
+  width: 566px;
+  max-width: 100%;
   margin-bottom: 12px;
   transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
 }
 
-.services-kicker {
+.services-title {
   margin: 0;
+  box-sizing: border-box;
+  width: 566px;
+  max-width: 100%;
   color: #c9a84c;
-  font: 300 18px/24px var(--font-rubik);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  font: 300 48px/1.12 var(--font-rubik);
+  letter-spacing: 0;
 }
 
 /* 2do Contenedor: Subtítulo "Transformo ideas y desarrollamos soluciones" */
 .services-container-two {
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
+  width: 490px;
+  max-width: 100%;
   margin-bottom: 32px;
   transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
 }
 
-.services-title {
+.services-subtitle {
   margin: 0;
-  font-size: 48px;
-  font-weight: 300;
-  line-height: 1.12;
-  letter-spacing: 0;
+  box-sizing: border-box;
+  width: 490px;
+  max-width: 100%;
+  font: 400 18px/1.5 var(--font-raleway);
 }
 
-.services-title-lead {
+.services-subtitle-lead {
   color: #fff;
-  font-family: var(--font-rubik);
-  font-weight: 300;
+  font-family: var(--font-raleway);
+  font-weight: 400;
 }
 
-.services-title-accent {
+.services-subtitle-accent {
   color: #c9a84c;
   font-family: var(--font-raleway);
   font-weight: 400;
@@ -838,7 +850,8 @@
     padding: 0 16px;
   }
 
-  .services-title {
+  .services-title,
+  .projects-title {
     font-size: 38px;
   }
 
@@ -847,4 +860,169 @@
     width: 280px;
   }
 }
+
+/* ============================================================
+   SECCIÓN PROYECTOS
+   ============================================================ */
+
+.projects-section {
+  position: relative;
+  box-sizing: border-box;
+  width: 1050px;
+  max-width: calc(100% - 48px);
+  margin: 64px auto 96px;
+  padding: 0 45px;
+  scroll-margin-top: 30px;
+}
+
+.projects-top-rule {
+  width: 940px;
+  max-width: 100%;
+  height: 0.3px;
+  margin: 0 auto 52px;
+  border-radius: 1px;
+  background: rgba(138, 138, 122, 0.3);
+}
+
+.projects-title {
+  box-sizing: border-box;
+  width: 566px;
+  max-width: 100%;
+  margin: 0 0 36px;
+  color: #c9a84c;
+  font: 300 48px/1.12 var(--font-rubik);
+  letter-spacing: 0;
+}
+
+.projects-container {
+  box-sizing: border-box;
+  width: 972px;
+  max-width: 100%;
+  min-height: 799px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+/* Componente de Proyecto (w946 y h232) */
+.project-card {
+  box-sizing: border-box;
+  width: 946px;
+  max-width: 100%;
+  min-height: 232px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.project-card--reverse {
+  flex-direction: row-reverse;
+}
+
+/* Columna de Imagen + Número */
+.project-card-media-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 480px;
+  flex-shrink: 0;
+}
+
+.project-card--reverse .project-card-media-col {
+  align-items: flex-end;
+}
+
+.project-card-number {
+  color: #c9a84c;
+  font: 300 36px/1 var(--font-rubik);
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.project-card-image-box {
+  width: 480px;
+  height: 180px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #191815;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.project-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  filter: brightness(0.9);
+}
+
+.project-card:hover .project-card-image {
+  transform: scale(1.03);
+  filter: brightness(1);
+}
+
+/* Columna de Información (Título y Descripción) */
+.project-card-info-col {
+  box-sizing: border-box;
+  width: 426px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+.project-card-title {
+  margin: 0 0 14px;
+  color: #c9a84c;
+  font: 400 24px/1.2 var(--font-rubik);
+}
+
+.project-card-description {
+  margin: 0;
+  color: #8a8a7a;
+  font: 400 14px/1.65 var(--font-raleway);
+  text-wrap: pretty;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .projects-section {
+    padding: 0 16px;
+  }
+
+  .projects-container {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .project-card {
+    width: 100%;
+    min-height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .project-card--reverse {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-card--reverse .project-card-media-col {
+    align-items: flex-start;
+  }
+
+  .project-card-media-col,
+  .project-card-image-box,
+  .project-card-info-col {
+    width: 100%;
+  }
+
+  .project-card-image-box {
+    height: 220px;
+  }
+}
+
 

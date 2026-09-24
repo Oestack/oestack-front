@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { CircleArrowLeft, CircleArrowRight, ArrowRight } from 'lucide-react'
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
+import ProjectCard from './components/project-card.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
@@ -261,17 +262,17 @@ function App() {
           id="servicios"
           aria-label="Servicios"
         >
-          {/* 1er Contenedor: Título / Subtítulo "Servicios" */}
-          <div className="services-title">
-            <p className="services-title-accent">Servicios</p>
+          {/* 1er Contenedor: Título "Servicios" (Mismo estilo que Proyectos) */}
+          <div className="services-container-one">
+            <h2 className="services-title">Servicios</h2>
           </div>
 
           {/* 2do Contenedor: Subtítulo "Transformo ideas y desarrollamos soluciones" */}
           <div className="services-container-two">
-            <h2 className="services-title">
-              <span className="services-title-lead">Transformo ideas y </span> <br />
-              <span className="services-title-accent">desarrollamos soluciones</span>
-            </h2>
+            <p className="services-subtitle">
+              <span className="services-subtitle-lead">Transformo ideas y </span>
+              <span className="services-subtitle-accent">desarrollamos soluciones</span>
+            </p>
           </div>
 
           {/* 3er Contenedor: Carrusel de tarjetas de servicios */}
@@ -378,6 +379,38 @@ function App() {
                 <CircleArrowRight size={22} strokeWidth={2} aria-hidden="true" />
               </button>
             </div>
+          </div>
+        </section>
+        
+        {/* SECCIÓN PROYECTOS */}
+        <section className="projects-section" id="proyectos" aria-label="Proyectos">
+          <div className="projects-top-rule" aria-hidden="true" />
+          
+          <h2 className="projects-title">Proyectos</h2>
+
+          <div className="projects-container">
+            <ProjectCard
+              number="01"
+              title="Lorem Ipsum"
+              description="Lorem ipsum dolor sit amet consectetur adipiscing elit congue, primis integer aptent dapibus vel platea ornare, mauris nisl ullamcorper blandit fermentum praesent magnis. Tincidunt sollicitudin erat penatibus montes hac convallis justo, vehicula blandit luctus quisque maecenas habitant. Nisi vitae neque."
+              image={img1}
+              imageAlt="Proyecto 01"
+            />
+            <ProjectCard
+              number="02"
+              title="Lorem Ipsum"
+              description="Lorem ipsum dolor sit amet consectetur adipiscing elit congue, primis integer aptent dapibus vel platea ornare, mauris nisl ullamcorper blandit fermentum praesent magnis. Tincidunt sollicitudin erat penatibus montes hac convallis justo, vehicula blandit luctus quisque maecenas habitant. Nisi vitae neque."
+              image={img2}
+              imageAlt="Proyecto 02"
+              reverse
+            />
+            <ProjectCard
+              number="03"
+              title="Lorem Ipsum"
+              description="Lorem ipsum dolor sit amet consectetur adipiscing elit congue, primis integer aptent dapibus vel platea ornare, mauris nisl ullamcorper blandit fermentum praesent magnis. Tincidunt sollicitudin erat penatibus montes hac convallis justo, vehicula blandit luctus quisque maecenas habitant. Nisi vitae neque."
+              image={img3}
+              imageAlt="Proyecto 03"
+            />
           </div>
         </section>
 

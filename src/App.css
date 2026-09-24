@@ -1047,6 +1047,81 @@
   color: #d6d6cd;
 }
 
+/* ============================================================
+   SECCIÓN NOSOTROS
+   ============================================================ */
+
+.about-section {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 896px;
+  scroll-margin-top: 30px;
+}
+
+.about-title {
+  position: absolute;
+  top: 22px;
+  left: 90px;
+  margin: 0;
+  color: #c9a84c;
+  font: 400 48px/1.12 var(--font-raleway);
+}
+
+.about-photo {
+  position: absolute;
+  width: 398px;
+  height: 370px;
+  overflow: hidden;
+}
+
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.about-photo--matias {
+  top: 145px;
+  left: 90px;
+}
+
+.about-photo--magali {
+  top: 515px;
+  left: 607px;
+}
+
+.about-bio {
+  position: absolute;
+  box-sizing: border-box;
+  width: 398px;
+  height: 327px;
+}
+
+.about-bio--matias {
+  top: 151px;
+  left: 605px;
+}
+
+.about-bio--magali {
+  top: 555px;
+  left: 111px;
+}
+
+.about-bio h3 {
+  margin: 0 0 20px;
+  color: #c9a84c;
+  font: 400 24px/1.25 var(--font-raleway);
+}
+
+.about-bio p {
+  margin: 0;
+  color: #fff;
+  font: 300 16px/1.5 var(--font-raleway);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .projects-section {

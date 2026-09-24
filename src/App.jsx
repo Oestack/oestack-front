@@ -7,6 +7,8 @@ import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
 import heroImg from './assets/hero.png'
+import foto1 from './assets/foto1.jpg'
+import foto2 from './assets/foto2.avif'
 import './App.css'
 
 const servicesData = [
@@ -415,6 +417,42 @@ function App() {
         </section>
 
         <div className="hero-bottom-rule" aria-hidden="true" style={{ marginTop: '72px', marginBottom: '48px' }} />
+
+        <section className="about-section" id="nosotros" aria-label="Nosotros">
+          <h2 className="about-title">Nosotros</h2>
+
+          <div className="about-photo about-photo--matias">
+            <img src={foto1} alt="Matias Carabajal" />
+          </div>
+          <div className="about-bio about-bio--matias">
+            <h3>Matias Carabajal</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo nec
+              mauris consequat tincidunt. Sed euismod, sapien vel posuere volutpat, lectus nisi
+              interdum erat, vitae facilisis erat justo sed augue. Curabitur non massa ut libero
+              feugiat aliquet. Vivamus ac velit nec lacus tristique tincidunt. Donec sit amet
+              turpis id neque interdum posuere. Pellentesque habitant morbi tristique senectus et
+              netus et malesuada fames ac turpis egestas. Aenean sed lorem at justo luctus
+              tincidunt. Proin vitae sem eget neque pharetra varius.
+            </p>
+          </div>
+
+          <div className="about-bio about-bio--magali">
+            <h3>Magalí Orellana</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo nec
+              mauris consequat tincidunt. Sed euismod, sapien vel posuere volutpat, lectus nisi
+              interdum erat, vitae facilisis erat justo sed augue. Curabitur non massa ut libero
+              feugiat aliquet. Vivamus ac velit nec lacus tristique tincidunt. Donec sit amet
+              turpis id neque interdum posuere. Pellentesque habitant morbi tristique senectus et
+              netus et malesuada fames ac turpis egestas. Aenean sed lorem at justo luctus
+              tincidunt. Proin vitae sem eget neque pharetra varius.
+            </p>
+          </div>
+          <div className="about-photo about-photo--magali">
+            <img src={foto2} alt="Magalí Orellana" />
+          </div>
+        </section>
       </main>
     </div>
   )

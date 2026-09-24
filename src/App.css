@@ -427,7 +427,7 @@
   opacity: 0;
   pointer-events: none;
   z-index: 8;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .services-backdrop-blur--active {
@@ -460,7 +460,7 @@
   width: 566px;
   max-width: 100%;
   margin-bottom: 12px;
-  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+  transition: filter 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
 }
 
 .services-title {
@@ -481,7 +481,7 @@
   width: 490px;
   max-width: 100%;
   margin-bottom: 32px;
-  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+  transition: filter 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
 }
 
 .services-subtitle {
@@ -516,20 +516,18 @@
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   transition:
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.45s ease,
-    border-color 0.45s ease,
-    background-color 0.45s ease;
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
-/* Efecto de agrandado, iluminación y realce sobre el fondo esmerilado al poner el mouse encima */
+/* Efecto de agrandado sobre el fondo esmerilado sin resplandor brillante y con baja latencia */
 .services-container-three:hover {
-  transform: scale(1.02);
-  background: rgba(20, 20, 18, 0.95);
-  border-color: rgba(201, 168, 76, 0.45);
-  box-shadow:
-    0 25px 65px -10px rgba(0, 0, 0, 0.9),
-    0 0 45px rgba(201, 168, 76, 0.16);
+  transform: scale(1.015);
+  background: rgba(20, 20, 18, 0.98);
+  border-color: #383630;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.8);
 }
 
 /* Header superior dentro del 3er contenedor */
@@ -636,12 +634,12 @@
 .service-card:hover {
   transform: translateY(-5px);
   border-color: rgba(201, 168, 76, 0.5);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(201, 168, 76, 0.12);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.65);
 }
 
 .service-card--active {
   border-color: #c9a84c;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7), 0 0 26px rgba(201, 168, 76, 0.22);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7);
 }
 
 .service-card:focus-visible {
@@ -803,7 +801,7 @@
   border-radius: 50%;
   background: #c9a84c;
   border: 2px solid #0d0d0c;
-  box-shadow: 0 0 10px rgba(201, 168, 76, 0.6);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
   cursor: grab;
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
@@ -824,7 +822,7 @@
   border-radius: 50%;
   background: #c9a84c;
   border: 2px solid #0d0d0c;
-  box-shadow: 0 0 10px rgba(201, 168, 76, 0.6);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
   cursor: grab;
 }
 
@@ -941,13 +939,12 @@
   font: 300 36px/1 var(--font-rubik);
   letter-spacing: 0.5px;
   margin-bottom: 12px;
-  transition: color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.35s ease;
+  transition: color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project-card:hover .project-card-number,
 .project-card--hovered .project-card-number {
-  color: #fff;
-  text-shadow: 0 0 16px rgba(201, 168, 76, 0.6);
+  color: #c9a84c;
   transform: scale(1.05);
 }
 
@@ -968,10 +965,8 @@
 .project-card:hover .project-card-image-box,
 .project-card--hovered .project-card-image-box {
   transform: translateY(-3px);
-  border-color: rgba(201, 168, 76, 0.5);
-  box-shadow:
-    0 16px 36px rgba(0, 0, 0, 0.75),
-    0 0 26px rgba(201, 168, 76, 0.2);
+  border-color: rgba(201, 168, 76, 0.4);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75);
 }
 
 .project-card-image {

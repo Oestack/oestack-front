@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { CircleArrowLeft, CircleArrowRight, ArrowRight } from 'lucide-react'
+import { CircleArrowLeft, CircleArrowRight, ArrowRight, FileText } from 'lucide-react'
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
@@ -385,9 +385,9 @@ function App() {
         </section>
         
         {/* SECCIÓN PROYECTOS */}
+        <div className="hero-bottom-rule" aria-hidden="true" />
+
         <section className="projects-section" id="proyectos" aria-label="Proyectos">
-          <div className="projects-top-rule" aria-hidden="true" />
-          
           <h2 className="projects-title">Proyectos</h2>
 
           <div className="projects-container">
@@ -416,7 +416,7 @@ function App() {
           </div>
         </section>
 
-        <div className="hero-bottom-rule" aria-hidden="true" style={{ marginTop: '72px', marginBottom: '48px' }} />
+        <div className="hero-bottom-rule" aria-hidden="true" />
 
         <section className="about-section" id="nosotros" aria-label="Nosotros">
           <h2 className="about-title">Nosotros</h2>
@@ -451,6 +451,30 @@ function App() {
           </div>
           <div className="about-photo about-photo--magali">
             <img src={foto2} alt="Magalí Orellana" />
+          </div>
+        </section>
+        <div className="hero-bottom-rule" aria-hidden="true" />
+
+        <section className="contact-section" id="contacto" aria-label="Contacto">
+          <div className="contact-heading-frame">
+            <h2 className="contact-section-title">Contacto</h2>
+          </div>
+          <div className="contact-content">
+            <h3 className="contact-title">
+              <span>Hablemos de tu</span>
+              <span>próximo proyecto</span>
+            </h3>
+            <p className="contact-subtitle">Contanos tu idea</p>
+            <div className="contact-option contact-option--one" aria-label="Opción 1">
+              <span className="contact-option-label">Opción 1:</span>
+              <FileText className="contact-option-icon" aria-hidden="true" />
+              <span className="contact-option-description">Completá el formulario</span>
+              <p className="contact-option-copy">
+                Contanos un poco de tu proyecto y nosotros nos ponemos en contacto a la brevedad
+              </p>
+            </div>
+            <div className="contact-option contact-option--two" aria-label="Opción 2" />
+            <div className="contact-option contact-option--three" aria-label="Opción 3" />
           </div>
         </section>
       </main>

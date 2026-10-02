@@ -1050,7 +1050,7 @@
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  min-height: 1000px;
+  min-height: 1100px;
   scroll-margin-top: 30px;
 }
 
@@ -1122,7 +1122,7 @@
   position: absolute;
   box-sizing: border-box;
   width: 328px;
-  height: 598px;
+  height: 650px;
   border: 3px solid #2a2924;
   border-radius: 20px;
   background: #0d0d0c;
@@ -1184,6 +1184,278 @@
   margin: 0;
   color: #fff;
   font: 400 15px/17.67px var(--font-raleway);
+}
+
+.contact-field-label {
+  position: absolute;
+  top: 172px;
+  left: 33px;
+  width: 142px;
+  height: 19px;
+  white-space: nowrap;
+  color: #fff;
+  font: 400 16px/19px var(--font-raleway);
+}
+
+.contact-email-label {
+  position: absolute;
+  top: 258px;
+  left: 36px;
+  width: 142px;
+  height: 19px;
+  color: #fff;
+  font: 400 16px/19px var(--font-raleway);
+  white-space: nowrap;
+}
+
+.contact-project-label {
+  position: absolute;
+  top: 346px;
+  left: 33px;
+  color: #fff;
+  font: 400 16px/19px var(--font-raleway);
+}
+
+.contact-form {
+  margin: 0;
+}
+
+.contact-name-field,
+.contact-email-field,
+.contact-project-select {
+  position: absolute;
+  left: 22px;
+  box-sizing: border-box;
+  width: 267px;
+  height: 39px;
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  border-radius: 5px;
+  background: rgba(201, 168, 76, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.contact-name-field {
+  top: 199px;
+}
+
+.contact-email-field {
+  top: 285px;
+}
+
+.contact-project-select {
+  top: 373px;
+}
+
+.contact-idea-label {
+  position: absolute;
+  top: 434px;
+  left: 32px;
+  color: #fff;
+  font: 400 16px/19px var(--font-raleway);
+  white-space: nowrap;
+}
+
+.contact-idea-field {
+  position: absolute;
+  top: 461px;
+  left: 22px;
+  box-sizing: border-box;
+  width: 267px;
+  height: 89px;
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  border-radius: 5px;
+  background: rgba(201, 168, 76, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.contact-idea-field:focus-within,
+.contact-idea-field.contact-field--filled {
+  background: #0d0d0c;
+}
+
+.contact-idea-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 10px 14px;
+  resize: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #fff;
+  font: 400 16px/19px var(--font-raleway);
+}
+
+.contact-idea-field textarea::placeholder {
+  color: #fff;
+  opacity: 0.2;
+  transition: opacity 0.2s ease;
+}
+
+.contact-idea-field textarea:focus::placeholder {
+  opacity: 0.2;
+}
+
+.contact-submit-button {
+  position: absolute;
+  top: 580px;
+  right: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100px;
+  height: 38px;
+  padding: 0 10px 0 14px;
+  border: 1px solid #c9a84c;
+  border-radius: 18px;
+  background: #c9a84c;
+  color: #0d0d0c;
+  font: 500 14px var(--font-raleway);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.contact-submit-button svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 2;
+}
+
+.contact-submit-button:hover {
+  background: #0d0d0c;
+  color: #c9a84c;
+}
+
+.contact-name-field input,
+.contact-email-field input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 12px 14px 4px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #fff;
+  font: 400 16px var(--font-raleway);
+}
+
+.contact-name-field label,
+.contact-email-field label {
+  position: absolute;
+  top: 10px;
+  left: 14.35px;
+  color: #fff;
+  font: 400 16px/19px var(--font-raleway);
+  pointer-events: none;
+  transition: top 0.2s ease, left 0.2s ease, font-size 0.2s ease;
+}
+
+.contact-name-field:focus-within,
+.contact-email-field:focus-within,
+.contact-project-select:focus-within {
+  background: #0d0d0c;
+}
+
+.contact-name-field:has(input:not(:placeholder-shown)),
+.contact-email-field:has(input:not(:placeholder-shown)),
+.contact-name-field.contact-field--filled,
+.contact-email-field.contact-field--filled,
+.contact-name-field:has(input:autofill),
+.contact-email-field:has(input:autofill),
+.contact-name-field:has(input:-webkit-autofill),
+.contact-email-field:has(input:-webkit-autofill) {
+  background: #0d0d0c;
+}
+
+.contact-name-field input:-webkit-autofill,
+.contact-email-field input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #0d0d0c inset;
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+}
+
+.contact-project-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0 42px 0 14px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: 400 16px var(--font-raleway);
+  cursor: pointer;
+  text-align: left;
+}
+
+.contact-project-trigger:focus-visible {
+  outline: 1px solid #c9a84c;
+  outline-offset: -2px;
+}
+
+.contact-project-options {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 6px);
+  left: -1px;
+  box-sizing: border-box;
+  width: calc(100% + 2px);
+  padding: 5px;
+  border: 1px solid #2a2924;
+  border-radius: 6px;
+  background: #141412;
+}
+
+.contact-project-option {
+  display: block;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  font: 400 14px var(--font-raleway);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.contact-project-option:hover,
+.contact-project-option:focus-visible {
+  transform: translateX(3px);
+  background: rgba(138, 138, 122, 0.102);
+  color: #c9a84c;
+  outline: 0;
+}
+
+.contact-project-chevron {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  opacity: 0.7;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.contact-project-chevron--open {
+  transform: rotate(180deg);
+}
+
+.contact-name-field input:focus + label,
+.contact-name-field input:not(:placeholder-shown) + label,
+.contact-email-field input:focus + label,
+.contact-email-field input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 10px;
+  padding: 0 4px;
+  background: #0d0d0c;
+  font-size: 12px;
 }
 
 .about-photo {

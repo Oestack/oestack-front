@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { CircleArrowLeft, CircleArrowRight, ArrowRight, FileText } from 'lucide-react'
+import { CircleArrowLeft, CircleArrowRight, ArrowRight, FileText, ChevronDown } from 'lucide-react'
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
@@ -68,6 +68,11 @@ function App() {
   const [activeCard, setActiveCard] = useState(0)
   const [isServicesHovered, setIsServicesHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
+  const [isProjectMenuOpen, setIsProjectMenuOpen] = useState(false)
+  const [selectedProjectType, setSelectedProjectType] = useState('')
+  const [contactName, setContactName] = useState('')
+  const [contactEmail, setContactEmail] = useState('')
+  const [contactIdea, setContactIdea] = useState('')
 
   const servicesTrackRef = useRef(null)
   const dragStartX = useRef(0)
@@ -472,6 +477,97 @@ function App() {
               <p className="contact-option-copy">
                 Contanos un poco de tu proyecto y nosotros nos ponemos en contacto a la brevedad
               </p>
+              <label className="contact-field-label" htmlFor="contact-name">
+                Nombre Completo *
+              </label>
+              <form className="contact-form">
+                <div className={`contact-name-field${contactName ? ' contact-field--filled' : ''}`}>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    placeholder=" "
+                    autoComplete="name"
+                    value={contactName}
+                    onChange={(event) => setContactName(event.target.value)}
+                    required
+                  />
+                  <label htmlFor="contact-name">Tu nombre</label>
+                </div>
+                <div className={`contact-email-field${contactEmail ? ' contact-field--filled' : ''}`}>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    placeholder=" "
+                    autoComplete="email"
+                    value={contactEmail}
+                    onChange={(event) => setContactEmail(event.target.value)}
+                    required
+                  />
+                  <label htmlFor="contact-email">e-mail</label>
+                </div>
+                <div className="contact-project-select">
+                  <input type="hidden" name="projectType" value={selectedProjectType} />
+                  <button
+                    className="contact-project-trigger"
+                    type="button"
+                    aria-haspopup="listbox"
+                    aria-expanded={isProjectMenuOpen}
+                    aria-controls="contact-project-options"
+                    onClick={() => setIsProjectMenuOpen((isOpen) => !isOpen)}
+                  >
+                    <span>{selectedProjectType || 'selecciona una opcion'}</span>
+                    <ChevronDown
+                      className={`contact-project-chevron ${isProjectMenuOpen ? 'contact-project-chevron--open' : ''}`}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  {isProjectMenuOpen && (
+                    <div className="contact-project-options" id="contact-project-options" role="listbox">
+                      {[
+                        'Landing Page',
+                        'Web de varias paginas',
+                        'Web full stack',
+                        'Un sistema a medida',
+                      ].map((option) => (
+                        <button
+                          className="contact-project-option"
+                          key={option}
+                          type="button"
+                          role="option"
+                          aria-selected={selectedProjectType === option}
+                          onClick={() => {
+                            setSelectedProjectType(option)
+                            setIsProjectMenuOpen(false)
+                          }}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <label className="contact-idea-label" htmlFor="contact-idea">
+                  Contanos brevemente tu idea *
+                </label>
+                <div className={`contact-idea-field${contactIdea ? ' contact-field--filled' : ''}`}>
+                  <textarea
+                    id="contact-idea"
+                    name="idea"
+                    placeholder="Escribi tu idea"
+                    value={contactIdea}
+                    onChange={(event) => setContactIdea(event.target.value)}
+                    required
+                  />
+                </div>
+                <button className="contact-submit-button" type="button">
+                  <span>Enviar</span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+              </form>
+              <span className="contact-email-label">E-mail *</span>
+              <span className="contact-project-label">Que querés desarrollar?</span>
             </div>
             <div className="contact-option contact-option--two" aria-label="Opción 2" />
             <div className="contact-option contact-option--three" aria-label="Opción 3" />

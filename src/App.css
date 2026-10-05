@@ -1,5 +1,5 @@
 .app-layout {
-  min-height: 100vh;
+  min-height: 111.111vh;
   background: #0d0d0c;
 }
 
@@ -9,7 +9,7 @@
   z-index: 10;
   box-sizing: border-box;
   width: 250px;
-  height: 100vh;
+  height: 111.111vh;
   padding: 27px 15px 20px;
   display: flex;
   flex-direction: column;
@@ -145,8 +145,9 @@
 
 .main-content {
   box-sizing: border-box;
-  min-height: 100vh;
+  min-height: 111.111vh;
   margin-left: 250px;
+  padding-right: 11.111vw;
   padding-top: 24px;
   background: #0d0d0c;
 }
@@ -382,6 +383,26 @@
 .action-button-leading-icon {
   flex: 0 0 20px;
   color: currentColor;
+}
+
+.hero-actions .action-button {
+  width: 170px;
+  height: 48px;
+  padding: 0 14px 0 18px;
+  font-size: 16px;
+}
+
+.hero-copy > .action-button {
+  width: 201px;
+  height: 50px;
+  font-size: 16px;
+}
+
+.hero-actions .action-button-icon,
+.hero-copy > .action-button .action-button-icon {
+  flex-basis: 26px;
+  width: 26px;
+  height: 26px;
 }
 
 .action-button.has-leading-icon {
@@ -1055,6 +1076,7 @@
   position: relative;
   box-sizing: border-box;
   width: 100%;
+  margin: 0 auto;
   min-height: 1100px;
   scroll-margin-top: 30px;
 }
@@ -1135,18 +1157,21 @@
 
 .contact-option--one {
   top: 234px;
-  left: max(69px, calc((100% - 1050px) / 2 + 45px));
+  left: calc((100% - 1010px) / 2);
+  height: 600px;
 }
 
 .contact-option--two {
   top: 234px;
-  left: calc(max(69px, (100% - 1050px) / 2 + 45px) + 365px);
+  left: calc((100% - 1010px) / 2 + 365px);
+  height: 600px;
 }
 
 .contact-option--three {
   top: 234px;
-  left: calc(max(69px, (100% - 1050px) / 2 + 45px) + 730px);
+  left: calc((100% - 1010px) / 2 + 730px);
   width: 280px;
+  height: 600px;
 }
 
 .contact-option-label {
@@ -1157,6 +1182,322 @@
   height: 19px;
   color: #c9a84c;
   font: 400 16px/19px var(--font-raleway);
+}
+
+.contact-option-calendar {
+  position: absolute;
+  top: 46px;
+  left: 17px;
+  width: 30px;
+  height: 30px;
+  color: #c9a84c;
+  opacity: 0.7;
+  stroke-width: 2;
+}
+
+.contact-option-interview {
+  position: absolute;
+  top: 53px;
+  left: 55px;
+  color: #fff;
+  font: 400 15px/19px var(--font-raleway);
+  white-space: nowrap;
+}
+
+.contact-option-interview-copy {
+  position: absolute;
+  top: 91px;
+  left: 22px;
+  width: 284px;
+  margin: 0;
+  color: #fff;
+  font: 400 15px/17.67px var(--font-raleway);
+}
+
+.contact-whatsapp-icon {
+  position: absolute;
+  top: 69px;
+  left: 22px;
+  width: 30px;
+  height: 30px;
+  color: #c0a84c;
+  opacity: 0.7;
+  stroke-width: 2;
+}
+
+.contact-whatsapp-title {
+  position: absolute;
+  top: 74px;
+  left: 59px;
+  color: #fff;
+  font: 400 16px/19px var(--font-raleway);
+}
+
+.contact-whatsapp-copy {
+  position: absolute;
+  top: 118px;
+  left: 23px;
+  margin: 0;
+  color: #fff;
+  font: 400 16px/20px var(--font-raleway);
+}
+
+.contact-whatsapp-action {
+  position: absolute;
+  top: 176px;
+  left: 32px;
+}
+
+.contact-option--three .contact-whatsapp-action .action-button,
+.contact-option--three .contact-email-action .action-button {
+  width: 216px;
+  min-width: 216px;
+  height: 48px;
+  padding: 0 14px 0 18px;
+  border-radius: 30px;
+  gap: 8px;
+  font: 400 14px/1 var(--font-raleway);
+}
+
+.contact-option--three .contact-whatsapp-action .action-button-leading-icon,
+.contact-option--three .contact-email-action .action-button-leading-icon {
+  color: #c9a84c;
+}
+
+.contact-option--three .contact-whatsapp-action .action-button--dark:hover,
+.contact-option--three .contact-email-action .action-button--dark:hover {
+  color: #0d0d0c;
+}
+
+.contact-option--three .contact-whatsapp-action .action-button--dark:hover .action-button-leading-icon,
+.contact-option--three .contact-email-action .action-button--dark:hover .action-button-leading-icon {
+  color: #fff;
+}
+
+.contact-whatsapp-divider {
+  position: absolute;
+  top: 257px;
+  left: 44.5px;
+  width: 191px;
+  height: 1px;
+  border-radius: 1px;
+  background: #2a2924;
+}
+
+.contact-email-icon {
+  position: absolute;
+  top: 284px;
+  left: 25px;
+  width: 30px;
+  height: 30px;
+  color: #c9a84c;
+  opacity: 0.7;
+  stroke-width: 2;
+}
+
+.contact-email-title {
+  position: absolute;
+  top: 289px;
+  left: 62px;
+  color: #fff;
+  font: 400 16px/19px var(--font-raleway);
+}
+
+.contact-email-copy {
+  position: absolute;
+  top: 334px;
+  left: 23px;
+  width: 234px;
+  margin: 0;
+  color: #fff;
+  font: 400 16px/20px var(--font-raleway);
+}
+
+.contact-email-action {
+  position: absolute;
+  top: 415px;
+  left: 30px;
+}
+
+.contact-calendar {
+  position: absolute;
+  top: 196px;
+  left: 22px;
+  box-sizing: border-box;
+  width: 284px;
+  padding: 12px;
+  border: 1px solid #2a2924;
+  border-radius: 16px;
+  color: #fff;
+}
+
+.contact-calendar-block {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.contact-calendar-nav {
+  display: grid;
+  flex: 0 0 22px;
+  place-items: center;
+  width: 22px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: #0d0d0c;
+  color: #fff;
+  cursor: pointer;
+}
+
+.contact-calendar-nav svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 2;
+}
+
+.contact-calendar-selects {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  min-width: 0;
+}
+
+.contact-calendar-select-wrap {
+  position: relative;
+  height: 30px;
+  border: 1px solid #2a2924;
+  border-radius: 8px;
+  background: #0d0d0c;
+}
+
+.contact-calendar-month-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-calendar-year-wrap {
+  flex: 0 0 76px;
+}
+
+.contact-calendar-select-wrap select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0 23px 0 9px;
+  appearance: none;
+  border: 0;
+  border-radius: inherit;
+  outline: 0;
+  background: transparent;
+  color: #fff;
+  font: 400 12px var(--font-raleway);
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.contact-calendar-select-wrap option {
+  background: #0d0d0c;
+  color: #fff;
+}
+
+.contact-calendar-select-wrap > svg {
+  position: absolute;
+  top: 9px;
+  right: 7px;
+  width: 12px;
+  height: 12px;
+  color: #fff;
+  pointer-events: none;
+}
+
+.contact-calendar-table {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #fff;
+  font: 400 11px/1 var(--font-raleway);
+  text-align: center;
+}
+
+.contact-calendar-table th {
+  height: 24px;
+  font-weight: 400;
+}
+
+.contact-calendar-table td {
+  height: 34px;
+  padding: 0;
+}
+
+.contact-calendar-day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  color: #fff;
+}
+
+.contact-calendar-day-number {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  transition: border-color 0.2s ease;
+}
+
+.contact-calendar-day:not(.contact-calendar-day--reserved):hover .contact-calendar-day-number {
+  border-color: #2a2924;
+}
+
+.contact-calendar-day--reserved .contact-calendar-day-number {
+  background: #c9a84c;
+  color: #fff;
+}
+
+.contact-interview-duration {
+  position: absolute;
+  top: 490px;
+  left: 22px;
+  box-sizing: border-box;
+  width: 284px;
+  height: 57px;
+  border: 1px solid #8a8a7a;
+  border-radius: 10px;
+}
+
+.contact-interview-duration-icon {
+  position: absolute;
+  top: 11px;
+  left: 12px;
+  width: 26px;
+  height: 26px;
+  color: #fff;
+  stroke-width: 2;
+}
+
+.contact-interview-duration-title {
+  position: absolute;
+  top: 11px;
+  left: 49px;
+  color: #fff;
+  font: 300 13px/17px var(--font-raleway);
+}
+
+.contact-interview-duration-note {
+  position: absolute;
+  top: 30px;
+  left: 49px;
+  color: #fff;
+  font: 300 11px/15px var(--font-rubik);
 }
 
 .contact-option-icon {
@@ -1266,7 +1607,7 @@
   left: 22px;
   box-sizing: border-box;
   width: 267px;
-  height: 89px;
+  height: 75px;
   border: 1px solid rgba(201, 168, 76, 0.1);
   border-radius: 5px;
   background: rgba(201, 168, 76, 0.2);
@@ -1303,14 +1644,14 @@
 
 .contact-submit-button {
   position: absolute;
-  top: 580px;
+  top: 550px;
   right: 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  width: 100px;
-  height: 38px;
+  width: 90px;
+  height: 36px;
   padding: 0 10px 0 14px;
   border: 1px solid #c9a84c;
   border-radius: 18px;
@@ -1351,9 +1692,10 @@
   top: 10px;
   left: 14.35px;
   color: #fff;
+  opacity: 0.2;
   font: 400 16px/19px var(--font-raleway);
   pointer-events: none;
-  transition: top 0.2s ease, left 0.2s ease, font-size 0.2s ease;
+  transition: top 0.2s ease, left 0.2s ease, font-size 0.2s ease, opacity 0.2s ease;
 }
 
 .contact-name-field:focus-within,
@@ -1460,6 +1802,7 @@
   left: 10px;
   padding: 0 4px;
   background: #0d0d0c;
+  opacity: 1;
   font-size: 12px;
 }
 

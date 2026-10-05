@@ -25,6 +25,14 @@ body,
   margin: 0;
 }
 
+#root {
+  width: 111.111%;
+  min-height: 111.111vh;
+  overflow-x: clip;
+  zoom: 0.9;
+}
+
 body {
   min-height: 100vh;
+  overflow-x: clip;
 }

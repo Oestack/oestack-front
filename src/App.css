@@ -147,7 +147,7 @@
   box-sizing: border-box;
   min-height: 111.111vh;
   margin-left: 250px;
-  padding-right: 11.111vw;
+  padding-right: calc(11.111vw + 24px);
   padding-top: 24px;
   background: #0d0d0c;
 }
@@ -1151,19 +1151,19 @@
 }
 
 .contact-option--one {
-  top: 234px;
+  top: 254px;
   left: calc((100% - 1010px) / 2);
   height: 600px;
 }
 
 .contact-option--two {
-  top: 234px;
+  top: 254px;
   left: calc((100% - 1010px) / 2 + 365px);
   height: 600px;
 }
 
 .contact-option--three {
-  top: 234px;
+  top: 254px;
   left: calc((100% - 1010px) / 2 + 730px);
   width: 280px;
   height: 600px;

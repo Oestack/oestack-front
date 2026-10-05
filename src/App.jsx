@@ -1,5 +1,17 @@
 import { useState, useRef, useEffect } from 'react'
-import { CircleArrowLeft, CircleArrowRight, ArrowRight, FileText, ChevronDown } from 'lucide-react'
+import {
+  CircleArrowLeft,
+  CircleArrowRight,
+  ArrowRight,
+  FileText,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  Clock,
+  MessageCircle,
+  Mail,
+} from 'lucide-react'
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
@@ -73,6 +85,34 @@ function App() {
   const [contactName, setContactName] = useState('')
   const [contactEmail, setContactEmail] = useState('')
   const [contactIdea, setContactIdea] = useState('')
+  const [calendarMonth, setCalendarMonth] = useState(() => new Date().getMonth())
+  const [calendarYear, setCalendarYear] = useState(() => new Date().getFullYear())
+
+  const calendarMonthNames = Array.from({ length: 12 }, (_, month) =>
+    new Intl.DateTimeFormat('es-AR', { month: 'long' }).format(new Date(2025, month, 1)),
+  )
+  const calendarDaysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate()
+  const calendarStartOffset = (new Date(calendarYear, calendarMonth, 1).getDay() + 6) % 7
+  const calendarCells = [
+    ...Array(calendarStartOffset).fill(null),
+    ...Array.from({ length: calendarDaysInMonth }, (_, day) => day + 1),
+  ]
+  while (calendarCells.length % 7 !== 0) calendarCells.push(null)
+
+  // Reserva de muestra para visualizar el estilo del calendario.
+  const reservedCalendarDates = ['2026-10-06']
+
+  const changeCalendarMonth = (amount) => {
+    const nextMonth = new Date(calendarYear, calendarMonth + amount, 1)
+    setCalendarMonth(nextMonth.getMonth())
+    setCalendarYear(nextMonth.getFullYear())
+  }
+
+  const isCalendarDateReserved = (day) => {
+    if (!day) return false
+    const date = `${calendarYear}-${String(calendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    return reservedCalendarDates.includes(date)
+  }
 
   const servicesTrackRef = useRef(null)
   const dragStartX = useRef(0)
@@ -569,8 +609,120 @@ function App() {
               <span className="contact-email-label">E-mail *</span>
               <span className="contact-project-label">Que querés desarrollar?</span>
             </div>
-            <div className="contact-option contact-option--two" aria-label="Opción 2" />
-            <div className="contact-option contact-option--three" aria-label="Opción 3" />
+            <div className="contact-option contact-option--two" aria-label="Opción 2">
+              <span className="contact-option-label">Opción 02</span>
+              <Calendar className="contact-option-calendar" aria-hidden="true" />
+              <span className="contact-option-interview">Programar una entrevista</span>
+              <p className="contact-option-interview-copy">
+                Elegí un horario disponible y coordinaremos una charla de 30 minutos para conocer tu
+                proyecto, aclarar dudas y definir pasos
+              </p>
+              <div className="contact-calendar" aria-label="Calendario de entrevistas">
+                <div className="contact-calendar-block">
+                  <button
+                    className="contact-calendar-nav"
+                    type="button"
+                    aria-label="Mes anterior"
+                    onClick={() => changeCalendarMonth(-1)}
+                  >
+                    <ChevronLeft aria-hidden="true" />
+                  </button>
+                  <div className="contact-calendar-selects">
+                    <div className="contact-calendar-select-wrap contact-calendar-month-wrap">
+                      <select
+                        aria-label="Mes"
+                        value={calendarMonth}
+                        onChange={(event) => setCalendarMonth(Number(event.target.value))}
+                      >
+                        {calendarMonthNames.map((month, index) => (
+                          <option value={index} key={month}>{month}</option>
+                        ))}
+                      </select>
+                      <ChevronDown aria-hidden="true" />
+                    </div>
+                    <div className="contact-calendar-select-wrap contact-calendar-year-wrap">
+                      <select
+                        aria-label="Año"
+                        value={calendarYear}
+                        onChange={(event) => setCalendarYear(Number(event.target.value))}
+                      >
+                        {Array.from({ length: 11 }, (_, index) => calendarYear - 5 + index).map((year) => (
+                          <option value={year} key={year}>{year}</option>
+                        ))}
+                      </select>
+                      <ChevronDown aria-hidden="true" />
+                    </div>
+                  </div>
+                  <button
+                    className="contact-calendar-nav"
+                    type="button"
+                    aria-label="Mes siguiente"
+                    onClick={() => changeCalendarMonth(1)}
+                  >
+                    <ChevronRight aria-hidden="true" />
+                  </button>
+                </div>
+                <table className="contact-calendar-table">
+                  <thead>
+                    <tr>
+                      {['Lu', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((weekday) => (
+                        <th scope="col" key={weekday}>{weekday}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.from({ length: calendarCells.length / 7 }, (_, week) => (
+                      <tr key={week}>
+                        {calendarCells.slice(week * 7, week * 7 + 7).map((day, index) => {
+                          const isReserved = isCalendarDateReserved(day)
+                          return (
+                            <td key={`${week}-${index}`}>
+                              {day && (
+                                <span
+                                  className={`contact-calendar-day${isReserved ? ' contact-calendar-day--reserved' : ''}`}
+                                  aria-label={`${day}${isReserved ? ', con reserva' : ''}`}
+                                >
+                                  <span className="contact-calendar-day-number">{day}</span>
+                                </span>
+                              )}
+                            </td>
+                          )
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="contact-interview-duration">
+                <Clock className="contact-interview-duration-icon" aria-hidden="true" />
+                <span className="contact-interview-duration-title">Duración: 30 minutos</span>
+                <span className="contact-interview-duration-note">
+                  La reunión será mediante Google Meet
+                </span>
+              </div>
+            </div>
+            <div className="contact-option contact-option--three" aria-label="Opción 3">
+              <span className="contact-option-label">Opción 03</span>
+              <MessageCircle className="contact-whatsapp-icon" aria-hidden="true" />
+              <span className="contact-whatsapp-title">Whatsapp</span>
+              <p className="contact-whatsapp-copy">Tenés una consulta rápida? Escribinos!</p>
+              <div className="contact-whatsapp-action">
+                <Button variant="dark" href="https://wa.me/" icon={MessageCircle}>
+                  Abrir WhatsApp
+                </Button>
+              </div>
+              <div className="contact-whatsapp-divider" aria-hidden="true" />
+              <Mail className="contact-email-icon" aria-hidden="true" />
+              <span className="contact-email-title">Email</span>
+              <p className="contact-email-copy">
+                También podés escribirnos por mail, y te respondemos lo antes posible
+              </p>
+              <div className="contact-email-action">
+                <Button variant="dark" href="mailto:" icon={Mail}>
+                  Enviar un mail
+                </Button>
+              </div>
+            </div>
           </div>
         </section>
       </main>

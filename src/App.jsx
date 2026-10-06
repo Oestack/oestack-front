@@ -11,6 +11,7 @@ import {
   Clock,
   MessageCircle,
   Mail,
+  X,
 } from 'lucide-react'
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
@@ -85,8 +86,15 @@ function App() {
   const [contactName, setContactName] = useState('')
   const [contactEmail, setContactEmail] = useState('')
   const [contactIdea, setContactIdea] = useState('')
+  const [isContactSubmitting, setIsContactSubmitting] = useState(false)
+  const [contactSubmitMessage, setContactSubmitMessage] = useState('')
   const [calendarMonth, setCalendarMonth] = useState(() => new Date().getMonth())
   const [calendarYear, setCalendarYear] = useState(() => new Date().getFullYear())
+  const [bookingDate, setBookingDate] = useState('')
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
+  const [bookingConfirmation, setBookingConfirmation] = useState(null)
+  const bookingFrameRef = useRef(null)
+  const bookingAppUrl = import.meta.env.VITE_BOOKING_APP_URL
 
   const calendarMonthNames = Array.from({ length: 12 }, (_, month) =>
     new Intl.DateTimeFormat('es-AR', { month: 'long' }).format(new Date(2025, month, 1)),
@@ -99,20 +107,109 @@ function App() {
   ]
   while (calendarCells.length % 7 !== 0) calendarCells.push(null)
 
-  // Reserva de muestra para visualizar el estilo del calendario.
-  const reservedCalendarDates = ['2026-10-06']
-
   const changeCalendarMonth = (amount) => {
     const nextMonth = new Date(calendarYear, calendarMonth + amount, 1)
     setCalendarMonth(nextMonth.getMonth())
     setCalendarYear(nextMonth.getFullYear())
   }
 
-  const isCalendarDateReserved = (day) => {
-    if (!day) return false
-    const date = `${calendarYear}-${String(calendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-    return reservedCalendarDates.includes(date)
+  const handleContactSubmit = async (event) => {
+    event.preventDefault()
+    if (isContactSubmitting) return
+
+    setIsContactSubmitting(true)
+    setContactSubmitMessage('')
+
+    const message = [
+      `Nombre: ${contactName.trim()}`,
+      `Mail: ${contactEmail.trim()}`,
+      `Opción elegida: ${selectedProjectType || 'No especificada'}`,
+      `Mensaje: ${contactIdea.trim()}`,
+    ].join('\n\n')
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/oestack.solutions@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name: contactName.trim(),
+          email: contactEmail.trim(),
+          projectType: selectedProjectType || 'No especificado',
+          message,
+          _subject: 'Nuevo mensaje desde Oestack',
+        }),
+      })
+      const result = await response.json()
+
+      if (!response.ok || result.success === false || result.success === 'false') {
+        throw new Error('No se pudo enviar el formulario.')
+      }
+
+      setContactSubmitMessage('¡Mensaje enviado! Te responderemos a la brevedad.')
+      setContactName('')
+      setContactEmail('')
+      setContactIdea('')
+      setSelectedProjectType('')
+    } catch {
+      setContactSubmitMessage('No se pudo enviar. Probá de nuevo en unos minutos.')
+    } finally {
+      setIsContactSubmitting(false)
+    }
   }
+
+  const getCalendarDateValue = (day) => (
+    `${calendarYear}-${String(calendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+  )
+
+  const isCalendarDateUnavailable = (day) => {
+    if (!day) return true
+    const date = new Date(calendarYear, calendarMonth, day)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    return date < today || date.getDay() === 0 || date.getDay() === 6
+  }
+
+  const openBookingModal = (day) => {
+    if (isCalendarDateUnavailable(day)) return
+    setBookingConfirmation(null)
+    setBookingDate(getCalendarDateValue(day))
+    setIsBookingModalOpen(true)
+  }
+
+  const openGmailComposer = (event) => {
+    event.preventDefault()
+
+    const width = 520
+    const height = 650
+    const left = Math.round((window.screen.width - width) / 2)
+    const top = Math.round((window.screen.height - height) / 2)
+    const features = `popup=yes,width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+
+    window.open(
+      'https://mail.google.com/mail/?view=cm&fs=1&to=oestack.solutions@gmail.com',
+      'oestack-gmail-compose',
+      features,
+    )
+  }
+
+  const closeBookingModal = () => {
+    setIsBookingModalOpen(false)
+    setBookingConfirmation(null)
+  }
+
+  useEffect(() => {
+    const handleBookingMessage = (event) => {
+      const isAppsScriptOrigin = event.origin === 'https://script.google.com'
+        || event.origin === 'https://script.googleusercontent.com'
+        || event.origin.endsWith('.script.googleusercontent.com')
+      if (!isAppsScriptOrigin) return
+      if (event.data?.type !== 'oestack-booking-success') return
+      setBookingConfirmation(true)
+    }
+
+    window.addEventListener('message', handleBookingMessage)
+    return () => window.removeEventListener('message', handleBookingMessage)
+  }, [bookingDate])
 
   const servicesTrackRef = useRef(null)
   const dragStartX = useRef(0)
@@ -520,7 +617,7 @@ function App() {
               <label className="contact-field-label" htmlFor="contact-name">
                 Nombre Completo *
               </label>
-              <form className="contact-form">
+              <form className="contact-form" onSubmit={handleContactSubmit}>
                 <div className={`contact-name-field${contactName ? ' contact-field--filled' : ''}`}>
                   <input
                     id="contact-name"
@@ -601,10 +698,15 @@ function App() {
                     required
                   />
                 </div>
-                <button className="contact-submit-button" type="button">
-                  <span>Enviar</span>
+                <button className="contact-submit-button" type="submit" disabled={isContactSubmitting}>
+                  <span>{isContactSubmitting ? 'Enviando' : 'Enviar'}</span>
                   <ArrowRight aria-hidden="true" />
                 </button>
+                {contactSubmitMessage && (
+                  <p className="contact-submit-message" role="status">
+                    {contactSubmitMessage}
+                  </p>
+                )}
               </form>
               <span className="contact-email-label">E-mail *</span>
               <span className="contact-project-label">Que querés desarrollar?</span>
@@ -674,16 +776,18 @@ function App() {
                     {Array.from({ length: calendarCells.length / 7 }, (_, week) => (
                       <tr key={week}>
                         {calendarCells.slice(week * 7, week * 7 + 7).map((day, index) => {
-                          const isReserved = isCalendarDateReserved(day)
                           return (
                             <td key={`${week}-${index}`}>
                               {day && (
-                                <span
-                                  className={`contact-calendar-day${isReserved ? ' contact-calendar-day--reserved' : ''}`}
-                                  aria-label={`${day}${isReserved ? ', con reserva' : ''}`}
+                                <button
+                                  className="contact-calendar-day"
+                                  type="button"
+                                  disabled={isCalendarDateUnavailable(day)}
+                                  aria-label={`Elegir ${day} de ${calendarMonthNames[calendarMonth]}`}
+                                  onClick={() => openBookingModal(day)}
                                 >
                                   <span className="contact-calendar-day-number">{day}</span>
-                                </span>
+                                </button>
                               )}
                             </td>
                           )
@@ -707,7 +811,11 @@ function App() {
               <span className="contact-whatsapp-title">Whatsapp</span>
               <p className="contact-whatsapp-copy">Tenés una consulta rápida? Escribinos!</p>
               <div className="contact-whatsapp-action">
-                <Button variant="dark" href="https://wa.me/" icon={MessageCircle}>
+                <Button
+                  variant="dark"
+                  href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
+                  icon={MessageCircle}
+                >
                   Abrir WhatsApp
                 </Button>
               </div>
@@ -718,7 +826,12 @@ function App() {
                 También podés escribirnos por mail, y te respondemos lo antes posible
               </p>
               <div className="contact-email-action">
-                <Button variant="dark" href="mailto:" icon={Mail}>
+                <Button
+                  variant="dark"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=oestack.solutions@gmail.com"
+                  icon={Mail}
+                  onClick={openGmailComposer}
+                >
                   Enviar un mail
                 </Button>
               </div>
@@ -726,6 +839,55 @@ function App() {
           </div>
         </section>
       </main>
+      {isBookingModalOpen && (
+        <div
+          className="booking-modal-backdrop"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) closeBookingModal()
+          }}
+        >
+          <section className="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
+            <button
+              className="booking-modal-close"
+              type="button"
+              aria-label="Cerrar reserva"
+              onClick={closeBookingModal}
+            >
+              <X aria-hidden="true" />
+            </button>
+            <h2 className="booking-modal-title" id="booking-modal-title">Programar entrevista</h2>
+            {bookingAppUrl ? (
+              <iframe
+                ref={bookingFrameRef}
+                className="booking-modal-frame"
+                title="Elegí tu horario de entrevista"
+                src={`${bookingAppUrl.replace(/\/$/, '')}?date=${encodeURIComponent(bookingDate)}`}
+              />
+            ) : (
+              <p className="booking-modal-setup-message">
+                El calendario todavía no está conectado. Cuando implementes la aplicación web de Apps Script, pegá su URL en <code>VITE_BOOKING_APP_URL</code> para habilitar las reservas.
+              </p>
+            )}
+            {bookingConfirmation && (
+              <div className="booking-confirmation-overlay" role="presentation">
+                <section className="booking-confirmation" role="dialog" aria-modal="true" aria-labelledby="booking-confirmation-title">
+                  <button
+                    className="booking-modal-close"
+                    type="button"
+                    aria-label="Cerrar confirmación y volver a la página"
+                    onClick={closeBookingModal}
+                  >
+                    <X aria-hidden="true" />
+                  </button>
+                  <h2 className="booking-modal-title" id="booking-confirmation-title">Reserva exitosa!</h2>
+                  <p>Tu entrevista quedó agendada. Te enviaremos la invitación con los detalles.</p>
+                </section>
+              </div>
+            )}
+          </section>
+        </div>
+      )}
     </div>
   )
 }

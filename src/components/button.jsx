@@ -5,11 +5,13 @@ function Button({
   href = '#contacto',
   icon: Icon,
   children = 'Contactanos',
+  onClick,
 }) {
   return (
     <a
       className={`action-button action-button--${variant}${Icon ? ' has-leading-icon' : ''}`}
       href={href}
+      onClick={onClick}
     >
       {Icon && <Icon className="action-button-leading-icon" size={20} strokeWidth={2} aria-hidden="true" />}
       <span>{children}</span>

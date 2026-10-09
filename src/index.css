@@ -17,6 +17,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #root {
@@ -35,4 +39,12 @@ body,
 body {
   min-height: 100vh;
   overflow-x: clip;
+}
+
+@media (max-width: 1024px) {
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    zoom: 1;
+  }
 }

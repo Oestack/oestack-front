@@ -16,12 +16,13 @@ import {
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
+import FaqModal from './components/faq-modal.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
 import heroImg from './assets/hero.png'
-import foto1 from './assets/foto1.jpg'
-import foto2 from './assets/foto2.avif'
+import matFoto from './assets/mat.jpg'
+import magFoto from './assets/magFoto.jpeg'
 import './App.css'
 
 const servicesData = [
@@ -92,6 +93,7 @@ function App() {
   const [calendarYear, setCalendarYear] = useState(() => new Date().getFullYear())
   const [bookingDate, setBookingDate] = useState('')
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
+  const [isFaqModalOpen, setIsFaqModalOpen] = useState(false)
   const [bookingConfirmation, setBookingConfirmation] = useState(null)
   const bookingFrameRef = useRef(null)
   const bookingAppUrl = import.meta.env.VITE_BOOKING_APP_URL
@@ -338,13 +340,16 @@ function App() {
         aria-hidden="true"
       />
 
-      <Sidebar />
+      <Sidebar
+        onOpenFaq={() => setIsFaqModalOpen(true)}
+        isFaqOpen={isFaqModalOpen}
+      />
 
       <main className="main-content" aria-label="Contenido principal">
         <div className="hero-top-rule" aria-hidden="true" />
 
         {/* HERO SECTION */}
-        <section className="hero-container" aria-label="Presentación">
+        <section className="hero-container" id="inicio" aria-label="Presentación">
           <div className="hero-actions">
             <Button variant="dark">Contactanos</Button>
           </div>
@@ -434,7 +439,7 @@ function App() {
                 <span className="services-carousel-hint">Deslizá o arrastrá para explorar</span>
               </div>
               <div className="services-carousel-arrows">
-                
+
               </div>
             </div>
 
@@ -525,7 +530,7 @@ function App() {
             </div>
           </div>
         </section>
-        
+
         {/* SECCIÓN PROYECTOS */}
         <div className="hero-bottom-rule" aria-hidden="true" />
 
@@ -564,35 +569,23 @@ function App() {
           <h2 className="about-title">Nosotros</h2>
 
           <div className="about-photo about-photo--matias">
-            <img src={foto1} alt="Matias Carabajal" />
+            <img src={matFoto} alt="Matias Carabajal" />
           </div>
           <div className="about-bio about-bio--matias">
             <h3>Matias Carabajal</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo nec
-              mauris consequat tincidunt. Sed euismod, sapien vel posuere volutpat, lectus nisi
-              interdum erat, vitae facilisis erat justo sed augue. Curabitur non massa ut libero
-              feugiat aliquet. Vivamus ac velit nec lacus tristique tincidunt. Donec sit amet
-              turpis id neque interdum posuere. Pellentesque habitant morbi tristique senectus et
-              netus et malesuada fames ac turpis egestas. Aenean sed lorem at justo luctus
-              tincidunt. Proin vitae sem eget neque pharetra varius.
+              Técnico Universitario en Programación recibido y estudiante de la Licenciatura en Informática en la Universidad Nacional de Hurlingham (UNAHUR). Cuento con una sólida base como Desarrollador, QA Tester y Análisis de Datos.
             </p>
           </div>
 
           <div className="about-bio about-bio--magali">
             <h3>Magalí Orellana</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo nec
-              mauris consequat tincidunt. Sed euismod, sapien vel posuere volutpat, lectus nisi
-              interdum erat, vitae facilisis erat justo sed augue. Curabitur non massa ut libero
-              feugiat aliquet. Vivamus ac velit nec lacus tristique tincidunt. Donec sit amet
-              turpis id neque interdum posuere. Pellentesque habitant morbi tristique senectus et
-              netus et malesuada fames ac turpis egestas. Aenean sed lorem at justo luctus
-              tincidunt. Proin vitae sem eget neque pharetra varius.
+              Técnica Universitaria en Programación recibida y estudiante de la Licenciatura en Informática en la Universidad Nacional de Hurlingham (UNAHUR). Me apasiona transformar ideas complejas en código limpio y funcional. Encuentro el equilibrio perfecto entre el diseño visual y la lógica del servidor, apasionada por el desarrollo y las buenas practicas.
             </p>
           </div>
           <div className="about-photo about-photo--magali">
-            <img src={foto2} alt="Magalí Orellana" />
+            <img src={magFoto} alt="Magalí Orellana" />
           </div>
         </section>
         <div className="hero-bottom-rule" aria-hidden="true" />
@@ -839,6 +832,48 @@ function App() {
           </div>
         </section>
       </main>
+
+      <footer className="page-footer" role="contentinfo" aria-label="Pie de página">
+        <div className="page-footer-content">
+          <a href="#inicio" className="page-footer-brand">OESTACK</a>
+          <span className="page-footer-dot" aria-hidden="true">•</span>
+          <span className="page-footer-location">Buenos Aires, Argentina</span>
+          <span className="page-footer-dot" aria-hidden="true">•</span>
+          <span className="page-footer-copy">© 2025</span>
+        </div>
+        <div className="page-footer-social">
+          <a
+            href="https://github.com/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            className="page-footer-icon"
+          >
+            <svg className="github-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path fill="currentColor" d="M12 .297a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.577v-2.234c-3.338.726-4.043-1.416-4.043-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.303-5.467-1.333-5.467-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.48 11.48 0 0 1 6.004 0c2.29-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.12 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.807 5.624-5.48 5.921.43.37.814 1.103.814 2.222v3.293c0 .32.216.694.825.576A12.002 12.002 0 0 0 12 .297Z" />
+            </svg>
+          </a>
+          <a
+            href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="WhatsApp"
+            className="page-footer-icon"
+          >
+            <MessageCircle size={16} aria-hidden="true" />
+          </a>
+          <a
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=oestack.solutions@gmail.com"
+            onClick={openGmailComposer}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Email"
+            className="page-footer-icon"
+          >
+            <Mail size={16} aria-hidden="true" />
+          </a>
+        </div>
+      </footer>
       {isBookingModalOpen && (
         <div
           className="booking-modal-backdrop"
@@ -888,6 +923,11 @@ function App() {
           </section>
         </div>
       )}
+
+      <FaqModal
+        isOpen={isFaqModalOpen}
+        onClose={() => setIsFaqModalOpen(false)}
+      />
     </div>
   )
 }

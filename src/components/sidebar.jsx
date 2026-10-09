@@ -1,20 +1,144 @@
-import { Home, BriefcaseBusiness, Users, FolderKanban, Mail } from 'lucide-react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { Home, BriefcaseBusiness, Users, FolderKanban, Mail, CircleHelp } from 'lucide-react'
 import SidebarItems from './sidebar-items.jsx'
 
-const navigationItems = [
-  { icon: Home, label: 'Inicio', href: '#inicio', active: true },
-  { icon: BriefcaseBusiness, label: 'Servicios', href: '#servicios' },
-  { icon: Users, label: 'Nosotros', href: '#nosotros' },
-  { icon: FolderKanban, label: 'Proyectos', href: '#proyectos' },
-  { icon: Mail, label: 'Contacto', href: '#contacto' },
+const mainNavigationItems = [
+  { icon: Home, label: 'Inicio', href: '#inicio', id: 'inicio' },
+  { icon: BriefcaseBusiness, label: 'Servicios', href: '#servicios', id: 'servicios' },
+  { icon: FolderKanban, label: 'Proyectos', href: '#proyectos', id: 'proyectos' },
+  { icon: Users, label: 'Nosotros', href: '#nosotros', id: 'nosotros' },
+  { icon: Mail, label: 'Contacto', href: '#contacto', id: 'contacto' },
 ]
 
-function Sidebar() {
+function Sidebar({ onOpenFaq, isFaqOpen = false }) {
+  const [activeSection, setActiveSection] = useState('inicio')
+  const [indicatorStyle, setIndicatorStyle] = useState({
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 53,
+    opacity: 0,
+    isHorizontal: false,
+  })
+  const navRef = useRef(null)
+  const itemRefs = useRef({})
+
+  const updateIndicator = useCallback((sectionId) => {
+    const activeEl = itemRefs.current[sectionId]
+    const navEl = navRef.current
+
+    if (activeEl && navEl) {
+      const isHorizontal = window.innerWidth <= 1024
+
+      if (isHorizontal) {
+        setIndicatorStyle({
+          left: activeEl.offsetLeft,
+          top: activeEl.offsetTop,
+          width: activeEl.offsetWidth,
+          height: activeEl.offsetHeight,
+          opacity: 1,
+          isHorizontal: true,
+        })
+
+        // En pantallas angostas con scroll horizontal en el nav, mantener centrado el item activo
+        const navWidth = navEl.clientWidth
+        const itemLeft = activeEl.offsetLeft
+        const itemWidth = activeEl.offsetWidth
+        const targetScroll = itemLeft - (navWidth / 2) + (itemWidth / 2)
+        if (Math.abs(navEl.scrollLeft - targetScroll) > 10) {
+          navEl.scrollTo({ left: targetScroll, behavior: 'smooth' })
+        }
+      } else {
+        setIndicatorStyle({
+          left: 0,
+          top: activeEl.offsetTop,
+          width: activeEl.offsetWidth,
+          height: activeEl.offsetHeight,
+          opacity: 1,
+          isHorizontal: false,
+        })
+      }
+    } else {
+      setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }))
+    }
+  }, [])
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      updateIndicator(activeSection)
+    })
+    return () => cancelAnimationFrame(id)
+  }, [activeSection, updateIndicator])
+
+  useEffect(() => {
+    const sectionIds = ['inicio', 'servicios', 'proyectos', 'nosotros', 'contacto']
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const scrollHeight = document.documentElement.scrollHeight
+      const innerHeight = window.innerHeight
+
+      // Llegó abajo de todo en la página -> activar Contacto
+      if (scrollY + innerHeight >= scrollHeight - 70) {
+        setActiveSection('contacto')
+        return
+      }
+
+      // Arriba de todo -> activar Inicio
+      if (scrollY < 80) {
+        setActiveSection('inicio')
+        return
+      }
+
+      // Medir posición de cada sección respecto a la ventana
+      const triggerPoint = innerHeight * 0.35
+      let currentSection = 'inicio'
+
+      for (let i = 0; i < sectionIds.length; i++) {
+        const el = document.getElementById(sectionIds[i])
+        if (!el) continue
+        const rect = el.getBoundingClientRect()
+
+        if (rect.top <= triggerPoint && rect.bottom > triggerPoint) {
+          currentSection = sectionIds[i]
+          break
+        } else if (rect.top <= triggerPoint) {
+          currentSection = sectionIds[i]
+        }
+      }
+
+      setActiveSection(currentSection)
+    }
+
+    const handleResize = () => {
+      handleScroll()
+      requestAnimationFrame(() => {
+        updateIndicator(activeSection)
+      })
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleResize, { passive: true })
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [activeSection, updateIndicator])
+
+  const handleItemClick = (id) => {
+    setActiveSection(id)
+    updateIndicator(id)
+  }
+
   return (
     <aside className="sidebar" aria-label="Navegación principal">
       <div className="sidebar-top">
         <div className="sidebar-brand">
-          <a className="sidebar-logo" href="#inicio">OESTACK</a>
+          <a className="sidebar-logo" href="#inicio" onClick={() => handleItemClick('inicio')}>
+            OESTACK
+          </a>
         </div>
 
         <a
@@ -29,18 +153,62 @@ function Sidebar() {
           </svg>
         </a>
 
-        <nav className="sidebar-navigation">
-          {navigationItems.map((item) => (
-            <SidebarItems key={item.label} {...item} />
+        <nav className="sidebar-navigation" ref={navRef}>
+          {/* Rail guía vertical / horizontal */}
+          <div className="sidebar-nav-rail" aria-hidden="true" />
+
+          {/* Indicador deslizante animado */}
+          <div
+            className={`sidebar-sliding-indicator ${indicatorStyle.isHorizontal ? 'sidebar-sliding-indicator--horizontal' : ''}`}
+            style={{
+              transform: indicatorStyle.isHorizontal
+                ? `translate3d(${indicatorStyle.left}px, ${indicatorStyle.top}px, 0)`
+                : `translate3d(0, ${indicatorStyle.top}px, 0)`,
+              width: indicatorStyle.isHorizontal ? `${indicatorStyle.width}px` : undefined,
+              height: `${indicatorStyle.height}px`,
+              opacity: indicatorStyle.opacity,
+            }}
+            aria-hidden="true"
+          >
+            <div className="sidebar-sliding-bar" />
+            <div className="sidebar-sliding-glow" />
+          </div>
+
+          {mainNavigationItems.map((item) => (
+            <div
+              key={item.label}
+              ref={(el) => {
+                itemRefs.current[item.id] = el
+              }}
+              className="sidebar-item-wrapper"
+            >
+              <SidebarItems
+                {...item}
+                active={activeSection === item.id}
+                onClick={() => handleItemClick(item.id)}
+              />
+            </div>
           ))}
         </nav>
       </div>
 
-      <footer className="sidebar-footer">
-        <p className="sidebar-footer-brand">OESTACK</p>
-        <p>Buenos Aires, Argentina</p>
-        <p>© 2025</p>
-      </footer>
+      <div className="sidebar-bottom">
+        <nav className="sidebar-navigation sidebar-navigation--bottom" aria-label="Navegación secundaria">
+          <SidebarItems
+            icon={CircleHelp}
+            label="Preguntas Frecuentes"
+            shortLabel="FAQ"
+            active={isFaqOpen}
+            onClick={onOpenFaq}
+          />
+        </nav>
+
+        <footer className="sidebar-footer">
+          <p className="sidebar-footer-brand">OESTACK</p>
+          <p>Buenos Aires, Argentina</p>
+          <p>© 2025</p>
+        </footer>
+      </div>
     </aside>
   )
 }

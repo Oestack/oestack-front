@@ -171,7 +171,6 @@ function Sidebar({ onOpenFaq, isFaqOpen = false }) {
             aria-hidden="true"
           >
             <div className="sidebar-sliding-bar" />
-            <div className="sidebar-sliding-glow" />
           </div>
 
           {mainNavigationItems.map((item) => (

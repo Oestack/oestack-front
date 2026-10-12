@@ -68,9 +68,9 @@ function App() {
   const [activeImage, setActiveImage] = useState(0)
   const images = [img1, img2, img3]
   const imagePositions = [
-    [88, 209, -33],
-    [-33, 88, 209],
-    [209, -33, 88],
+    [21, 50, -8],
+    [-8, 21, 50],
+    [50, -8, 21],
   ]
 
   const moveCarousel = (direction) => {
@@ -385,7 +385,7 @@ function App() {
                     alt={`Proyecto destacado ${index + 1}`}
                     draggable="false"
                     style={{
-                      left: `${imagePositions[activeImage][index]}px`,
+                      left: `${imagePositions[activeImage][index]}%`,
                       zIndex: 3 - position,
                     }}
                   />

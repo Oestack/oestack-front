@@ -64,19 +64,6 @@ const servicesData = [
 ]
 
 function App() {
-  // Hero Carousel State
-  const [activeImage, setActiveImage] = useState(0)
-  const images = [img1, img2, img3]
-  const imagePositions = [
-    [21, 50, -8],
-    [-8, 21, 50],
-    [50, -8, 21],
-  ]
-
-  const moveCarousel = (direction) => {
-    setActiveImage((current) => (current + direction + images.length) % images.length)
-  }
-
   // Servicios Carousel State
   const [scrollProgress, setScrollProgress] = useState(0)
   const [activeCard, setActiveCard] = useState(0)
@@ -96,6 +83,8 @@ function App() {
   const [isFaqModalOpen, setIsFaqModalOpen] = useState(false)
   const [bookingConfirmation, setBookingConfirmation] = useState(null)
   const bookingFrameRef = useRef(null)
+  const heroAreaRef = useRef(null)
+  const servicesSectionRef = useRef(null)
   const bookingAppUrl = import.meta.env.VITE_BOOKING_APP_URL
 
   const calendarMonthNames = Array.from({ length: 12 }, (_, month) =>
@@ -212,6 +201,35 @@ function App() {
     window.addEventListener('message', handleBookingMessage)
     return () => window.removeEventListener('message', handleBookingMessage)
   }, [bookingDate])
+
+  useEffect(() => {
+    let animationFrame = null
+
+    const updateHeroOpacity = () => {
+      if (animationFrame !== null) return
+
+      animationFrame = window.requestAnimationFrame(() => {
+        animationFrame = null
+        const heroArea = heroAreaRef.current
+        const servicesSection = servicesSectionRef.current
+        if (!heroArea || !servicesSection) return
+
+        const servicesTop = servicesSection.getBoundingClientRect().top
+        const fadeProgress = Math.min(1, Math.max(0, servicesTop / (window.innerHeight * 0.85)))
+        heroArea.style.opacity = String(fadeProgress ** 2.2)
+      })
+    }
+
+    updateHeroOpacity()
+    window.addEventListener('scroll', updateHeroOpacity, { passive: true })
+    window.addEventListener('resize', updateHeroOpacity)
+
+    return () => {
+      window.removeEventListener('scroll', updateHeroOpacity)
+      window.removeEventListener('resize', updateHeroOpacity)
+      if (animationFrame !== null) window.cancelAnimationFrame(animationFrame)
+    }
+  }, [])
 
   const servicesTrackRef = useRef(null)
   const dragStartX = useRef(0)
@@ -346,194 +364,161 @@ function App() {
       />
 
       <main className="main-content" aria-label="Contenido principal">
-        <div className="hero-top-rule" aria-hidden="true" />
-
-        {/* HERO SECTION */}
-        <section className="hero-container" id="inicio" aria-label="Presentación">
-          <div className="hero-actions">
-            <Button variant="dark">Contactanos</Button>
-          </div>
-          <div className="hero-copy">
-            <p className="hero-kicker">Estudio de soluciones tecnológicas</p>
-            <h1 className="hero-title">
-              <span className="hero-title-lead">Vos imaginás,</span>
-              <br />
-              <span className="hero-title-accent">
-                nosotros hacemos que
-                <br />
-                funcione.
-              </span>
-            </h1>
-            <p className="hero-description">
-              Desarrollamos sitios web, software y soluciones digitales para resolver problemas reales
-            </p>
-            <Button variant="yellow" href="#servicios">Ver servicios</Button>
-          </div>
-          <div className="hero-carousel" aria-label="Carrusel de proyectos">
-            <div className="carousel-stage">
-              {images.map((image, index) => {
-                const position = (index - activeImage + images.length) % images.length
-                const centeredShadow = activeImage === 1 && index === 1
-                  ? ' carousel-image--centered-shadow'
-                  : ''
-
-                return (
-                  <img
-                    key={image}
-                    className={`carousel-image carousel-image--${['active', 'next', 'previous'][position]}${centeredShadow}`}
-                    src={image}
-                    alt={`Proyecto destacado ${index + 1}`}
-                    draggable="false"
-                    style={{
-                      left: `${imagePositions[activeImage][index]}%`,
-                      zIndex: 3 - position,
-                    }}
-                  />
-                )
-              })}
-            </div>
-            <div className="carousel-controls">
-              <button type="button" aria-label="Imagen anterior" onClick={() => moveCarousel(-1)}>
-                <CircleArrowLeft size={25} strokeWidth={2} aria-hidden="true" />
-              </button>
-              <button type="button" aria-label="Imagen siguiente" onClick={() => moveCarousel(1)}>
-                <CircleArrowRight size={25} strokeWidth={2} aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <div className="hero-bottom-rule" aria-hidden="true" />
-
-        {/* SECCIÓN SERVICIOS */}
-        <section
-          className={`services-section ${isServicesHovered ? 'services-section--hovered' : ''}`}
-          id="servicios"
-          aria-label="Servicios"
-        >
-          {/* 1er Contenedor: Título "Servicios" (Mismo estilo que Proyectos) */}
-          <div className="services-container-one">
-            <h2 className="services-title">Servicios</h2>
+        <div className="hero-services-stage">
+          <div className="hero-area" ref={heroAreaRef}>
+            {/* HERO SECTION */}
+            <section className="hero-container" id="inicio" aria-label="Presentación">
+              <div className="hero-copy">
+                <p className="hero-kicker">Estudio de soluciones tecnológicas</p>
+                <h1 className="hero-title">
+                  <span className="hero-title-lead">Vos imaginás,</span>
+                  <br />
+                  <span className="hero-title-accent">
+                    nosotros hacemos que
+                    <br />
+                    funcione.
+                  </span>
+                </h1>
+                <p className="hero-description">
+                  Desarrollamos sitios web, software y soluciones digitales para resolver problemas reales
+                </p>
+                <div className="hero-actions-group">
+                  <Button variant="dark">Contactanos</Button>
+                  <Button variant="yellow" href="#servicios">Ver servicios</Button>
+                </div>
+              </div>
+            </section>
           </div>
 
-          {/* 2do Contenedor: Subtítulo "Transformo ideas y desarrollamos soluciones" */}
-          <div className="services-container-two">
-            <p className="services-subtitle">
-              <span className="services-subtitle-lead">Transformo ideas y </span>
-              <span className="services-subtitle-accent">desarrollamos soluciones</span>
-            </p>
-          </div>
-
-          {/* 3er Contenedor: Carrusel de tarjetas de servicios */}
-          <div
-            className="services-container-three"
-            onMouseEnter={() => setIsServicesHovered(true)}
-            onMouseLeave={() => setIsServicesHovered(false)}
+          {/* SECCIÓN SERVICIOS */}
+          <section
+            ref={servicesSectionRef}
+            className={`services-section ${isServicesHovered ? 'services-section--hovered' : ''}`}
+            id="servicios"
+            aria-label="Servicios"
           >
-            {/* Header del 3er contenedor con navegación por flechas */}
-            <div className="services-carousel-header">
-              <div className="services-carousel-header-info">
-                <span className="services-carousel-counter">
-                  0{activeCard + 1} <span className="services-counter-divider">/</span> 0{servicesData.length}
-                </span>
-                <span className="services-carousel-hint">Deslizá o arrastrá para explorar</span>
-              </div>
-              <div className="services-carousel-arrows">
-
-              </div>
+            {/* 1er Contenedor: Título "Servicios" (Mismo estilo que Proyectos) */}
+            <div className="services-container-one">
+              <h2 className="services-title">Servicios</h2>
             </div>
 
-            {/* Track deslizable de tarjetas */}
+            {/* 2do Contenedor: Subtítulo "Transformo ideas y desarrollamos soluciones" */}
+            <div className="services-container-two">
+              <p className="services-subtitle">
+                <span className="services-subtitle-lead">Transformo ideas y </span>
+                <span className="services-subtitle-accent">desarrollamos soluciones</span>
+              </p>
+            </div>
+
+            {/* 3er Contenedor: Carrusel de tarjetas de servicios */}
             <div
-              ref={servicesTrackRef}
-              className={`services-cards-track ${isDragging ? 'is-dragging' : ''}`}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
-              onScroll={handleTrackScroll}
+              className="services-container-three"
+              onMouseEnter={() => setIsServicesHovered(true)}
+              onMouseLeave={() => setIsServicesHovered(false)}
             >
-              {servicesData.map((service, index) => (
-                <article
-                  key={service.id}
-                  className={`service-card ${activeCard === index ? 'service-card--active' : ''}`}
-                  onClick={() => handleCardSelect(index)}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`Servicio: ${service.title}`}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      handleCardSelect(index)
-                    }
-                  }}
-                >
-                  <div className="service-card-media">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="service-card-image"
-                      draggable="false"
-                    />
-                    <span className="service-card-tag">{service.tag}</span>
-                  </div>
-                  <div className="service-card-content">
-                    <h3 className="service-card-title">{service.title}</h3>
-                    <p className="service-card-description">{service.description}</p>
-                    <div className="service-card-footer">
-                      <span className="service-card-link">
-                        Conocer más
-                        <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
+              {/* Header del 3er contenedor con navegación por flechas */}
+              <div className="services-carousel-header">
+                <div className="services-carousel-header-info">
+                  <span className="services-carousel-counter">
+                    0{activeCard + 1} <span className="services-counter-divider">/</span> 0{servicesData.length}
+                  </span>
+                  <span className="services-carousel-hint">Deslizá o arrastrá para explorar</span>
+                </div>
+                <div className="services-carousel-arrows">
 
-            {/* Slider bar horizontal inferior para deslizar hacia los costados */}
-            <div className="services-slider-container">
-              <button
-                type="button"
-                className="services-slider-btn"
-                aria-label="Deslizar hacia la izquierda"
-                onClick={() => scrollCarousel(-1)}
-              >
-                <CircleArrowLeft size={22} strokeWidth={2} aria-hidden="true" />
-              </button>
-
-              <div className="services-slider-wrapper">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="0.1"
-                  value={scrollProgress}
-                  onChange={handleSliderInput}
-                  className="services-slider-input"
-                  aria-label="Control deslizante horizontal de servicios"
-                />
-                <div
-                  className="services-slider-fill"
-                  style={{ width: `${scrollProgress}%` }}
-                />
+                </div>
               </div>
 
-              <button
-                type="button"
-                className="services-slider-btn"
-                aria-label="Deslizar hacia la derecha"
-                onClick={() => scrollCarousel(1)}
+              {/* Track deslizable de tarjetas */}
+              <div
+                ref={servicesTrackRef}
+                className={`services-cards-track ${isDragging ? 'is-dragging' : ''}`}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+                onScroll={handleTrackScroll}
               >
-                <CircleArrowRight size={22} strokeWidth={2} aria-hidden="true" />
-              </button>
+                {servicesData.map((service, index) => (
+                  <article
+                    key={service.id}
+                    className={`service-card ${activeCard === index ? 'service-card--active' : ''}`}
+                    onClick={() => handleCardSelect(index)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Servicio: ${service.title}`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        handleCardSelect(index)
+                      }
+                    }}
+                  >
+                    <div className="service-card-media">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="service-card-image"
+                        draggable="false"
+                      />
+                      <span className="service-card-tag">{service.tag}</span>
+                    </div>
+                    <div className="service-card-content">
+                      <h3 className="service-card-title">{service.title}</h3>
+                      <p className="service-card-description">{service.description}</p>
+                      <div className="service-card-footer">
+                        <span className="service-card-link">
+                          Conocer más
+                          <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {/* Slider bar horizontal inferior para deslizar hacia los costados */}
+              <div className="services-slider-container">
+                <button
+                  type="button"
+                  className="services-slider-btn"
+                  aria-label="Deslizar hacia la izquierda"
+                  onClick={() => scrollCarousel(-1)}
+                >
+                  <CircleArrowLeft size={22} strokeWidth={2} aria-hidden="true" />
+                </button>
+
+                <div className="services-slider-wrapper">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={scrollProgress}
+                    onChange={handleSliderInput}
+                    className="services-slider-input"
+                    aria-label="Control deslizante horizontal de servicios"
+                  />
+                  <div
+                    className="services-slider-fill"
+                    style={{ width: `${scrollProgress}%` }}
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  className="services-slider-btn"
+                  aria-label="Deslizar hacia la derecha"
+                  onClick={() => scrollCarousel(1)}
+                >
+                  <CircleArrowRight size={22} strokeWidth={2} aria-hidden="true" />
+                </button>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
         {/* SECCIÓN PROYECTOS */}
-        <div className="hero-bottom-rule" aria-hidden="true" />
-
         <section className="projects-section" id="proyectos" aria-label="Proyectos">
           <h2 className="projects-title">Proyectos</h2>
 
@@ -563,8 +548,6 @@ function App() {
           </div>
         </section>
 
-        <div className="hero-bottom-rule" aria-hidden="true" />
-
         <section className="about-section" id="nosotros" aria-label="Nosotros">
           <h2 className="about-title">Nosotros</h2>
 
@@ -588,7 +571,6 @@ function App() {
             <img src={magFoto} alt="Magalí Orellana" />
           </div>
         </section>
-        <div className="hero-bottom-rule" aria-hidden="true" />
 
         <section className="contact-section" id="contacto" aria-label="Contacto">
           <div className="contact-heading-frame">
@@ -933,4 +915,3 @@ function App() {
 }
 
 export default App
-

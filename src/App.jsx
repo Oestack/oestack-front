@@ -12,10 +12,14 @@ import {
   MessageCircle,
   Mail,
   X,
+  PanelsTopLeft,
+  Code2,
+  MonitorCheck,
 } from 'lucide-react'
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
+import ProcessCard from './components/process-card.jsx'
 import FaqModal from './components/faq-modal.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
@@ -63,6 +67,29 @@ const servicesData = [
   },
 ]
 
+const processStages = [
+  {
+    title: 'Relevamiento',
+    description: 'Entendemos tus necesidades, analizamos tu negocio y definimos el alcance del proyecto.',
+    Icon: FileText,
+  },
+  {
+    title: 'Diseño',
+    description: 'Diseñamos la estructura y creamos un prototipo para validar la solución antes de desarrollarla.',
+    Icon: PanelsTopLeft,
+  },
+  {
+    title: 'Desarrollo',
+    description: 'Programamos, probamos y ajustamos cada funcionalidad con tu feedback.',
+    Icon: Code2,
+  },
+  {
+    title: 'Implementación',
+    description: 'Publicamos la solución, verificamos su funcionamiento y te acompañamos con soporte y mejoras.',
+    Icon: MonitorCheck,
+  },
+]
+
 function App() {
   // Servicios Carousel State
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -82,10 +109,44 @@ function App() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
   const [isFaqModalOpen, setIsFaqModalOpen] = useState(false)
   const [bookingConfirmation, setBookingConfirmation] = useState(null)
+  const [hasProcessSectionEntered, setHasProcessSectionEntered] = useState(false)
+  const [hasProjectsSectionEntered, setHasProjectsSectionEntered] = useState(false)
   const bookingFrameRef = useRef(null)
   const heroAreaRef = useRef(null)
   const servicesSectionRef = useRef(null)
+  const processSectionRef = useRef(null)
+  const projectsSectionRef = useRef(null)
   const bookingAppUrl = import.meta.env.VITE_BOOKING_APP_URL
+
+  useEffect(() => {
+    const processSection = processSectionRef.current
+    if (!processSection) return
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setHasProcessSectionEntered(true)
+        observer.disconnect()
+      }
+    }, { threshold: 0.15 })
+
+    observer.observe(processSection)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const projectsSection = projectsSectionRef.current
+    if (!projectsSection) return
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setHasProjectsSectionEntered(true)
+        observer.disconnect()
+      }
+    }, { threshold: 0.15 })
+
+    observer.observe(projectsSection)
+    return () => observer.disconnect()
+  }, [])
 
   const calendarMonthNames = Array.from({ length: 12 }, (_, month) =>
     new Intl.DateTimeFormat('es-AR', { month: 'long' }).format(new Date(2025, month, 1)),
@@ -217,6 +278,7 @@ function App() {
         const servicesTop = servicesSection.getBoundingClientRect().top
         const fadeProgress = Math.min(1, Math.max(0, servicesTop / (window.innerHeight * 0.85)))
         heroArea.style.opacity = String(fadeProgress ** 2.2)
+        heroArea.style.transform = `translateY(${(1 - fadeProgress) * 8}px) scale(${0.985 + fadeProgress * 0.015})`
       })
     }
 
@@ -405,8 +467,8 @@ function App() {
             {/* 2do Contenedor: Subtítulo "Transformo ideas y desarrollamos soluciones" */}
             <div className="services-container-two">
               <p className="services-subtitle">
-                <span className="services-subtitle-lead">Transformo ideas y </span>
-                <span className="services-subtitle-accent">desarrollamos soluciones</span>
+                <span className="services-subtitle-lead">Transformamos ideas, y </span>
+                <span className="services-subtitle-accent">desarrollamos soluciones.</span>
               </p>
             </div>
 
@@ -518,8 +580,33 @@ function App() {
           </section>
         </div>
 
+        <section
+          ref={processSectionRef}
+          className={`nuestros-procesos ${hasProcessSectionEntered ? 'nuestros-procesos--visible' : ''}`}
+          aria-label="Nuestros procesos"
+        >
+          <div className="nuestros-procesos-contenido">
+            <h2 className="nuestros-procesos-titulo">Procesos</h2>
+            <p className="nuestros-procesos-texto">
+              <strong>Cada solución tiene un proceso detrás.</strong> En Oestack trabajamos por etapas,
+              con objetivos definidos, avances concretos y comunicación constante. Sabés qué estamos
+              haciendo, por qué lo hacemos y qué sigue.
+            </p>
+          </div>
+          <div className="procesos-tarjetas">
+            {processStages.map((stage) => (
+              <ProcessCard key={stage.title} {...stage} />
+            ))}
+          </div>
+        </section>
+
         {/* SECCIÓN PROYECTOS */}
-        <section className="projects-section" id="proyectos" aria-label="Proyectos">
+        <section
+          ref={projectsSectionRef}
+          className={`projects-section ${hasProjectsSectionEntered ? 'projects-section--visible' : ''}`}
+          id="proyectos"
+          aria-label="Proyectos"
+        >
           <h2 className="projects-title">Proyectos</h2>
 
           <div className="projects-container">

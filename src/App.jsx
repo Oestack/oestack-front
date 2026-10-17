@@ -16,6 +16,7 @@ import ProjectCard from './components/project-card.jsx'
 import ProcessCard from './components/process-card.jsx'
 import ServiceCard from './components/service-card.jsx'
 import Faq from './components/faq.jsx'
+import Nosotros from './pages/nosotros.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
@@ -86,6 +87,8 @@ const processStages = [
 ]
 
 function App() {
+  const isNosotrosPage = window.location.pathname.replace(/\/+$/, '') === '/nosotros'
+
   // Servicios Carousel State
   const [scrollProgress, setScrollProgress] = useState(0)
   const [activeCard, setActiveCard] = useState(0)
@@ -396,9 +399,14 @@ function App() {
 
       <Sidebar
         onNavigateHome={handleNavigateHome}
+        currentPage={isNosotrosPage ? 'nosotros' : 'home'}
       />
 
       <main className="main-content" aria-label="Contenido principal">
+        {isNosotrosPage ? (
+          <Nosotros />
+        ) : (
+          <>
         <div className="hero-services-stage">
           <div className="hero-area" ref={heroAreaRef}>
             {/* HERO SECTION */}
@@ -685,6 +693,8 @@ function App() {
           </div>
         </section>
         <Faq />
+          </>
+        )}
       </main>
 
       <footer className="page-footer" role="contentinfo" aria-label="Pie de página">

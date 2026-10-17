@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Home, BriefcaseBusiness, Workflow, FolderKanban, Mail, CircleHelp, PersonStanding } from 'lucide-react'
+import { Home, BriefcaseBusiness, Workflow, FolderKanban, Mail, PersonStanding } from 'lucide-react'
 import SidebarItems from './sidebar-items.jsx'
 
 const mainNavigationItems = [
@@ -10,8 +10,8 @@ const mainNavigationItems = [
   { icon: Mail, label: 'Contacto', href: '#contacto', id: 'contacto' },
 ]
 
-function Sidebar({ onNavigateHome }) {
-  const [activeSection, setActiveSection] = useState('inicio')
+function Sidebar({ onNavigateHome, currentPage = 'home' }) {
+  const [activeSection, setActiveSection] = useState(currentPage === 'nosotros' ? 'nosotros' : 'inicio')
   const [indicatorStyle, setIndicatorStyle] = useState({
     left: 0,
     top: 0,
@@ -71,6 +71,8 @@ function Sidebar({ onNavigateHome }) {
   }, [activeSection, updateIndicator])
 
   useEffect(() => {
+    if (currentPage === 'nosotros') return undefined
+
     const sectionIds = ['inicio', 'servicios', 'proceso', 'proyectos', 'contacto']
 
     const handleScroll = () => {
@@ -125,23 +127,31 @@ function Sidebar({ onNavigateHome }) {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
     }
-  }, [activeSection, updateIndicator])
+  }, [activeSection, currentPage, updateIndicator])
 
   const handleItemClick = (id, event) => {
     setActiveSection(id)
     updateIndicator(id)
 
-    if (id === 'inicio') {
+    if (id === 'inicio' && currentPage === 'home') {
       event.preventDefault()
       onNavigateHome()
     }
   }
 
+  const navigationItems = currentPage === 'nosotros'
+    ? mainNavigationItems.map((item) => ({ ...item, href: `/${item.href}` }))
+    : mainNavigationItems
+
   return (
     <aside className="sidebar" aria-label="Navegación principal">
       <div className="sidebar-top">
         <div className="sidebar-brand">
-          <a className="sidebar-logo" href="#inicio" onClick={() => handleItemClick('inicio')}>
+          <a
+            className="sidebar-logo"
+            href={currentPage === 'nosotros' ? '/#inicio' : '#inicio'}
+            onClick={(event) => handleItemClick('inicio', event)}
+          >
             OESTACK
           </a>
         </div>
@@ -178,7 +188,7 @@ function Sidebar({ onNavigateHome }) {
             <div className="sidebar-sliding-bar" />
           </div>
 
-          {mainNavigationItems.map((item) => (
+          {navigationItems.map((item) => (
             <div
               key={item.label}
               ref={(el) => {
@@ -197,21 +207,16 @@ function Sidebar({ onNavigateHome }) {
       </div>
 
       <div className="sidebar-bottom">
-        <nav className="sidebar-navigation sidebar-navigation--bottom" aria-label="Navegación secundaria">
-          <SidebarItems
-            icon={PersonStanding}
-            label="Nosotros"
-            shortLabel="Nosotros"
-          />
-          <SidebarItems
-            icon={CircleHelp}
-            label="Preguntas Frecuentes"
-            shortLabel="FAQ"
-            href="#preguntas-frecuentes"
-          />
-        </nav>
-
         <footer className="sidebar-footer">
+          <nav className="sidebar-navigation sidebar-navigation--bottom" aria-label="Navegación secundaria">
+            <SidebarItems
+              icon={PersonStanding}
+              label="Nosotros"
+              shortLabel="Nosotros"
+              href="/nosotros"
+              active={currentPage === 'nosotros'}
+            />
+          </nav>
           <p className="sidebar-footer-brand">OESTACK</p>
           <p>Buenos Aires, Argentina</p>
           <p>© 2025</p>

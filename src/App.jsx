@@ -588,8 +588,8 @@ function App() {
             </p>
           </div>
           <div className="procesos-tarjetas">
-            {processStages.map((stage) => (
-              <ProcessCard key={stage.title} {...stage} />
+            {processStages.map((stage, index) => (
+              <ProcessCard key={stage.title} number={index + 1} {...stage} />
             ))}
           </div>
         </section>

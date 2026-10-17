@@ -10,7 +10,7 @@ const mainNavigationItems = [
   { icon: Mail, label: 'Contacto', href: '#contacto', id: 'contacto' },
 ]
 
-function Sidebar({ onOpenFaq, onNavigateHome, isFaqOpen = false }) {
+function Sidebar({ onNavigateHome }) {
   const [activeSection, setActiveSection] = useState('inicio')
   const [indicatorStyle, setIndicatorStyle] = useState({
     left: 0,
@@ -207,8 +207,7 @@ function Sidebar({ onOpenFaq, onNavigateHome, isFaqOpen = false }) {
             icon={CircleHelp}
             label="Preguntas Frecuentes"
             shortLabel="FAQ"
-            active={isFaqOpen}
-            onClick={onOpenFaq}
+            href="#preguntas-frecuentes"
           />
         </nav>
 

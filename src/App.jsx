@@ -15,7 +15,7 @@ import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
 import ProcessCard from './components/process-card.jsx'
 import ServiceCard from './components/service-card.jsx'
-import FaqModal from './components/faq-modal.jsx'
+import Faq from './components/faq.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
@@ -91,7 +91,6 @@ function App() {
   const [activeCard, setActiveCard] = useState(0)
   const [isServicesHovered, setIsServicesHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
-  const [isFaqModalOpen, setIsFaqModalOpen] = useState(false)
   const [isProjectTypeOpen, setIsProjectTypeOpen] = useState(false)
   const [selectedProjectType, setSelectedProjectType] = useState('')
   const [contactValue, setContactValue] = useState('')
@@ -396,9 +395,7 @@ function App() {
       />
 
       <Sidebar
-        onOpenFaq={() => setIsFaqModalOpen(true)}
         onNavigateHome={handleNavigateHome}
-        isFaqOpen={isFaqModalOpen}
       />
 
       <main className="main-content" aria-label="Contenido principal">
@@ -687,6 +684,7 @@ function App() {
             </form>
           </div>
         </section>
+        <Faq />
       </main>
 
       <footer className="page-footer" role="contentinfo" aria-label="Pie de página">
@@ -741,10 +739,6 @@ function App() {
           <img src={whatsappIcon} alt="" />
         </span>
       </a>
-      <FaqModal
-        isOpen={isFaqModalOpen}
-        onClose={() => setIsFaqModalOpen(false)}
-      />
     </div>
   )
 }

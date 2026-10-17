@@ -1,15 +1,8 @@
-import { useState, useEffect } from 'react'
-import { ChevronDown, MessageCircle, ArrowRight, CircleHelp, Sparkles, X } from 'lucide-react'
+import { useState } from 'react'
+import { ChevronDown, MessageCircle, ArrowRight, CircleHelp, Sparkles } from 'lucide-react'
 import Button from './button.jsx'
 
-const faqCategories = [
-  { id: 'all', label: 'Todas las preguntas' },
-  { id: 'services', label: 'Hosting & Tecnología' },
-  { id: 'pricing', label: 'Costos & Medios de Pago' },
-  { id: 'process', label: 'Tiempos, Proceso & Soporte' },
-]
-
-const faqItems = [
+const defaultFaqItems = [
   {
     id: 'hosting-dominio-ssl',
     category: 'services',
@@ -206,175 +199,105 @@ const faqItems = [
   },
 ]
 
-function FaqModal({ isOpen, onClose }) {
-  const [selectedCategory, setSelectedCategory] = useState('all')
+function Faq({ questions = defaultFaqItems }) {
   const [openItem, setOpenItem] = useState(null)
-
-  // Cerrar al presionar la tecla ESC y bloquear el scroll del fondo
-  useEffect(() => {
-    if (!isOpen) return
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
-    }
-
-    const originalOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.body.style.overflow = originalOverflow
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [isOpen, onClose])
-
-  if (!isOpen) return null
 
   const toggleItem = (id) => {
     setOpenItem((prev) => (prev === id ? null : id))
   }
 
-  const filteredItems = selectedCategory === 'all'
-    ? faqItems
-    : faqItems.filter((item) => item.category === selectedCategory)
+  const visibleQuestions = questions.slice(0, 5)
 
   return (
-    <div
-      className="faq-modal-backdrop"
-      role="presentation"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose()
-      }}
-    >
-      <section
-        className="faq-modal-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="faq-modal-title"
-      >
-        <div className="faq-modal-header">
-          <div className="faq-badge">
-            <CircleHelp className="faq-badge-icon" size={15} aria-hidden="true" />
-            <span>Preguntas Frecuentes</span>
-          </div>
-          <button
-            type="button"
-            className="faq-modal-close"
-            aria-label="Cerrar preguntas frecuentes"
-            onClick={onClose}
-          >
-            <X size={18} aria-hidden="true" />
-          </button>
+    <section className="faq-section" id="preguntas-frecuentes" aria-labelledby="faq-title">
+      <div className="faq-section-header">
+        <div className="faq-badge">
+          <CircleHelp className="faq-badge-icon" size={15} aria-hidden="true" />
+          <span>Preguntas Frecuentes</span>
         </div>
+      </div>
 
-        <div className="faq-modal-title-area">
-          <h2 className="faq-title" id="faq-modal-title">Resolvé tus dudas</h2>
-          <p className="faq-subtitle">
-            <span className="faq-subtitle-lead">Todo lo que necesitás saber antes de </span>
-            <span className="faq-subtitle-accent">iniciar tu proyecto digital con nosotros</span>
-          </p>
-        </div>
+      <div className="faq-section-title-area">
+        <h2 className="faq-title" id="faq-title">Resolvé tus dudas</h2>
+        <p className="faq-subtitle">
+          <span className="faq-subtitle-lead">Todo lo que necesitás saber antes de </span>
+          <span className="faq-subtitle-accent">iniciar tu proyecto digital con nosotros</span>
+        </p>
+      </div>
 
-        <div className="faq-modal-body">
-          <div className="faq-categories" role="tablist" aria-label="Categorías de preguntas">
-            {faqCategories.map((category) => {
-              const isActive = selectedCategory === category.id
-              return (
+      <div className="faq-section-body">
+        <div className="faq-accordion-container">
+          {visibleQuestions.map((item, index) => {
+            const isOpenItem = openItem === item.id
+            const itemIndex = String(index + 1).padStart(2, '0')
+
+            return (
+              <div
+                key={item.id}
+                className={`faq-item${isOpenItem ? ' is-open' : ''}`}
+              >
                 <button
-                  key={category.id}
                   type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  className={`faq-category-btn${isActive ? ' is-active' : ''}`}
-                  onClick={() => setSelectedCategory(category.id)}
+                  className="faq-question-btn"
+                  onClick={() => toggleItem(item.id)}
+                  aria-expanded={isOpenItem}
+                  aria-controls={`faq-answer-${item.id}`}
+                  id={`faq-question-${item.id}`}
                 >
-                  {category.label}
-                </button>
-              )
-            })}
-          </div>
-
-          <div className="faq-accordion-container">
-            {filteredItems.map((item, index) => {
-              const isOpenItem = openItem === item.id
-              const itemIndex = String(index + 1).padStart(2, '0')
-
-              return (
-                <div
-                  key={item.id}
-                  className={`faq-item${isOpenItem ? ' is-open' : ''}`}
-                >
-                  <button
-                    type="button"
-                    className="faq-question-btn"
-                    onClick={() => toggleItem(item.id)}
-                    aria-expanded={isOpenItem}
-                    aria-controls={`faq-answer-${item.id}`}
-                    id={`faq-question-${item.id}`}
-                  >
-                    <div className="faq-question-left">
-                      <span className="faq-question-number">{itemIndex}</span>
-                      <span className="faq-question-text">{item.question}</span>
-                    </div>
-                    <div className="faq-question-right">
-                      <span className="faq-item-tag">{item.categoryLabel}</span>
-                      <div className="faq-chevron-wrap">
-                        <ChevronDown className="faq-chevron" size={18} aria-hidden="true" />
-                      </div>
-                    </div>
-                  </button>
-
-                  <div
-                    id={`faq-answer-${item.id}`}
-                    role="region"
-                    aria-labelledby={`faq-question-${item.id}`}
-                    className={`faq-answer-collapse${isOpenItem ? ' is-expanded' : ''}`}
-                  >
-                    <div className="faq-answer-content">
-                      {item.answer}
+                  <div className="faq-question-left">
+                    <span className="faq-question-number">{itemIndex}</span>
+                    <span className="faq-question-text">{item.question}</span>
+                  </div>
+                  <div className="faq-question-right">
+                    <span className="faq-item-tag">{item.categoryLabel}</span>
+                    <div className="faq-chevron-wrap">
+                      <ChevronDown className="faq-chevron" size={18} aria-hidden="true" />
                     </div>
                   </div>
-                </div>
-              )
-            })}
-          </div>
+                </button>
 
-          <div className="faq-cta-card">
-            <div className="faq-cta-content">
-              <div className="faq-cta-badge">
-                <Sparkles size={16} aria-hidden="true" />
-                <span>Asesoramiento Personalizado</span>
+                <div
+                  id={`faq-answer-${item.id}`}
+                  role="region"
+                  aria-labelledby={`faq-question-${item.id}`}
+                  className={`faq-answer-collapse${isOpenItem ? ' is-expanded' : ''}`}
+                >
+                  <div className="faq-answer-content">
+                    {item.answer}
+                  </div>
+                </div>
               </div>
-              <h3 className="faq-cta-title">¿Tenés alguna otra duda sobre tu proyecto?</h3>
-              <p className="faq-cta-desc">
-                Cada idea tiene requerimientos únicos. Escribinos sin ningún compromiso y te orientamos sobre la mejor arquitectura técnica y opciones para tu presupuesto.
-              </p>
+            )
+          })}
+        </div>
+
+        <div className="faq-cta-card">
+          <div className="faq-cta-content">
+            <div className="faq-cta-badge">
+              <Sparkles size={16} aria-hidden="true" />
+              <span>Asesoramiento Personalizado</span>
             </div>
-            <div className="faq-cta-actions">
-              <Button
-                variant="dark"
-                href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola! Estuve viendo las preguntas frecuentes de la web y tengo una consulta sobre mi proyecto.')}`}
-                icon={MessageCircle}
-              >
-                Preguntar por WhatsApp
-              </Button>
-              <Button
-                variant="yellow"
-                href="#contacto"
-                icon={ArrowRight}
-                onClick={onClose}
-              >
-                Hablemos de tu idea
-              </Button>
-            </div>
+            <h3 className="faq-cta-title">¿Tenés alguna otra duda sobre tu proyecto?</h3>
+            <p className="faq-cta-desc">
+              Cada idea tiene requerimientos únicos. Escribinos sin ningún compromiso y te orientamos sobre la mejor arquitectura técnica y opciones para tu presupuesto.
+            </p>
+          </div>
+          <div className="faq-cta-actions">
+            <Button
+              variant="dark"
+              href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola! Estuve viendo las preguntas frecuentes de la web y tengo una consulta sobre mi proyecto.')}`}
+              icon={MessageCircle}
+            >
+              Preguntar por WhatsApp
+            </Button>
+            <Button variant="yellow" href="#contacto" icon={ArrowRight}>
+              Hablemos de tu idea
+            </Button>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   )
 }
 
-export default FaqModal
-
+export default Faq

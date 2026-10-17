@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Button from './button.jsx'
 
 function ProjectCard({
   number,
@@ -6,6 +7,10 @@ function ProjectCard({
   description,
   image,
   imageAlt,
+  imageContain = false,
+  imageCompact = false,
+  imageTone = 'teal',
+  demoHref,
   reverse = false,
 }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -23,11 +28,11 @@ function ProjectCard({
         aria-label={`Proyecto ${number}: ${title}`}
       >
         <span className="project-card-number">{number}</span>
-        <div className="project-card-image-box">
+        <div className={`project-card-image-box${imageContain ? ` project-card-image-box--${imageTone}` : ''}`}>
           <img
             src={image}
             alt={imageAlt || title}
-            className="project-card-image"
+            className={`project-card-image${imageContain ? ' project-card-image--contain' : ''}${imageCompact ? ' project-card-image--compact' : ''}`}
             draggable="false"
           />
         </div>
@@ -35,6 +40,13 @@ function ProjectCard({
       <div className="project-card-info-col" aria-hidden={!isHovered}>
         <h3 className="project-card-title">{title}</h3>
         <p className="project-card-description">{description}</p>
+        {demoHref && (
+          <div className="project-card-demo-action">
+            <Button variant="yellow" href={demoHref}>
+              Ver demo
+            </Button>
+          </div>
+        )}
       </div>
     </article>
   )

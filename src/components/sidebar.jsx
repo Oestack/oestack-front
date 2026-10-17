@@ -1,16 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Home, BriefcaseBusiness, Users, FolderKanban, Mail, CircleHelp } from 'lucide-react'
+import { Home, BriefcaseBusiness, FolderKanban, Mail, CircleHelp } from 'lucide-react'
 import SidebarItems from './sidebar-items.jsx'
 
 const mainNavigationItems = [
   { icon: Home, label: 'Inicio', href: '#inicio', id: 'inicio' },
   { icon: BriefcaseBusiness, label: 'Servicios', href: '#servicios', id: 'servicios' },
   { icon: FolderKanban, label: 'Proyectos', href: '#proyectos', id: 'proyectos' },
-  { icon: Users, label: 'Nosotros', href: '#nosotros', id: 'nosotros' },
   { icon: Mail, label: 'Contacto', href: '#contacto', id: 'contacto' },
 ]
 
-function Sidebar({ onOpenFaq, isFaqOpen = false }) {
+function Sidebar({ onOpenFaq, onNavigateHome, isFaqOpen = false }) {
   const [activeSection, setActiveSection] = useState('inicio')
   const [indicatorStyle, setIndicatorStyle] = useState({
     left: 0,
@@ -71,7 +70,7 @@ function Sidebar({ onOpenFaq, isFaqOpen = false }) {
   }, [activeSection, updateIndicator])
 
   useEffect(() => {
-    const sectionIds = ['inicio', 'servicios', 'proyectos', 'nosotros', 'contacto']
+    const sectionIds = ['inicio', 'servicios', 'proyectos', 'contacto']
 
     const handleScroll = () => {
       const scrollY = window.scrollY
@@ -127,9 +126,14 @@ function Sidebar({ onOpenFaq, isFaqOpen = false }) {
     }
   }, [activeSection, updateIndicator])
 
-  const handleItemClick = (id) => {
+  const handleItemClick = (id, event) => {
     setActiveSection(id)
     updateIndicator(id)
+
+    if (id === 'inicio') {
+      event.preventDefault()
+      onNavigateHome()
+    }
   }
 
   return (
@@ -184,7 +188,7 @@ function Sidebar({ onOpenFaq, isFaqOpen = false }) {
               <SidebarItems
                 {...item}
                 active={activeSection === item.id}
-                onClick={() => handleItemClick(item.id)}
+                onClick={(event) => handleItemClick(item.id, event)}
               />
             </div>
           ))}

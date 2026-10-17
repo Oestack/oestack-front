@@ -1012,10 +1012,24 @@
   box-sizing: border-box;
   width: 566px;
   max-width: 100%;
-  margin: 0 0 36px;
+  margin: 0 0 8px;
   color: #c9a84c;
   font: italic 300 48px/1.12 var(--font-rubik);
   letter-spacing: 0;
+}
+
+.projects-subtitle {
+  margin: 0 0 36px;
+  font: 400 18px/1.5 var(--font-raleway);
+}
+
+.projects-subtitle-lead {
+  color: #fff;
+}
+
+.projects-subtitle-accent {
+  color: #c9a84c;
+  font-weight: 600;
 }
 
 .projects-section--visible {
@@ -1092,6 +1106,18 @@
     box-shadow 0.45s ease;
 }
 
+.project-card-image-box--teal {
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at center, #163b3b 0%, #102727 55%, #101b1b 100%);
+}
+
+.project-card-image-box--warm {
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at center, #55513e 0%, #302e24 55%, #191815 100%);
+}
+
 .project-card:hover .project-card-image-box,
 .project-card--hovered .project-card-image-box {
   transform: translateY(-3px);
@@ -1107,10 +1133,27 @@
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
 }
 
+.project-card-image--contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: none;
+}
+
+.project-card-image--compact {
+  width: min(100%, 140px);
+  height: min(100%, 140px);
+}
+
 .project-card:hover .project-card-image,
 .project-card--hovered .project-card-image {
   transform: scale(1.04);
   filter: brightness(1.06) saturate(1.05);
+}
+
+.project-card:hover .project-card-image--contain,
+.project-card--hovered .project-card-image--contain {
+  filter: brightness(1.04) saturate(1.05);
 }
 
 /* Columna de Información (Título y Descripción): Oculto por defecto y con desplazamiento hacia adentro */
@@ -1160,9 +1203,30 @@
 .project-card-description {
   margin: 0;
   color: #8a8a7a;
-  font: 400 14px/1.65 var(--font-raleway);
+  font: 400 15px/1.65 var(--font-raleway);
   text-wrap: pretty;
+  white-space: pre-line;
   transition: color 0.35s ease;
+}
+
+.project-card-demo-action {
+  align-self: flex-start;
+  margin: 14px 0 0;
+}
+
+.project-card-demo-action .action-button {
+  width: 132px;
+  height: 38px;
+  justify-content: center;
+  padding: 0 10px;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.project-card-demo-action .action-button-icon {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .project-card:hover .project-card-description,
@@ -1172,20 +1236,6 @@
   color: #d6d6cd;
 }
 
-/* ============================================================
-   SECCIÓN NOSOTROS
-   ============================================================ */
-
-.about-section {
-  position: relative;
-  box-sizing: border-box;
-  width: 1050px;
-  max-width: calc(100% - 48px);
-  margin: 0 auto;
-  min-height: 911px;
-  scroll-margin-top: 30px;
-}
-
 .contact-section {
   position: relative;
   box-sizing: border-box;
@@ -1193,15 +1243,6 @@
   margin: 0 auto;
   min-height: 1100px;
   scroll-margin-top: 30px;
-}
-
-.about-title {
-  position: absolute;
-  top: 64px;
-  left: 45px;
-  margin: 0;
-  color: #c9a84c;
-  font: 400 48px/1.12 var(--font-raleway);
 }
 
 .contact-title {
@@ -2051,60 +2092,6 @@
   font-size: 12px;
 }
 
-.about-photo {
-  position: absolute;
-  width: 398px;
-  height: 370px;
-  overflow: hidden;
-}
-
-.about-photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-}
-
-.about-photo--matias {
-  top: 145px;
-  left: 45px;
-}
-
-.about-photo--magali {
-  top: 515px;
-  left: 562px;
-}
-
-.about-bio {
-  position: absolute;
-  box-sizing: border-box;
-  width: 398px;
-  height: 327px;
-}
-
-.about-bio--matias {
-  top: 145px;
-  left: 560px;
-}
-
-.about-bio--magali {
-  top: 515px;
-  left: 66px;
-}
-
-.about-bio h3 {
-  margin: 0 0 20px;
-  color: #c9a84c;
-  font: 400 24px/1.25 var(--font-raleway);
-}
-
-.about-bio p {
-  margin: 0;
-  color: #fff;
-  font: 300 16px/1.5 var(--font-raleway);
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .projects-section {
@@ -2837,7 +2824,6 @@
   .services-section,
   .projects-section,
   .nuestros-procesos,
-  .about-section,
   .contact-section {
     scroll-margin-top: 80px;
   }
@@ -2923,7 +2909,6 @@
   .services-section,
   .projects-section,
   .nuestros-procesos,
-  .about-section,
   .contact-section {
     scroll-margin-top: 100px;
   }
@@ -3226,61 +3211,6 @@
     transform: none;
   }
 
-  .about-section {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: center;
-    gap: 28px;
-    width: min(100%, 1050px);
-    max-width: none;
-    min-height: 0;
-    margin: 24px auto 0;
-    padding-inline: clamp(16px, 4vw, 45px);
-  }
-
-  .about-title,
-  .about-photo,
-  .about-bio {
-    position: static;
-    width: 100%;
-    height: auto;
-    margin: 0;
-  }
-
-  .about-title {
-    grid-column: 1 / -1;
-    font-size: clamp(36px, 5vw, 48px);
-  }
-
-  .about-photo {
-    aspect-ratio: 398 / 370;
-    border-radius: 6px;
-  }
-
-  .about-photo--matias {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .about-bio--matias {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  .about-bio--magali {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .about-photo--magali {
-    grid-column: 2;
-    grid-row: 3;
-  }
-
-  .about-bio h3 {
-    font-size: clamp(20px, 2.5vw, 24px);
-  }
-
   .contact-section {
     width: 100%;
     min-height: 0;
@@ -3476,7 +3406,6 @@
   .services-section,
   .projects-section,
   .nuestros-procesos,
-  .about-section,
   .contact-section {
     transform: translateX(-24px);
   }
@@ -3487,10 +3416,6 @@
 }
 
 @media (min-width: 769px) and (max-width: 1550px) {
-  .about-section {
-    align-items: start;
-  }
-
   .contact-option--three {
     height: 600px;
   }
@@ -3580,6 +3505,10 @@
   }
 
   .projects-title {
+    margin-bottom: 8px;
+  }
+
+  .projects-subtitle {
     margin-bottom: 24px;
   }
 
@@ -3589,48 +3518,6 @@
 
   .project-card-image-box {
     height: clamp(180px, 58vw, 260px);
-  }
-
-  .about-section {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-    padding-inline: 0;
-  }
-
-  .about-title {
-    grid-column: 1;
-    grid-row: 1;
-    margin-bottom: 10px;
-  }
-
-  .about-photo--matias {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .about-bio--matias {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .about-photo--magali {
-    grid-column: 1;
-    grid-row: 4;
-    margin-top: 10px;
-  }
-
-  .about-bio--magali {
-    grid-column: 1;
-    grid-row: 5;
-  }
-
-  .about-photo {
-    width: min(100%, 398px);
-    justify-self: center;
-  }
-
-  .about-bio p {
-    font-size: 15px;
   }
 
   .contact-heading-frame {

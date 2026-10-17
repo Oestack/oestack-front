@@ -25,8 +25,6 @@ import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
 import heroImg from './assets/hero.png'
-import matFoto from './assets/mat.jpg'
-import magFoto from './assets/magFoto.jpeg'
 import './App.css'
 
 const servicesData = [
@@ -111,6 +109,7 @@ function App() {
   const [bookingConfirmation, setBookingConfirmation] = useState(null)
   const [hasProcessSectionEntered, setHasProcessSectionEntered] = useState(false)
   const [hasProjectsSectionEntered, setHasProjectsSectionEntered] = useState(false)
+  const [heroAnimationKey, setHeroAnimationKey] = useState(0)
   const bookingFrameRef = useRef(null)
   const heroAreaRef = useRef(null)
   const servicesSectionRef = useRef(null)
@@ -118,15 +117,17 @@ function App() {
   const projectsSectionRef = useRef(null)
   const bookingAppUrl = import.meta.env.VITE_BOOKING_APP_URL
 
+  const handleNavigateHome = () => {
+    setHeroAnimationKey((key) => key + 1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     const processSection = processSectionRef.current
     if (!processSection) return
 
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setHasProcessSectionEntered(true)
-        observer.disconnect()
-      }
+      setHasProcessSectionEntered(entry.isIntersecting)
     }, { threshold: 0.15 })
 
     observer.observe(processSection)
@@ -138,10 +139,7 @@ function App() {
     if (!projectsSection) return
 
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setHasProjectsSectionEntered(true)
-        observer.disconnect()
-      }
+      setHasProjectsSectionEntered(entry.isIntersecting)
     }, { threshold: 0.15 })
 
     observer.observe(projectsSection)
@@ -422,6 +420,7 @@ function App() {
 
       <Sidebar
         onOpenFaq={() => setIsFaqModalOpen(true)}
+        onNavigateHome={handleNavigateHome}
         isFaqOpen={isFaqModalOpen}
       />
 
@@ -430,7 +429,7 @@ function App() {
           <div className="hero-area" ref={heroAreaRef}>
             {/* HERO SECTION */}
             <section className="hero-container" id="inicio" aria-label="Presentación">
-              <div className="hero-copy">
+              <div className="hero-copy" key={heroAnimationKey}>
                 <p className="hero-kicker">Estudio de soluciones tecnológicas</p>
                 <h1 className="hero-title">
                   <span className="hero-title-lead">Vos imaginás,</span>
@@ -608,14 +607,21 @@ function App() {
           aria-label="Proyectos"
         >
           <h2 className="projects-title">Proyectos</h2>
+          <p className="projects-subtitle">
+            <span className="projects-subtitle-lead">Explorá nuestras demos y </span>
+            <span className="projects-subtitle-accent">probá nuestras soluciones.</span>
+          </p>
 
           <div className="projects-container">
             <ProjectCard
               number="01"
-              title="Lorem Ipsum"
-              description="Lorem ipsum dolor sit amet consectetur adipiscing elit congue, primis integer aptent dapibus vel platea ornare, mauris nisl ullamcorper blandit fermentum praesent magnis. Tincidunt sollicitudin erat penatibus montes hac convallis justo, vehicula blandit luctus quisque maecenas habitant. Nisi vitae neque."
+              title="Sistema de gestión clínica"
+              description={'Demo clínica con dashboard para gestionar turnos y pacientes.\nUsuario Centro médico: 22222222222 | Contraseña: 123\nUsuario Médico: 11111111111 | Contraseña: 123'}
               image={img1}
-              imageAlt="Proyecto 01"
+              imageAlt="Logo del sistema de gestión clínica"
+              imageContain
+              imageCompact
+              demoHref="https://prestadores-medicos.vercel.app"
             />
             <ProjectCard
               number="02"
@@ -627,35 +633,15 @@ function App() {
             />
             <ProjectCard
               number="03"
-              title="Lorem Ipsum"
-              description="Lorem ipsum dolor sit amet consectetur adipiscing elit congue, primis integer aptent dapibus vel platea ornare, mauris nisl ullamcorper blandit fermentum praesent magnis. Tincidunt sollicitudin erat penatibus montes hac convallis justo, vehicula blandit luctus quisque maecenas habitant. Nisi vitae neque."
+              title="Bohemia Velas"
+              description={'E-commerce de velas artesanales y cuidado personal, con carrito y panel de administración.\nUsuario administrador: admin@velas.com | Contraseña: 123456'}
               image={img3}
-              imageAlt="Proyecto 03"
+              imageAlt="Logo de Bohemia Velas"
+              imageContain
+              imageCompact
+              imageTone="warm"
+              demoHref="https://bohemia-sigma.vercel.app"
             />
-          </div>
-        </section>
-
-        <section className="about-section" id="nosotros" aria-label="Nosotros">
-          <h2 className="about-title">Nosotros</h2>
-
-          <div className="about-photo about-photo--matias">
-            <img src={matFoto} alt="Matias Carabajal" />
-          </div>
-          <div className="about-bio about-bio--matias">
-            <h3>Matias Carabajal</h3>
-            <p>
-              Técnico Universitario en Programación recibido y estudiante de la Licenciatura en Informática en la Universidad Nacional de Hurlingham (UNAHUR). Cuento con una sólida base como Desarrollador, QA Tester y Análisis de Datos.
-            </p>
-          </div>
-
-          <div className="about-bio about-bio--magali">
-            <h3>Magalí Orellana</h3>
-            <p>
-              Técnica Universitaria en Programación recibida y estudiante de la Licenciatura en Informática en la Universidad Nacional de Hurlingham (UNAHUR). Me apasiona transformar ideas complejas en código limpio y funcional. Encuentro el equilibrio perfecto entre el diseño visual y la lógica del servidor, apasionada por el desarrollo y las buenas practicas.
-            </p>
-          </div>
-          <div className="about-photo about-photo--magali">
-            <img src={magFoto} alt="Magalí Orellana" />
           </div>
         </section>
 

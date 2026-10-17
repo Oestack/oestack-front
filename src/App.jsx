@@ -3,15 +3,10 @@ import {
   CircleArrowLeft,
   CircleArrowRight,
   ArrowRight,
-  FileText,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Calendar,
-  Clock,
+  FileText,
   MessageCircle,
   Mail,
-  X,
   PanelsTopLeft,
   Code2,
   MonitorCheck,
@@ -24,6 +19,7 @@ import FaqModal from './components/faq-modal.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
+import whatsappIcon from './assets/whatsapp.png'
 import heroImg from './assets/hero.png'
 import './App.css'
 
@@ -94,33 +90,52 @@ function App() {
   const [activeCard, setActiveCard] = useState(0)
   const [isServicesHovered, setIsServicesHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
-  const [isProjectMenuOpen, setIsProjectMenuOpen] = useState(false)
+  const [isFaqModalOpen, setIsFaqModalOpen] = useState(false)
+  const [isProjectTypeOpen, setIsProjectTypeOpen] = useState(false)
   const [selectedProjectType, setSelectedProjectType] = useState('')
-  const [contactName, setContactName] = useState('')
-  const [contactEmail, setContactEmail] = useState('')
-  const [contactIdea, setContactIdea] = useState('')
+  const [contactValue, setContactValue] = useState('')
   const [isContactSubmitting, setIsContactSubmitting] = useState(false)
   const [contactSubmitMessage, setContactSubmitMessage] = useState('')
-  const [calendarMonth, setCalendarMonth] = useState(() => new Date().getMonth())
-  const [calendarYear, setCalendarYear] = useState(() => new Date().getFullYear())
-  const [bookingDate, setBookingDate] = useState('')
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
-  const [isFaqModalOpen, setIsFaqModalOpen] = useState(false)
-  const [bookingConfirmation, setBookingConfirmation] = useState(null)
   const [hasProcessSectionEntered, setHasProcessSectionEntered] = useState(false)
   const [hasProjectsSectionEntered, setHasProjectsSectionEntered] = useState(false)
+  const [hasContactSectionEntered, setHasContactSectionEntered] = useState(false)
   const [heroAnimationKey, setHeroAnimationKey] = useState(0)
-  const bookingFrameRef = useRef(null)
   const heroAreaRef = useRef(null)
+  const heroHasFadedOutRef = useRef(false)
   const servicesSectionRef = useRef(null)
   const processSectionRef = useRef(null)
   const projectsSectionRef = useRef(null)
-  const bookingAppUrl = import.meta.env.VITE_BOOKING_APP_URL
-
+  const contactSectionRef = useRef(null)
+  const projectTypeSelectRef = useRef(null)
+  const contactInputRef = useRef(null)
   const handleNavigateHome = () => {
-    setHeroAnimationKey((key) => key + 1)
+    if (window.scrollY < 10) {
+      heroHasFadedOutRef.current = false
+      setHeroAnimationKey((key) => key + 1)
+    } else {
+      heroHasFadedOutRef.current = true
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  useEffect(() => {
+    const handlePointerDown = (event) => {
+      if (!projectTypeSelectRef.current?.contains(event.target)) {
+        setIsProjectTypeOpen(false)
+      }
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsProjectTypeOpen(false)
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
 
   useEffect(() => {
     const processSection = processSectionRef.current
@@ -146,85 +161,17 @@ function App() {
     return () => observer.disconnect()
   }, [])
 
-  const calendarMonthNames = Array.from({ length: 12 }, (_, month) =>
-    new Intl.DateTimeFormat('es-AR', { month: 'long' }).format(new Date(2025, month, 1)),
-  )
-  const calendarDaysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate()
-  const calendarStartOffset = (new Date(calendarYear, calendarMonth, 1).getDay() + 6) % 7
-  const calendarCells = [
-    ...Array(calendarStartOffset).fill(null),
-    ...Array.from({ length: calendarDaysInMonth }, (_, day) => day + 1),
-  ]
-  while (calendarCells.length % 7 !== 0) calendarCells.push(null)
+  useEffect(() => {
+    const contactSection = contactSectionRef.current
+    if (!contactSection) return
 
-  const changeCalendarMonth = (amount) => {
-    const nextMonth = new Date(calendarYear, calendarMonth + amount, 1)
-    setCalendarMonth(nextMonth.getMonth())
-    setCalendarYear(nextMonth.getFullYear())
-  }
+    const observer = new IntersectionObserver(([entry]) => {
+      setHasContactSectionEntered(entry.isIntersecting)
+    }, { threshold: 0.15 })
 
-  const handleContactSubmit = async (event) => {
-    event.preventDefault()
-    if (isContactSubmitting) return
-
-    setIsContactSubmitting(true)
-    setContactSubmitMessage('')
-
-    const message = [
-      `Nombre: ${contactName.trim()}`,
-      `Mail: ${contactEmail.trim()}`,
-      `Opción elegida: ${selectedProjectType || 'No especificada'}`,
-      `Mensaje: ${contactIdea.trim()}`,
-    ].join('\n\n')
-
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/oestack.solutions@gmail.com', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          name: contactName.trim(),
-          email: contactEmail.trim(),
-          projectType: selectedProjectType || 'No especificado',
-          message,
-          _subject: 'Nuevo mensaje desde Oestack',
-        }),
-      })
-      const result = await response.json()
-
-      if (!response.ok || result.success === false || result.success === 'false') {
-        throw new Error('No se pudo enviar el formulario.')
-      }
-
-      setContactSubmitMessage('¡Mensaje enviado! Te responderemos a la brevedad.')
-      setContactName('')
-      setContactEmail('')
-      setContactIdea('')
-      setSelectedProjectType('')
-    } catch {
-      setContactSubmitMessage('No se pudo enviar. Probá de nuevo en unos minutos.')
-    } finally {
-      setIsContactSubmitting(false)
-    }
-  }
-
-  const getCalendarDateValue = (day) => (
-    `${calendarYear}-${String(calendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-  )
-
-  const isCalendarDateUnavailable = (day) => {
-    if (!day) return true
-    const date = new Date(calendarYear, calendarMonth, day)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    return date < today || date.getDay() === 0 || date.getDay() === 6
-  }
-
-  const openBookingModal = (day) => {
-    if (isCalendarDateUnavailable(day)) return
-    setBookingConfirmation(null)
-    setBookingDate(getCalendarDateValue(day))
-    setIsBookingModalOpen(true)
-  }
+    observer.observe(contactSection)
+    return () => observer.disconnect()
+  }, [])
 
   const openGmailComposer = (event) => {
     event.preventDefault()
@@ -242,24 +189,46 @@ function App() {
     )
   }
 
-  const closeBookingModal = () => {
-    setIsBookingModalOpen(false)
-    setBookingConfirmation(null)
-  }
+  const handleContactRequestSubmit = async (event) => {
+    event.preventDefault()
+    if (isContactSubmitting) return
 
-  useEffect(() => {
-    const handleBookingMessage = (event) => {
-      const isAppsScriptOrigin = event.origin === 'https://script.google.com'
-        || event.origin === 'https://script.googleusercontent.com'
-        || event.origin.endsWith('.script.googleusercontent.com')
-      if (!isAppsScriptOrigin) return
-      if (event.data?.type !== 'oestack-booking-success') return
-      setBookingConfirmation(true)
+    if (!contactValue.trim() || !selectedProjectType) {
+      setContactSubmitMessage('Completá tus datos y seleccioná el tipo de proyecto.')
+      if (!contactValue.trim()) contactInputRef.current?.focus()
+      else projectTypeSelectRef.current?.querySelector('button')?.focus()
+      return
     }
 
-    window.addEventListener('message', handleBookingMessage)
-    return () => window.removeEventListener('message', handleBookingMessage)
-  }, [bookingDate])
+    setIsContactSubmitting(true)
+    setContactSubmitMessage('')
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/oestack.solutions@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          contact: contactValue.trim(),
+          projectType: selectedProjectType,
+          message: `Contacto: ${contactValue.trim()}\nTipo de proyecto: ${selectedProjectType}`,
+          _subject: 'Solicitud de contacto desde Oestack',
+        }),
+      })
+      const result = await response.json()
+
+      if (!response.ok || result.success === false || result.success === 'false') {
+        throw new Error('No se pudo enviar la solicitud.')
+      }
+
+      setContactSubmitMessage('¡Listo! Recibimos tus datos y nos pondremos en contacto.')
+      setContactValue('')
+      setSelectedProjectType('')
+    } catch {
+      setContactSubmitMessage('No se pudo enviar la solicitud. Probá de nuevo en unos minutos.')
+    } finally {
+      setIsContactSubmitting(false)
+    }
+  }
 
   useEffect(() => {
     let animationFrame = null
@@ -277,6 +246,13 @@ function App() {
         const fadeProgress = Math.min(1, Math.max(0, servicesTop / (window.innerHeight * 0.85)))
         heroArea.style.opacity = String(fadeProgress ** 2.2)
         heroArea.style.transform = `translateY(${(1 - fadeProgress) * 8}px) scale(${0.985 + fadeProgress * 0.015})`
+
+        if (fadeProgress < 1) {
+          heroHasFadedOutRef.current = true
+        } else if (heroHasFadedOutRef.current) {
+          heroHasFadedOutRef.current = false
+          setHeroAnimationKey((key) => key + 1)
+        }
       })
     }
 
@@ -463,11 +439,11 @@ function App() {
               <h2 className="services-title">Servicios</h2>
             </div>
 
-            {/* 2do Contenedor: Subtítulo "Transformo ideas y desarrollamos soluciones" */}
+            {/* 2do Contenedor: Subtítulo */}
             <div className="services-container-two">
               <p className="services-subtitle">
-                <span className="services-subtitle-lead">Transformamos ideas, y </span>
-                <span className="services-subtitle-accent">desarrollamos soluciones.</span>
+                <span className="services-subtitle-lead">Transformamos ideas,</span>
+                <span className="services-subtitle-accent">y desarrollamos soluciones.</span>
               </p>
             </div>
 
@@ -582,14 +558,14 @@ function App() {
         <section
           ref={processSectionRef}
           className={`nuestros-procesos ${hasProcessSectionEntered ? 'nuestros-procesos--visible' : ''}`}
+          id="proceso"
           aria-label="Nuestros procesos"
         >
           <div className="nuestros-procesos-contenido">
-            <h2 className="nuestros-procesos-titulo">Procesos</h2>
+            <h2 className="nuestros-procesos-titulo">Proceso</h2>
             <p className="nuestros-procesos-texto">
-              <strong>Cada solución tiene un proceso detrás.</strong> En Oestack trabajamos por etapas,
-              con objetivos definidos, avances concretos y comunicación constante. Sabés qué estamos
-              haciendo, por qué lo hacemos y qué sigue.
+              <span>Cada solución</span>
+              <span>tiene un proceso detrás.</span>
             </p>
           </div>
           <div className="procesos-tarjetas">
@@ -607,10 +583,10 @@ function App() {
           aria-label="Proyectos"
         >
           <h2 className="projects-title">Proyectos</h2>
-          <p className="projects-subtitle">
-            <span className="projects-subtitle-lead">Explorá nuestras demos y </span>
-            <span className="projects-subtitle-accent">probá nuestras soluciones.</span>
-          </p>
+          <h3 className="projects-subtitle">
+            <span className="projects-subtitle-lead">Explorá nuestros</span>
+            <span className="projects-subtitle-accent">proyectos realizados</span>
+          </h3>
 
           <div className="projects-container">
             <ProjectCard
@@ -645,7 +621,12 @@ function App() {
           </div>
         </section>
 
-        <section className="contact-section" id="contacto" aria-label="Contacto">
+        <section
+          ref={contactSectionRef}
+          className={`contact-section ${hasContactSectionEntered ? 'contact-section--visible' : ''}`}
+          id="contacto"
+          aria-label="Contacto"
+        >
           <div className="contact-heading-frame">
             <h2 className="contact-section-title">Contacto</h2>
           </div>
@@ -654,236 +635,83 @@ function App() {
               <span>Hablemos de tu</span>
               <span>próximo proyecto</span>
             </h3>
-            <p className="contact-subtitle">Contanos tu idea</p>
-            <div className="contact-option contact-option--one" aria-label="Opción 1">
-              <span className="contact-option-label">Opción 1:</span>
-              <FileText className="contact-option-icon" aria-hidden="true" />
-              <span className="contact-option-description">Completá el formulario</span>
-              <p className="contact-option-copy">
-                Contanos un poco de tu proyecto y nosotros nos ponemos en contacto a la brevedad
-              </p>
-              <label className="contact-field-label" htmlFor="contact-name">
-                Nombre Completo *
-              </label>
-              <form className="contact-form" onSubmit={handleContactSubmit}>
-                <div className={`contact-name-field${contactName ? ' contact-field--filled' : ''}`}>
-                  <input
-                    id="contact-name"
-                    name="name"
-                    type="text"
-                    placeholder=" "
-                    autoComplete="name"
-                    value={contactName}
-                    onChange={(event) => setContactName(event.target.value)}
-                    required
-                  />
-                  <label htmlFor="contact-name">Tu nombre</label>
-                </div>
-                <div className={`contact-email-field${contactEmail ? ' contact-field--filled' : ''}`}>
-                  <input
-                    id="contact-email"
-                    name="email"
-                    type="email"
-                    placeholder=" "
-                    autoComplete="email"
-                    value={contactEmail}
-                    onChange={(event) => setContactEmail(event.target.value)}
-                    required
-                  />
-                  <label htmlFor="contact-email">e-mail</label>
-                </div>
-                <div className="contact-project-select">
-                  <input type="hidden" name="projectType" value={selectedProjectType} />
-                  <button
-                    className="contact-project-trigger"
-                    type="button"
-                    aria-haspopup="listbox"
-                    aria-expanded={isProjectMenuOpen}
-                    aria-controls="contact-project-options"
-                    onClick={() => setIsProjectMenuOpen((isOpen) => !isOpen)}
-                  >
-                    <span>{selectedProjectType || 'selecciona una opcion'}</span>
-                    <ChevronDown
-                      className={`contact-project-chevron ${isProjectMenuOpen ? 'contact-project-chevron--open' : ''}`}
-                      aria-hidden="true"
-                    />
-                  </button>
-                  {isProjectMenuOpen && (
-                    <div className="contact-project-options" id="contact-project-options" role="listbox">
-                      {[
-                        'Landing Page',
-                        'Web de varias paginas',
-                        'Web full stack',
-                        'Un sistema a medida',
-                      ].map((option) => (
-                        <button
-                          className="contact-project-option"
-                          key={option}
-                          type="button"
-                          role="option"
-                          aria-selected={selectedProjectType === option}
-                          onClick={() => {
-                            setSelectedProjectType(option)
-                            setIsProjectMenuOpen(false)
-                          }}
-                        >
-                          {option}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <label className="contact-idea-label" htmlFor="contact-idea">
-                  Contanos brevemente tu idea *
-                </label>
-                <div className={`contact-idea-field${contactIdea ? ' contact-field--filled' : ''}`}>
-                  <textarea
-                    id="contact-idea"
-                    name="idea"
-                    placeholder="Escribi tu idea"
-                    value={contactIdea}
-                    onChange={(event) => setContactIdea(event.target.value)}
-                    required
-                  />
-                </div>
-                <button className="contact-submit-button" type="submit" disabled={isContactSubmitting}>
-                  <span>{isContactSubmitting ? 'Enviando' : 'Enviar'}</span>
-                  <ArrowRight aria-hidden="true" />
+            <form
+              className="contact-lead-fields"
+              onSubmit={handleContactRequestSubmit}
+              aria-busy={isContactSubmitting}
+            >
+              <input
+                ref={contactInputRef}
+                className="contact-lead-input"
+                type="text"
+                name="contact"
+                aria-label="Tu email o número de teléfono"
+                placeholder="Tu email o número de teléfono"
+                autoComplete="off"
+                value={contactValue}
+                onChange={(event) => {
+                  setContactValue(event.target.value)
+                  setContactSubmitMessage('')
+                }}
+                required
+              />
+              <div className="contact-lead-select-wrap" ref={projectTypeSelectRef}>
+                <button
+                  className={`contact-lead-select${isProjectTypeOpen ? ' contact-lead-select--open' : ''}`}
+                  type="button"
+                  aria-haspopup="listbox"
+                  aria-expanded={isProjectTypeOpen}
+                  aria-controls="contact-lead-project-options"
+                  onClick={() => setIsProjectTypeOpen((isOpen) => !isOpen)}
+                >
+                  <span>{selectedProjectType || 'Tipo de Proyecto'}</span>
+                  <ChevronDown aria-hidden="true" />
                 </button>
-                {contactSubmitMessage && (
-                  <p className="contact-submit-message" role="status">
-                    {contactSubmitMessage}
-                  </p>
-                )}
-              </form>
-              <span className="contact-email-label">E-mail *</span>
-              <span className="contact-project-label">Que querés desarrollar?</span>
-            </div>
-            <div className="contact-option contact-option--two" aria-label="Opción 2">
-              <span className="contact-option-label">Opción 02</span>
-              <Calendar className="contact-option-calendar" aria-hidden="true" />
-              <span className="contact-option-interview">Programar una entrevista</span>
-              <p className="contact-option-interview-copy">
-                Elegí un horario disponible y coordinaremos una charla de 30 minutos para conocer tu
-                proyecto, aclarar dudas y definir pasos
-              </p>
-              <div className="contact-calendar" aria-label="Calendario de entrevistas">
-                <div className="contact-calendar-block">
-                  <button
-                    className="contact-calendar-nav"
-                    type="button"
-                    aria-label="Mes anterior"
-                    onClick={() => changeCalendarMonth(-1)}
+                {isProjectTypeOpen && (
+                  <div
+                    className="contact-lead-options"
+                    id="contact-lead-project-options"
+                    role="listbox"
+                    aria-label="Tipo de proyecto"
                   >
-                    <ChevronLeft aria-hidden="true" />
-                  </button>
-                  <div className="contact-calendar-selects">
-                    <div className="contact-calendar-select-wrap contact-calendar-month-wrap">
-                      <select
-                        aria-label="Mes"
-                        value={calendarMonth}
-                        onChange={(event) => setCalendarMonth(Number(event.target.value))}
+                    {[
+                      'Landing Page',
+                      'Web Institucional',
+                      'E-commerce',
+                      'Sistema a Medida',
+                      'Menú Digital',
+                    ].map((projectType) => (
+                      <button
+                        className="contact-lead-option"
+                        key={projectType}
+                        type="button"
+                        role="option"
+                        aria-selected={selectedProjectType === projectType}
+                        onClick={() => {
+                          setSelectedProjectType(projectType)
+                          setIsProjectTypeOpen(false)
+                          setContactSubmitMessage('')
+                        }}
                       >
-                        {calendarMonthNames.map((month, index) => (
-                          <option value={index} key={month}>{month}</option>
-                        ))}
-                      </select>
-                      <ChevronDown aria-hidden="true" />
-                    </div>
-                    <div className="contact-calendar-select-wrap contact-calendar-year-wrap">
-                      <select
-                        aria-label="Año"
-                        value={calendarYear}
-                        onChange={(event) => setCalendarYear(Number(event.target.value))}
-                      >
-                        {Array.from({ length: 11 }, (_, index) => calendarYear - 5 + index).map((year) => (
-                          <option value={year} key={year}>{year}</option>
-                        ))}
-                      </select>
-                      <ChevronDown aria-hidden="true" />
-                    </div>
-                  </div>
-                  <button
-                    className="contact-calendar-nav"
-                    type="button"
-                    aria-label="Mes siguiente"
-                    onClick={() => changeCalendarMonth(1)}
-                  >
-                    <ChevronRight aria-hidden="true" />
-                  </button>
-                </div>
-                <table className="contact-calendar-table">
-                  <thead>
-                    <tr>
-                      {['Lu', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((weekday) => (
-                        <th scope="col" key={weekday}>{weekday}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Array.from({ length: calendarCells.length / 7 }, (_, week) => (
-                      <tr key={week}>
-                        {calendarCells.slice(week * 7, week * 7 + 7).map((day, index) => {
-                          return (
-                            <td key={`${week}-${index}`}>
-                              {day && (
-                                <button
-                                  className="contact-calendar-day"
-                                  type="button"
-                                  disabled={isCalendarDateUnavailable(day)}
-                                  aria-label={`Elegir ${day} de ${calendarMonthNames[calendarMonth]}`}
-                                  onClick={() => openBookingModal(day)}
-                                >
-                                  <span className="contact-calendar-day-number">{day}</span>
-                                </button>
-                              )}
-                            </td>
-                          )
-                        })}
-                      </tr>
+                        {projectType}
+                      </button>
                     ))}
-                  </tbody>
-                </table>
+                  </div>
+                )}
               </div>
-              <div className="contact-interview-duration">
-                <Clock className="contact-interview-duration-icon" aria-hidden="true" />
-                <span className="contact-interview-duration-title">Duración: 30 minutos</span>
-                <span className="contact-interview-duration-note">
-                  La reunión será mediante Google Meet
-                </span>
-              </div>
-            </div>
-            <div className="contact-option contact-option--three" aria-label="Opción 3">
-              <span className="contact-option-label">Opción 03</span>
-              <MessageCircle className="contact-whatsapp-icon" aria-hidden="true" />
-              <span className="contact-whatsapp-title">Whatsapp</span>
-              <p className="contact-whatsapp-copy">Tenés una consulta rápida? Escribinos!</p>
-              <div className="contact-whatsapp-action">
-                <Button
-                  variant="dark"
-                  href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
-                  icon={MessageCircle}
-                >
-                  Abrir WhatsApp
-                </Button>
-              </div>
-              <div className="contact-whatsapp-divider" aria-hidden="true" />
-              <Mail className="contact-email-icon" aria-hidden="true" />
-              <span className="contact-email-title">Email</span>
-              <p className="contact-email-copy">
-                También podés escribirnos por mail, y te respondemos lo antes posible
-              </p>
-              <div className="contact-email-action">
-                <Button
-                  variant="dark"
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=oestack.solutions@gmail.com"
-                  icon={Mail}
-                  onClick={openGmailComposer}
-                >
-                  Enviar un mail
-                </Button>
-              </div>
-            </div>
+              <button
+                className="contact-lead-submit"
+                type="submit"
+                disabled={isContactSubmitting}
+              >
+                {isContactSubmitting ? 'Enviando...' : 'Quiero que me contacten'}
+              </button>
+              {contactSubmitMessage && (
+                <p className="contact-lead-message" role="status" aria-live="polite">
+                  {contactSubmitMessage}
+                </p>
+              )}
+            </form>
           </div>
         </section>
       </main>
@@ -929,56 +757,17 @@ function App() {
           </a>
         </div>
       </footer>
-      {isBookingModalOpen && (
-        <div
-          className="booking-modal-backdrop"
-          role="presentation"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) closeBookingModal()
-          }}
-        >
-          <section className="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
-            <button
-              className="booking-modal-close"
-              type="button"
-              aria-label="Cerrar reserva"
-              onClick={closeBookingModal}
-            >
-              <X aria-hidden="true" />
-            </button>
-            <h2 className="booking-modal-title" id="booking-modal-title">Programar entrevista</h2>
-            {bookingAppUrl ? (
-              <iframe
-                ref={bookingFrameRef}
-                className="booking-modal-frame"
-                title="Elegí tu horario de entrevista"
-                src={`${bookingAppUrl.replace(/\/$/, '')}?date=${encodeURIComponent(bookingDate)}`}
-              />
-            ) : (
-              <p className="booking-modal-setup-message">
-                El calendario todavía no está conectado. Cuando implementes la aplicación web de Apps Script, pegá su URL en <code>VITE_BOOKING_APP_URL</code> para habilitar las reservas.
-              </p>
-            )}
-            {bookingConfirmation && (
-              <div className="booking-confirmation-overlay" role="presentation">
-                <section className="booking-confirmation" role="dialog" aria-modal="true" aria-labelledby="booking-confirmation-title">
-                  <button
-                    className="booking-modal-close"
-                    type="button"
-                    aria-label="Cerrar confirmación y volver a la página"
-                    onClick={closeBookingModal}
-                  >
-                    <X aria-hidden="true" />
-                  </button>
-                  <h2 className="booking-modal-title" id="booking-confirmation-title">Reserva exitosa!</h2>
-                  <p>Tu entrevista quedó agendada. Te enviaremos la invitación con los detalles.</p>
-                </section>
-              </div>
-            )}
-          </section>
-        </div>
-      )}
-
+      <a
+        className="whatsapp-contact-float"
+        href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="WhatsApp"
+      >
+        <span className="whatsapp-contact-button" aria-hidden="true">
+          <img src={whatsappIcon} alt="" />
+        </span>
+      </a>
       <FaqModal
         isOpen={isFaqModalOpen}
         onClose={() => setIsFaqModalOpen(false)}

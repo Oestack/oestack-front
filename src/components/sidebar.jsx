@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Home, BriefcaseBusiness, FolderKanban, Mail, CircleHelp } from 'lucide-react'
+import { Home, BriefcaseBusiness, Workflow, FolderKanban, Mail, CircleHelp } from 'lucide-react'
 import SidebarItems from './sidebar-items.jsx'
 
 const mainNavigationItems = [
   { icon: Home, label: 'Inicio', href: '#inicio', id: 'inicio' },
   { icon: BriefcaseBusiness, label: 'Servicios', href: '#servicios', id: 'servicios' },
+  { icon: Workflow, label: 'Proceso', href: '#proceso', id: 'proceso' },
   { icon: FolderKanban, label: 'Proyectos', href: '#proyectos', id: 'proyectos' },
   { icon: Mail, label: 'Contacto', href: '#contacto', id: 'contacto' },
 ]
@@ -70,7 +71,7 @@ function Sidebar({ onOpenFaq, onNavigateHome, isFaqOpen = false }) {
   }, [activeSection, updateIndicator])
 
   useEffect(() => {
-    const sectionIds = ['inicio', 'servicios', 'proyectos', 'contacto']
+    const sectionIds = ['inicio', 'servicios', 'proceso', 'proyectos', 'contacto']
 
     const handleScroll = () => {
       const scrollY = window.scrollY

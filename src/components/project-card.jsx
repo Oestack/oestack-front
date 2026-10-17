@@ -18,8 +18,14 @@ function ProjectCard({
   return (
     <article
       className={`project-card ${reverse ? 'project-card--reverse' : ''} ${isHovered ? 'project-card--hovered' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onPointerEnter={() => setIsHovered(true)}
+      onPointerLeave={() => setIsHovered(false)}
+      onFocusCapture={() => setIsHovered(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setIsHovered(false)
+        }
+      }}
     >
       <div
         className="project-card-media-col"

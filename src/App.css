@@ -717,21 +717,7 @@
   filter: brightness(1) saturate(1.05);
 }
 
-.service-card-tag {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 4px 10px;
-  border-radius: 50px;
-  background: rgba(13, 13, 12, 0.85);
-  backdrop-filter: blur(4px);
-  color: #c9a84c;
-  font: 600 11px/1 var(--font-raleway);
-  letter-spacing: 0.5px;
-  border: 1px solid rgba(201, 168, 76, 0.3);
-}
-
-/* Contenido de la tarjeta (Subtítulo y Texto Descriptivo) */
+/* Contenido de la tarjeta */
 .service-card-content {
   padding: 20px 18px 18px;
   display: flex;
@@ -758,34 +744,6 @@
 .service-card:hover .service-card-title,
 .service-card--active .service-card-title {
   color: #c9a84c;
-}
-
-.service-card-price {
-  flex: 0 0 92px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
-  padding-left: 8px;
-  border-left: 1px solid rgba(201, 168, 76, 0.35);
-  text-align: right;
-}
-
-.service-card-price-main {
-  color: #c9a84c;
-  font: 600 13px/1.1 var(--font-rubik);
-  white-space: nowrap;
-}
-
-.service-card-price-secondary {
-  color: #8a8a7a;
-  font: 500 11px/1.1 var(--font-raleway);
-  white-space: nowrap;
-}
-
-.service-card-price--consult .service-card-price-main {
-  color: #fff;
-  font-size: 12px;
 }
 
 .service-card-description {

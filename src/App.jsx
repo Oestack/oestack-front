@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import {
   CircleArrowLeft,
   CircleArrowRight,
-  ArrowRight,
   ChevronDown,
   FileText,
   MessageCircle,
@@ -15,6 +14,7 @@ import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
 import ProcessCard from './components/process-card.jsx'
+import ServiceCard from './components/service-card.jsx'
 import FaqModal from './components/faq-modal.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
@@ -26,51 +26,39 @@ import './App.css'
 const servicesData = [
   {
     id: 'landing',
-    tag: 'Desarrollo Web',
     title: 'Landing Page y Web Institucionales',
     description: 'Una presencia digital clara, profesional y optimizada para mostrar tu propuesta y convertir visitas en consultas.',
     image: img1,
-    price: { usd: 'USD 200', ars: '$200.000' },
   },
   {
     id: 'software',
-    tag: 'Sistemas a Medida',
     title: 'Sistemas Web y Software a Medida',
     description: 'Herramientas digitales y plataformas diseñadas para ordenar, automatizar y hacer crecer la operación de tu negocio.',
     image: img2,
-    price: { usd: 'USD 800', ars: '$800.000' },
   },
   {
     id: 'ecommerce',
-    tag: 'Comercio Digital',
     title: 'E-Commerce',
     description: 'Tu tienda online lista para vender, gestionar productos y ofrecer una experiencia de compra simple y confiable.',
     image: img3,
-    price: { usd: 'USD 1.300', ars: '$1.300.000' },
   },
   {
     id: 'menu-qr',
-    tag: 'Solución Gastronómica',
     title: 'Menú QR + Web',
     description: 'Un menú digital accesible desde cualquier dispositivo, acompañado por una web simple para presentar tu propuesta.',
     image: heroImg,
-    price: { usd: 'USD 250', ars: '$250.000' },
   },
   {
     id: 'invitaciones',
-    tag: 'Diseño Personalizado',
     title: 'Invitaciones Personalizadas',
     description: 'Invitaciones digitales únicas para celebrar tus momentos importantes con una experiencia hecha a tu medida.',
     image: img1,
-    price: { usd: 'Consultar', ars: '' },
   },
   {
     id: 'mantenimiento',
-    tag: 'Soporte Continuo',
     title: 'Mantenimiento y Optimización',
     description: 'Mejoras, ajustes y soporte técnico para mantener tu producto actualizado, rápido y funcionando de forma confiable.',
     image: img2,
-    price: { usd: 'Consultar', ars: '' },
   },
 ]
 
@@ -490,46 +478,12 @@ function App() {
                 onScroll={handleTrackScroll}
               >
                 {servicesData.map((service, index) => (
-                  <article
+                  <ServiceCard
                     key={service.id}
-                    className={`service-card ${activeCard === index ? 'service-card--active' : ''}`}
-                    onClick={() => handleCardSelect(index)}
-                    tabIndex={0}
-                    role="button"
-                    aria-label={`Servicio: ${service.title}`}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault()
-                        handleCardSelect(index)
-                      }
-                    }}
-                  >
-                    <div className="service-card-media">
-                      <img
-                        src={service.image}
-                        alt={service.title}
-                        className="service-card-image"
-                        draggable="false"
-                      />
-                      <span className="service-card-tag">{service.tag}</span>
-                    </div>
-                    <div className="service-card-content">
-                      <div className="service-card-heading">
-                        <h3 className="service-card-title">{service.title}</h3>
-                        <div className={`service-card-price${service.price.ars ? '' : ' service-card-price--consult'}`}>
-                          <span className="service-card-price-main">{service.price.usd}</span>
-                          {service.price.ars && <span className="service-card-price-secondary">{service.price.ars}</span>}
-                        </div>
-                      </div>
-                      <p className="service-card-description">{service.description}</p>
-                      <div className="service-card-footer">
-                        <span className="service-card-link">
-                          Conocer más
-                          <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
-                        </span>
-                      </div>
-                    </div>
-                  </article>
+                    service={service}
+                    isActive={activeCard === index}
+                    onSelect={() => handleCardSelect(index)}
+                  />
                 ))}
               </div>
 

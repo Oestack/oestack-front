@@ -25,39 +25,52 @@ import './App.css'
 
 const servicesData = [
   {
-    id: 'web',
-    tag: 'Web & E-Commerce',
-    title: 'Desarrollo Web & Plataformas',
-    description: 'Creamos sitios web institucionales, e-commerce y aplicaciones web modernas, rápidas y adaptadas a cualquier dispositivo con la mejor optimización SEO.',
+    id: 'landing',
+    tag: 'Desarrollo Web',
+    title: 'Landing Page y Web Institucionales',
+    description: 'Una presencia digital clara, profesional y optimizada para mostrar tu propuesta y convertir visitas en consultas.',
     image: img1,
+    price: { usd: 'USD 200', ars: '$200.000' },
   },
   {
     id: 'software',
     tag: 'Sistemas a Medida',
-    title: 'Software & Automatizaciones',
-    description: 'Arquitecturas escalables, sistemas de gestión interna y herramientas digitales diseñadas específicamente para resolver la operativa real de tu negocio.',
+    title: 'Sistemas Web y Software a Medida',
+    description: 'Herramientas digitales y plataformas diseñadas para ordenar, automatizar y hacer crecer la operación de tu negocio.',
     image: img2,
+    price: { usd: 'USD 800', ars: '$800.000' },
   },
   {
-    id: 'uiux',
-    tag: 'Diseño UX / UI',
-    title: 'Diseño UI / UX & Prototipado',
-    description: 'Diseñamos interfaces atractivas, modernas e intuitivas centradas en el usuario que transforman experiencias y potencian la tasa de conversión.',
+    id: 'ecommerce',
+    tag: 'Comercio Digital',
+    title: 'E-Commerce',
+    description: 'Tu tienda online lista para vender, gestionar productos y ofrecer una experiencia de compra simple y confiable.',
     image: img3,
+    price: { usd: 'USD 1.300', ars: '$1.300.000' },
   },
   {
-    id: 'cloud',
-    tag: 'Cloud & DevOps',
-    title: 'Infraestructura & Soluciones Cloud',
-    description: 'Despliegues continuos, entornos seguros, integración de APIs y administración en la nube para garantizar alta disponibilidad y tolerancia a fallos.',
+    id: 'menu-qr',
+    tag: 'Solución Gastronómica',
+    title: 'Menú QR + Web',
+    description: 'Un menú digital accesible desde cualquier dispositivo, acompañado por una web simple para presentar tu propuesta.',
     image: heroImg,
+    price: { usd: 'USD 250', ars: '$250.000' },
   },
   {
-    id: 'consultoria',
-    tag: 'Consultoría & Soporte',
-    title: 'Mantenimiento & Optimización',
-    description: 'Auditoría de código, optimización de velocidad de carga, modernización tecnológica y soporte continuo para que tus productos sigan escalando.',
+    id: 'invitaciones',
+    tag: 'Diseño Personalizado',
+    title: 'Invitaciones Personalizadas',
+    description: 'Invitaciones digitales únicas para celebrar tus momentos importantes con una experiencia hecha a tu medida.',
+    image: img1,
+    price: { usd: 'Consultar', ars: '' },
+  },
+  {
+    id: 'mantenimiento',
+    tag: 'Soporte Continuo',
+    title: 'Mantenimiento y Optimización',
+    description: 'Mejoras, ajustes y soporte técnico para mantener tu producto actualizado, rápido y funcionando de forma confiable.',
     image: img2,
+    price: { usd: 'Consultar', ars: '' },
   },
 ]
 
@@ -501,7 +514,13 @@ function App() {
                       <span className="service-card-tag">{service.tag}</span>
                     </div>
                     <div className="service-card-content">
-                      <h3 className="service-card-title">{service.title}</h3>
+                      <div className="service-card-heading">
+                        <h3 className="service-card-title">{service.title}</h3>
+                        <div className={`service-card-price${service.price.ars ? '' : ' service-card-price--consult'}`}>
+                          <span className="service-card-price-main">{service.price.usd}</span>
+                          {service.price.ars && <span className="service-card-price-secondary">{service.price.ars}</span>}
+                        </div>
+                      </div>
                       <p className="service-card-description">{service.description}</p>
                       <div className="service-card-footer">
                         <span className="service-card-link">

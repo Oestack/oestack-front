@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Home, BriefcaseBusiness, Workflow, FolderKanban, Mail, CircleHelp } from 'lucide-react'
+import { Home, BriefcaseBusiness, Workflow, FolderKanban, Mail, CircleHelp, PersonStanding } from 'lucide-react'
 import SidebarItems from './sidebar-items.jsx'
 
 const mainNavigationItems = [
@@ -198,6 +198,11 @@ function Sidebar({ onOpenFaq, onNavigateHome, isFaqOpen = false }) {
 
       <div className="sidebar-bottom">
         <nav className="sidebar-navigation sidebar-navigation--bottom" aria-label="Navegación secundaria">
+          <SidebarItems
+            icon={PersonStanding}
+            label="Nosotros"
+            shortLabel="Nosotros"
+          />
           <SidebarItems
             icon={CircleHelp}
             label="Preguntas Frecuentes"

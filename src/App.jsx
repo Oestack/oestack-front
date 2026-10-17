@@ -102,13 +102,19 @@ function App() {
   const [hasProcessSectionEntered, setHasProcessSectionEntered] = useState(false)
   const [hasProjectsSectionEntered, setHasProjectsSectionEntered] = useState(false)
   const [hasContactSectionEntered, setHasContactSectionEntered] = useState(false)
+  const [activeProjectSlide, setActiveProjectSlide] = useState(0)
+  const [isWhatsappStopped, setIsWhatsappStopped] = useState(false)
+  const [whatsappFooterHeight, setWhatsappFooterHeight] = useState(0)
   const [heroAnimationKey, setHeroAnimationKey] = useState(0)
   const heroAreaRef = useRef(null)
   const heroHasFadedOutRef = useRef(false)
   const servicesSectionRef = useRef(null)
   const processSectionRef = useRef(null)
   const projectsSectionRef = useRef(null)
+  const projectsTrackRef = useRef(null)
   const contactSectionRef = useRef(null)
+  const pageFooterRef = useRef(null)
+  const whatsappContactRef = useRef(null)
   const projectTypeSelectRef = useRef(null)
   const contactInputRef = useRef(null)
   const handleNavigateHome = () => {
@@ -174,6 +180,34 @@ function App() {
 
     observer.observe(contactSection)
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const footer = pageFooterRef.current
+    if (!footer || !whatsappContactRef.current) return undefined
+
+    const updateWhatsappPosition = () => {
+      if (window.innerWidth > 1024) {
+        setIsWhatsappStopped(false)
+        return
+      }
+
+      const footerTop = footer.getBoundingClientRect().top
+      const shouldStop = footerTop < window.innerHeight
+      setIsWhatsappStopped(shouldStop)
+      if (shouldStop) {
+        setWhatsappFooterHeight(footer.offsetHeight)
+      }
+    }
+
+    updateWhatsappPosition()
+    window.addEventListener('scroll', updateWhatsappPosition, { passive: true })
+    window.addEventListener('resize', updateWhatsappPosition)
+
+    return () => {
+      window.removeEventListener('scroll', updateWhatsappPosition)
+      window.removeEventListener('resize', updateWhatsappPosition)
+    }
   }, [])
 
   const openGmailComposer = (event) => {
@@ -343,6 +377,35 @@ function App() {
 
   const handleMouseLeave = () => {
     setIsDragging(false)
+  }
+
+  const handleProjectTrackScroll = () => {
+    const track = projectsTrackRef.current
+    if (!track) return
+
+    const trackCenter = track.scrollLeft + track.clientWidth / 2
+    let closestIndex = 0
+    let minDistance = Infinity
+
+    Array.from(track.children).forEach((slide, index) => {
+      const slideCenter = slide.offsetLeft + slide.clientWidth / 2
+      const distance = Math.abs(trackCenter - slideCenter)
+      if (distance < minDistance) {
+        minDistance = distance
+        closestIndex = index
+      }
+    })
+
+    setActiveProjectSlide(closestIndex)
+  }
+
+  const goToProjectSlide = (index) => {
+    const track = projectsTrackRef.current
+    const slide = track?.children[index]
+    if (!track || !slide) return
+
+    track.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' })
+    setActiveProjectSlide(index)
   }
 
   const handleCardSelect = (index) => {
@@ -566,7 +629,11 @@ function App() {
             <span className="projects-subtitle-accent">proyectos realizados</span>
           </h3>
 
-          <div className="projects-container">
+          <div
+            className="projects-container"
+            ref={projectsTrackRef}
+            onScroll={handleProjectTrackScroll}
+          >
             <ProjectCard
               number="01"
               title="Sistema de gestión clínica"
@@ -596,6 +663,26 @@ function App() {
               imageTone="warm"
               demoHref="https://bohemia-sigma.vercel.app"
             />
+          </div>
+          <div className="projects-carousel-controls" aria-label="Navegación de proyectos">
+            <button
+              type="button"
+              className="projects-carousel-button"
+              aria-label="Proyecto anterior"
+              onClick={() => goToProjectSlide(Math.max(0, activeProjectSlide - 1))}
+              disabled={activeProjectSlide === 0}
+            >
+              <CircleArrowLeft size={28} strokeWidth={2} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              className="projects-carousel-button"
+              aria-label="Proyecto siguiente"
+              onClick={() => goToProjectSlide(Math.min(2, activeProjectSlide + 1))}
+              disabled={activeProjectSlide === 2}
+            >
+              <CircleArrowRight size={28} strokeWidth={2} aria-hidden="true" />
+            </button>
           </div>
         </section>
 
@@ -697,7 +784,7 @@ function App() {
         )}
       </main>
 
-      <footer className="page-footer" role="contentinfo" aria-label="Pie de página">
+      <footer ref={pageFooterRef} className="page-footer" role="contentinfo" aria-label="Pie de página">
         <div className="page-footer-content">
           <a href="#inicio" className="page-footer-brand">OESTACK</a>
           <span className="page-footer-dot" aria-hidden="true">•</span>
@@ -739,11 +826,13 @@ function App() {
         </div>
       </footer>
       <a
-        className="whatsapp-contact-float"
+        ref={whatsappContactRef}
+        className={`whatsapp-contact-float${isWhatsappStopped ? ' whatsapp-contact-float--above-footer' : ''}`}
         href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
+        style={isWhatsappStopped ? { bottom: `${whatsappFooterHeight + 24}px` } : undefined}
       >
         <span className="whatsapp-contact-button" aria-hidden="true">
           <img src={whatsappIcon} alt="" />

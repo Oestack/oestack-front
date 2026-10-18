@@ -855,6 +855,10 @@
   scroll-behavior: auto;
 }
 
+.mobile-service-list {
+  display: none;
+}
+
 /* Tarjeta de servicio con formato de teléfono */
 .iphone-card {
   position: relative;
@@ -2006,6 +2010,10 @@
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
+}
+
+.project-card-mobile-toggle {
+  display: none;
 }
 
 .project-card:hover .project-card-description,
@@ -4342,6 +4350,59 @@
     margin-bottom: 20px;
   }
 
+  .services-container-three {
+    display: none !important;
+  }
+
+  .mobile-service-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    border-top: 1px solid rgba(138, 138, 122, 0.25);
+  }
+
+  .mobile-service-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(110px, 0.9fr) minmax(0, 1.5fr) 24px;
+    gap: 18px;
+    align-items: center;
+    padding: 20px 4px;
+    border-bottom: 1px solid rgba(138, 138, 122, 0.25);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.25s ease, padding-inline 0.25s ease;
+  }
+
+  .mobile-service-row:active,
+  .mobile-service-row:focus-visible {
+    padding-inline: 10px;
+    background: rgba(201, 168, 76, 0.08);
+  }
+
+  .mobile-service-row-title {
+    color: #c9a84c;
+    font: 500 18px/1.25 var(--font-rubik);
+  }
+
+  .mobile-service-row-description {
+    grid-column: 2;
+    color: #8a8a7a;
+    font: 400 13px/1.5 var(--font-raleway);
+  }
+
+  .mobile-service-row-icon {
+    grid-column: 3;
+    grid-row: 1;
+    color: #c9a84c;
+    transition: transform 0.25s ease;
+  }
+
+  .mobile-service-row:active .mobile-service-row-icon,
+  .mobile-service-row:focus-visible .mobile-service-row-icon {
+    transform: translateX(4px);
+  }
+
   .iphone-card {
     flex-basis: 300px;
     width: 300px;
@@ -4357,6 +4418,54 @@
 
   .iphone-card-heading h3 {
     font-size: 18px;
+  }
+
+  .project-card-mobile-toggle {
+    display: grid;
+    place-items: center;
+    align-self: center;
+    width: 42px;
+    height: 34px;
+    margin: 10px auto 0;
+    padding: 0;
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    border-radius: 999px;
+    color: #c9a84c;
+    background: #141412;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.3s ease;
+  }
+
+  .project-card-mobile-toggle:hover,
+  .project-card-mobile-toggle:focus-visible {
+    background: rgba(201, 168, 76, 0.12);
+    outline: 2px solid #c9a84c;
+    outline-offset: 2px;
+  }
+
+  .project-card-mobile-toggle.is-expanded {
+    transform: rotate(180deg);
+  }
+
+  .project-card-info-col,
+  .project-card--reverse .project-card-info-col {
+    max-height: 0;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: none;
+    transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease, visibility 0.35s;
+  }
+
+  .project-card-info-col.is-mobile-expanded {
+    max-height: 360px;
+    padding: 8px 0 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .nosotros-page h1 {

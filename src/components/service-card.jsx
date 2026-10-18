@@ -1,42 +1,50 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowUpRight, Check } from 'lucide-react'
+import Button from './button.jsx'
 
-function ServiceCard({ service, isActive, onSelect }) {
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
-      onSelect()
-    }
-  }
+function ServiceCard({ service }) {
+  const { title, description, price, includes = [], featured = false } = service
+  const consultMessage = `Hola, quiero consultar por el plan ${title}`
+  const consultHref = `https://wa.me/5491164889873?text=${encodeURIComponent(consultMessage)}`
 
   return (
-    <article
-      className={`service-card ${isActive ? 'service-card--active' : ''}`}
-      onClick={onSelect}
-      tabIndex={0}
-      role="button"
-      aria-label={`Servicio: ${service.title}`}
-      onKeyDown={handleKeyDown}
-    >
-      <div className="service-card-media">
-        <img
-          src={service.image}
-          alt={service.title}
-          className="service-card-image"
-          draggable="false"
-        />
+    <article className={`sitios-web-plan${featured ? ' sitios-web-plan--featured' : ''}`}>
+      <span
+        className={`sitios-web-plan-badge${featured ? '' : ' sitios-web-plan-badge--placeholder'}`}
+        aria-hidden={!featured}
+      >
+        Más elegido
+      </span>
+      <div className="sitios-web-plan-heading">
+        <h2>{title}</h2>
+        <p>{description}</p>
       </div>
-      <div className="service-card-content">
-        <div className="service-card-heading">
-          <h3 className="service-card-title">{service.title}</h3>
-        </div>
-        <p className="service-card-description">{service.description}</p>
-        <div className="service-card-footer">
-          <span className="service-card-link">
-            Conocer más
-            <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
-          </span>
+      <div className="sitios-web-plan-price">
+        <span>DESDE</span>
+        <div className="sitios-web-plan-price-amount">
+          <strong>{price}</strong>
+          <span>ARS</span>
         </div>
       </div>
+      <div className="sitios-web-plan-includes">
+        <h3>¿Qué incluye?</h3>
+        <ul>
+          {includes.map((item) => (
+            <li key={item}>
+              <Check size={18} strokeWidth={2.2} aria-hidden="true" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <Button
+        variant="yellow"
+        href={consultHref}
+        target="_blank"
+        rel="noreferrer"
+        trailingIcon={ArrowUpRight}
+      >
+        Consultar
+      </Button>
     </article>
   )
 }

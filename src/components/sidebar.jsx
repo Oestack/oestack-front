@@ -11,7 +11,9 @@ const mainNavigationItems = [
 ]
 
 function Sidebar({ onNavigateHome, currentPage = 'home' }) {
-  const [activeSection, setActiveSection] = useState(currentPage === 'nosotros' ? 'nosotros' : 'inicio')
+  const [activeSection, setActiveSection] = useState(
+    currentPage === 'nosotros' ? 'nosotros' : currentPage === 'home' ? 'inicio' : '',
+  )
   const [indicatorStyle, setIndicatorStyle] = useState({
     left: 0,
     top: 0,
@@ -139,7 +141,7 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
     }
   }
 
-  const navigationItems = currentPage === 'nosotros'
+  const navigationItems = currentPage !== 'home'
     ? mainNavigationItems.map((item) => ({ ...item, href: `/${item.href}` }))
     : mainNavigationItems
 
@@ -149,7 +151,7 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
         <div className="sidebar-brand">
           <a
             className="sidebar-logo"
-            href={currentPage === 'nosotros' ? '/#inicio' : '#inicio'}
+            href={currentPage !== 'home' ? '/#inicio' : '#inicio'}
             onClick={(event) => handleItemClick('inicio', event)}
           >
             OESTACK

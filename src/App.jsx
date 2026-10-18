@@ -17,6 +17,7 @@ import ProcessCard from './components/process-card.jsx'
 import IPhoneCard from './components/iphone-card.jsx'
 import Faq from './components/faq.jsx'
 import Nosotros from './pages/nosotros.jsx'
+import SitiosWeb from './pages/sitios-web.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
@@ -160,6 +161,7 @@ const processStages = [
 
 function App() {
   const isNosotrosPage = window.location.pathname.replace(/\/+$/, '') === '/nosotros'
+  const isSitiosWebPage = window.location.pathname.replace(/\/+$/, '') === '/sitios-web'
 
   // Servicios Carousel State
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -482,6 +484,10 @@ function App() {
 
   const handleCardSelect = (index) => {
     if (hasDragged.current) return
+    if (index === 0) {
+      window.location.assign('/sitios-web')
+      return
+    }
     setActiveCard(index)
     const track = servicesTrackRef.current
     if (!track) return
@@ -534,12 +540,14 @@ function App() {
 
       <Sidebar
         onNavigateHome={handleNavigateHome}
-        currentPage={isNosotrosPage ? 'nosotros' : 'home'}
+        currentPage={isNosotrosPage ? 'nosotros' : isSitiosWebPage ? 'sitios-web' : 'home'}
       />
 
       <main className="main-content" aria-label="Contenido principal">
         {isNosotrosPage ? (
           <Nosotros />
+        ) : isSitiosWebPage ? (
+          <SitiosWeb />
         ) : (
           <>
         <div className="hero-services-stage">
@@ -625,7 +633,8 @@ function App() {
                     featureCards={service.featureCards}
                     isActive={activeCard === index}
                     onSelect={() => handleCardSelect(index)}
-                    onButtonClick={() => handleCardSelect(index)}
+                    onButtonClick={index === 0 ? undefined : () => handleCardSelect(index)}
+                    buttonHref={index === 0 ? '/sitios-web' : '#contacto'}
                   />
                 ))}
               </div>

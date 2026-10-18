@@ -14,7 +14,7 @@ import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
 import ProcessCard from './components/process-card.jsx'
-import ServiceCard from './components/service-card.jsx'
+import IPhoneCard from './components/iphone-card.jsx'
 import Faq from './components/faq.jsx'
 import Nosotros from './pages/nosotros.jsx'
 import img1 from './assets/img1.png'
@@ -30,36 +30,108 @@ const servicesData = [
     title: 'Landing Page y Web Institucionales',
     description: 'Una presencia digital clara, profesional y optimizada para mostrar tu propuesta y convertir visitas en consultas.',
     image: img1,
+    featureCards: [
+      {
+        title: 'Landing Page',
+        description: 'Páginas de aterrizaje enfocadas en captar clientes potenciales con llamadas a la acción claras.',
+        tags: ['Diseño Responsive', 'Carga Ultra Rápida'],
+      },
+      {
+        title: 'Web Institucional',
+        description: 'Sitios corporativos completos que transmiten solidez, profesionalismo y confianza a tu audiencia.',
+        tags: ['Secciones a Medida', 'SEO Optimizado'],
+      },
+    ],
   },
   {
     id: 'software',
     title: 'Sistemas Web y Software a Medida',
     description: 'Herramientas digitales y plataformas diseñadas para ordenar, automatizar y hacer crecer la operación de tu negocio.',
     image: img2,
+    featureCards: [
+      {
+        title: 'Sistemas Web',
+        description: 'Herramientas digitales pensadas para centralizar la información y simplificar el trabajo diario.',
+        tags: ['Procesos a Medida', 'Acceso Seguro'],
+      },
+      {
+        title: 'Software a Medida',
+        description: 'Plataformas escalables que se adaptan a la lógica y los objetivos específicos de tu negocio.',
+        tags: ['Integraciones', 'Datos Centralizados'],
+      },
+    ],
   },
   {
     id: 'ecommerce',
     title: 'E-Commerce',
     description: 'Tu tienda online lista para vender, gestionar productos y ofrecer una experiencia de compra simple y confiable.',
     image: img3,
+    featureCards: [
+      {
+        title: 'Tienda Online',
+        description: 'Una experiencia de compra clara para que tus clientes encuentren y elijan tus productos fácilmente.',
+        tags: ['Catálogo Dinámico', 'Diseño Responsive'],
+      },
+      {
+        title: 'Gestión de Ventas',
+        description: 'Herramientas para administrar pedidos, productos y pagos desde un mismo lugar.',
+        tags: ['Medios de Pago', 'Control de Stock'],
+      },
+    ],
   },
   {
     id: 'menu-qr',
     title: 'Menú QR + Web',
     description: 'Un menú digital accesible desde cualquier dispositivo, acompañado por una web simple para presentar tu propuesta.',
     image: heroImg,
+    featureCards: [
+      {
+        title: 'Menú QR',
+        description: 'Tus clientes acceden a la carta de forma rápida desde cualquier celular, sin descargar aplicaciones.',
+        tags: ['Acceso Instantáneo', 'Actualización Simple'],
+      },
+      {
+        title: 'Web Gastronómica',
+        description: 'Una presencia digital atractiva para mostrar tu propuesta, ubicación y canales de contacto.',
+        tags: ['Información Clara', 'Diseño Atractivo'],
+      },
+    ],
   },
   {
     id: 'invitaciones',
     title: 'Invitaciones Personalizadas',
     description: 'Invitaciones digitales únicas para celebrar tus momentos importantes con una experiencia hecha a tu medida.',
     image: img1,
+    featureCards: [
+      {
+        title: 'Diseño Personalizado',
+        description: 'Una invitación digital creada especialmente para reflejar el estilo de tu celebración.',
+        tags: ['Estilo Único', 'Diseño Responsive'],
+      },
+      {
+        title: 'Experiencia Interactiva',
+        description: 'Compartí todos los detalles del evento en una experiencia simple y especial.',
+        tags: ['Galería y Mapas', 'Confirmación Online'],
+      },
+    ],
   },
   {
     id: 'mantenimiento',
     title: 'Mantenimiento y Optimización',
     description: 'Mejoras, ajustes y soporte técnico para mantener tu producto actualizado, rápido y funcionando de forma confiable.',
     image: img2,
+    featureCards: [
+      {
+        title: 'Mantenimiento',
+        description: 'Mantenemos tu sitio actualizado, estable y preparado para acompañar el crecimiento de tu proyecto.',
+        tags: ['Actualizaciones', 'Backups'],
+      },
+      {
+        title: 'Optimización',
+        description: 'Detectamos oportunidades de mejora para que tu producto funcione cada vez mejor.',
+        tags: ['Más Velocidad', 'Soporte Continuo'],
+      },
+    ],
   },
 ]
 
@@ -312,7 +384,7 @@ function App() {
   const scrollCarousel = (direction) => {
     const track = servicesTrackRef.current
     if (!track) return
-    const cardStep = 332 // Ancho de tarjeta (310px) + gap (22px)
+    const cardStep = 362 // Ancho de tarjeta (340px) + gap (22px)
     track.scrollBy({ left: direction * cardStep, behavior: 'smooth' })
   }
 
@@ -546,11 +618,14 @@ function App() {
                 onScroll={handleTrackScroll}
               >
                 {servicesData.map((service, index) => (
-                  <ServiceCard
+                  <IPhoneCard
                     key={service.id}
-                    service={service}
+                    title={service.title}
+                    description={service.description}
+                    featureCards={service.featureCards}
                     isActive={activeCard === index}
                     onSelect={() => handleCardSelect(index)}
+                    onButtonClick={() => handleCardSelect(index)}
                   />
                 ))}
               </div>

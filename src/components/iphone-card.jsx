@@ -2,7 +2,6 @@ import Button from './button.jsx'
 
 function IPhoneCard({
   title,
-  description,
   featureCards = [],
   logo = null,
   buttonText = 'Conocer más',
@@ -43,7 +42,6 @@ function IPhoneCard({
         <div className="iphone-card-heading">
           <h3>{title}</h3>
         </div>
-
 
         {(featureCards.length > 0 || children) && (
           <div className="iphone-card-extra">

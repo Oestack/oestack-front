@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import Button from './button.jsx'
 
 function ProjectCard({
@@ -14,6 +15,7 @@ function ProjectCard({
   reverse = false,
 }) {
   const [isHovered, setIsHovered] = useState(false)
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false)
 
   return (
     <article
@@ -42,8 +44,20 @@ function ProjectCard({
             draggable="false"
           />
         </div>
+        <button
+          type="button"
+          className={`project-card-mobile-toggle${isMobileExpanded ? ' is-expanded' : ''}`}
+          aria-label={`${isMobileExpanded ? 'Ocultar' : 'Mostrar'} información de ${title}`}
+          aria-expanded={isMobileExpanded}
+          onClick={() => setIsMobileExpanded((expanded) => !expanded)}
+        >
+          <ChevronDown size={22} strokeWidth={1.8} aria-hidden="true" />
+        </button>
       </div>
-      <div className="project-card-info-col" aria-hidden={!isHovered}>
+      <div
+        className={`project-card-info-col${isMobileExpanded ? ' is-mobile-expanded' : ''}`}
+        aria-hidden={!isHovered && !isMobileExpanded}
+      >
         <h3 className="project-card-title">{title}</h3>
         <p className="project-card-description">{description}</p>
         {demoHref && (

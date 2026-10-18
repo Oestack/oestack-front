@@ -15,6 +15,7 @@ import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
 import ProcessCard from './components/process-card.jsx'
 import IPhoneCard from './components/iphone-card.jsx'
+import MobileServiceList from './components/mobile-service-list.jsx'
 import Faq from './components/faq.jsx'
 import Nosotros from './pages/nosotros.jsx'
 import SitiosWeb from './pages/sitios-web.jsx'
@@ -34,6 +35,7 @@ const servicesData = [
     title: 'Landing Page y Web Institucionales',
     description: 'Una presencia digital clara, profesional y optimizada para mostrar tu propuesta y convertir visitas en consultas.',
     image: img1,
+    href: '/sitios-web',
     featureCards: [
       {
         title: 'Landing Page',
@@ -52,6 +54,7 @@ const servicesData = [
     title: 'Tienda Online',
     description: 'Tu tienda online lista para vender, gestionar productos y ofrecer una experiencia de compra simple y confiable.',
     image: img3,
+    href: '/tienda-online',
     featureCards: [
       {
         title: 'Tienda Online',
@@ -70,6 +73,7 @@ const servicesData = [
     title: 'Sistemas Web y Software a Medida',
     description: 'Herramientas digitales y plataformas diseñadas para ordenar, automatizar y hacer crecer la operación de tu negocio.',
     image: img2,
+    href: '#contacto',
     featureCards: [
       {
         title: 'Sistemas Web',
@@ -85,9 +89,10 @@ const servicesData = [
   },
   {
     id: 'menu-qr',
-    title: 'Menú Digital',
-    description: 'Una carta digital para presentar tus productos y facilitar el acceso de tus clientes mediante un código QR.',
+    title: 'Menú QR + Web',
+    description: 'Un menú digital accesible desde cualquier dispositivo, acompañado por una web simple para presentar tu propuesta.',
     image: heroImg,
+    href: '#contacto',
     featureCards: [
       {
         title: 'Menú QR',
@@ -103,9 +108,10 @@ const servicesData = [
   },
   {
     id: 'invitaciones',
-    title: 'Invitaciones Personalizadas',
+    title: 'Invitaciones',
     description: 'Invitaciones digitales únicas para celebrar tus momentos importantes con una experiencia hecha a tu medida.',
     image: img1,
+    href: '#contacto',
     featureCards: [
       {
         title: 'Diseño Personalizado',
@@ -124,6 +130,7 @@ const servicesData = [
     title: 'Mantenimiento y Optimización',
     description: 'Mejoras, ajustes y soporte técnico para mantener tu producto actualizado, rápido y funcionando de forma confiable.',
     image: img2,
+    href: '#contacto',
     featureCards: [
       {
         title: 'Mantenimiento',
@@ -665,7 +672,6 @@ function App() {
                   <IPhoneCard
                     key={service.id}
                     title={service.title}
-                    description={service.description}
                     featureCards={service.featureCards}
                     isActive={activeCard === index}
                     onSelect={() => handleCardSelect(index)}
@@ -723,6 +729,7 @@ function App() {
                 </button>
               </div>
             </div>
+            <MobileServiceList services={servicesData} />
           </section>
         </div>
 
@@ -872,9 +879,11 @@ function App() {
                     {[
                       'Landing Page',
                       'Web Institucional',
-                      'E-commerce',
+                      'Tienda Online',
                       'Sistema a Medida',
                       'Menú Digital',
+                      'Invitaciones',
+                      'Mantenimiento y Optimización'
                     ].map((projectType) => (
                       <button
                         className="contact-lead-option"

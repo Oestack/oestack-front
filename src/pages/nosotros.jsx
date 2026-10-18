@@ -61,13 +61,7 @@ function Nosotros() {
         <div className="nosotros-header">
           <div className="nosotros-heading-row">
             <h1 id="nosotros-title">¿Quiénes somos?</h1>
-            <Button
-              variant="dark"
-              href="#preguntas-frecuentes-nosotros"
-              trailingIcon={ChevronDown}
-            >
-              Preguntas frecuentes
-            </Button>
+            
           </div>
           <p className="projects-subtitle nosotros-subtitle">
             <span className="projects-subtitle-lead">Conocé más</span>

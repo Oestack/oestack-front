@@ -70,7 +70,7 @@ const servicesData = [
   },
   {
     id: 'software',
-    title: 'Sistemas Web y Software a Medida',
+    title: 'Software a Medida',
     description: 'Herramientas digitales y plataformas diseñadas para ordenar, automatizar y hacer crecer la operación de tu negocio.',
     image: img2,
     href: '#contacto',
@@ -89,7 +89,7 @@ const servicesData = [
   },
   {
     id: 'menu-qr',
-    title: 'Menú QR + Web',
+    title: 'Menú Digital',
     description: 'Un menú digital accesible desde cualquier dispositivo, acompañado por una web simple para presentar tu propuesta.',
     image: heroImg,
     href: '#contacto',

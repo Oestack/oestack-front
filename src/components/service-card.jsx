@@ -2,31 +2,45 @@ import { Check } from 'lucide-react'
 import Button from './button.jsx'
 
 function ServiceCard({ service }) {
-  const { title, description, price, includes = [], featured = false } = service
+  const {
+    title,
+    description,
+    price,
+    includes = [],
+    featured = false,
+    badgeLabel = 'Más elegido',
+    pricePrefix = 'DESDE',
+    priceCurrency = 'ARS',
+    priceNote,
+    includesTitle = '¿Qué incluye?',
+  } = service
   const consultMessage = `Hola, quiero consultar por el plan ${title}`
   const consultHref = `https://wa.me/5491164889873?text=${encodeURIComponent(consultMessage)}`
 
   return (
     <article className={`sitios-web-plan${featured ? ' sitios-web-plan--featured' : ''}`}>
-      <span
-        className={`sitios-web-plan-badge${featured ? '' : ' sitios-web-plan-badge--placeholder'}`}
-        aria-hidden={!featured}
-      >
-        Más elegido
-      </span>
+      {badgeLabel && (
+        <span
+          className={`sitios-web-plan-badge${featured ? '' : ' sitios-web-plan-badge--placeholder'}`}
+          aria-hidden={!featured}
+        >
+          {badgeLabel}
+        </span>
+      )}
       <div className="sitios-web-plan-heading">
         <h2>{title}</h2>
         <p>{description}</p>
       </div>
       <div className="sitios-web-plan-price">
-        <span>DESDE</span>
+        {pricePrefix && <span>{pricePrefix}</span>}
         <div className="sitios-web-plan-price-amount">
           <strong>{price}</strong>
-          <span>ARS</span>
+          {priceCurrency && <span>{priceCurrency}</span>}
         </div>
+        {priceNote && <p className="sitios-web-plan-price-note">{priceNote}</p>}
       </div>
       <div className="sitios-web-plan-includes">
-        <h3>¿Qué incluye?</h3>
+        <h3>{includesTitle}</h3>
         <ul>
           {includes.map((item) => (
             <li key={item}>
@@ -43,7 +57,7 @@ function ServiceCard({ service }) {
         rel="noreferrer"
         showTrailingIcon={false}
       >
-        Consultar
+        Hablemos de tu proyecto
       </Button>
     </article>
   )

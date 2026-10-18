@@ -19,6 +19,8 @@ import Faq from './components/faq.jsx'
 import Nosotros from './pages/nosotros.jsx'
 import SitiosWeb from './pages/sitios-web.jsx'
 import TiendaOnline from './pages/tienda-online.jsx'
+import SistemasAMedida from './pages/sistemas-a-medida.jsx'
+import MenuDigital from './pages/menu.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
@@ -83,8 +85,8 @@ const servicesData = [
   },
   {
     id: 'menu-qr',
-    title: 'Menú QR + Web',
-    description: 'Un menú digital accesible desde cualquier dispositivo, acompañado por una web simple para presentar tu propuesta.',
+    title: 'Menú Digital',
+    description: 'Una carta digital para presentar tus productos y facilitar el acceso de tus clientes mediante un código QR.',
     image: heroImg,
     featureCards: [
       {
@@ -164,6 +166,8 @@ function App() {
   const isNosotrosPage = window.location.pathname.replace(/\/+$/, '') === '/nosotros'
   const isSitiosWebPage = window.location.pathname.replace(/\/+$/, '') === '/sitios-web'
   const isTiendaOnlinePage = window.location.pathname.replace(/\/+$/, '') === '/tienda-online'
+  const isSistemasAMedidaPage = window.location.pathname.replace(/\/+$/, '') === '/sistemas-a-medida'
+  const isMenuDigitalPage = window.location.pathname.replace(/\/+$/, '') === '/menu-digital'
 
   // Servicios Carousel State
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -494,6 +498,14 @@ function App() {
       window.location.assign('/tienda-online')
       return
     }
+    if (index === 2) {
+      window.location.assign('/sistemas-a-medida')
+      return
+    }
+    if (index === 3) {
+      window.location.assign('/menu-digital')
+      return
+    }
     setActiveCard(index)
     const track = servicesTrackRef.current
     if (!track) return
@@ -546,7 +558,19 @@ function App() {
 
       <Sidebar
         onNavigateHome={handleNavigateHome}
-        currentPage={isNosotrosPage ? 'nosotros' : isSitiosWebPage ? 'sitios-web' : isTiendaOnlinePage ? 'tienda-online' : 'home'}
+        currentPage={
+          isNosotrosPage
+            ? 'nosotros'
+            : isSitiosWebPage
+              ? 'sitios-web'
+              : isTiendaOnlinePage
+                ? 'tienda-online'
+                : isSistemasAMedidaPage
+                  ? 'sistemas-a-medida'
+                  : isMenuDigitalPage
+                    ? 'menu-digital'
+                  : 'home'
+        }
       />
 
       <main className="main-content" aria-label="Contenido principal">
@@ -556,6 +580,10 @@ function App() {
           <SitiosWeb />
         ) : isTiendaOnlinePage ? (
           <TiendaOnline />
+        ) : isSistemasAMedidaPage ? (
+          <SistemasAMedida />
+        ) : isMenuDigitalPage ? (
+          <MenuDigital />
         ) : (
           <>
         <div className="hero-services-stage">
@@ -641,8 +669,18 @@ function App() {
                     featureCards={service.featureCards}
                     isActive={activeCard === index}
                     onSelect={() => handleCardSelect(index)}
-                    onButtonClick={index === 0 || index === 1 ? undefined : () => handleCardSelect(index)}
-                    buttonHref={index === 0 ? '/sitios-web' : index === 1 ? '/tienda-online' : '#contacto'}
+                    onButtonClick={index <= 2 ? undefined : () => handleCardSelect(index)}
+                    buttonHref={
+                      index === 0
+                        ? '/sitios-web'
+                        : index === 1
+                          ? '/tienda-online'
+                          : index === 2
+                            ? '/sistemas-a-medida'
+                            : index === 3
+                              ? '/menu-digital'
+                            : '#contacto'
+                    }
                   />
                 ))}
               </div>

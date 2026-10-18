@@ -18,6 +18,7 @@ import IPhoneCard from './components/iphone-card.jsx'
 import Faq from './components/faq.jsx'
 import Nosotros from './pages/nosotros.jsx'
 import SitiosWeb from './pages/sitios-web.jsx'
+import TiendaOnline from './pages/tienda-online.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
@@ -45,6 +46,24 @@ const servicesData = [
     ],
   },
   {
+    id: 'ecommerce',
+    title: 'Tienda Online',
+    description: 'Tu tienda online lista para vender, gestionar productos y ofrecer una experiencia de compra simple y confiable.',
+    image: img3,
+    featureCards: [
+      {
+        title: 'Tienda Online',
+        description: 'Una experiencia de compra clara para que tus clientes encuentren y elijan tus productos fácilmente.',
+        tags: ['Catálogo Dinámico', 'Diseño Responsive'],
+      },
+      {
+        title: 'Gestión de Ventas',
+        description: 'Herramientas para administrar pedidos, productos y pagos desde un mismo lugar.',
+        tags: ['Medios de Pago', 'Control de Stock'],
+      },
+    ],
+  },
+  {
     id: 'software',
     title: 'Sistemas Web y Software a Medida',
     description: 'Herramientas digitales y plataformas diseñadas para ordenar, automatizar y hacer crecer la operación de tu negocio.',
@@ -59,24 +78,6 @@ const servicesData = [
         title: 'Software a Medida',
         description: 'Plataformas escalables que se adaptan a la lógica y los objetivos específicos de tu negocio.',
         tags: ['Integraciones', 'Datos Centralizados'],
-      },
-    ],
-  },
-  {
-    id: 'ecommerce',
-    title: 'E-Commerce',
-    description: 'Tu tienda online lista para vender, gestionar productos y ofrecer una experiencia de compra simple y confiable.',
-    image: img3,
-    featureCards: [
-      {
-        title: 'Tienda Online',
-        description: 'Una experiencia de compra clara para que tus clientes encuentren y elijan tus productos fácilmente.',
-        tags: ['Catálogo Dinámico', 'Diseño Responsive'],
-      },
-      {
-        title: 'Gestión de Ventas',
-        description: 'Herramientas para administrar pedidos, productos y pagos desde un mismo lugar.',
-        tags: ['Medios de Pago', 'Control de Stock'],
       },
     ],
   },
@@ -162,6 +163,7 @@ const processStages = [
 function App() {
   const isNosotrosPage = window.location.pathname.replace(/\/+$/, '') === '/nosotros'
   const isSitiosWebPage = window.location.pathname.replace(/\/+$/, '') === '/sitios-web'
+  const isTiendaOnlinePage = window.location.pathname.replace(/\/+$/, '') === '/tienda-online'
 
   // Servicios Carousel State
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -488,6 +490,10 @@ function App() {
       window.location.assign('/sitios-web')
       return
     }
+    if (index === 1) {
+      window.location.assign('/tienda-online')
+      return
+    }
     setActiveCard(index)
     const track = servicesTrackRef.current
     if (!track) return
@@ -540,7 +546,7 @@ function App() {
 
       <Sidebar
         onNavigateHome={handleNavigateHome}
-        currentPage={isNosotrosPage ? 'nosotros' : isSitiosWebPage ? 'sitios-web' : 'home'}
+        currentPage={isNosotrosPage ? 'nosotros' : isSitiosWebPage ? 'sitios-web' : isTiendaOnlinePage ? 'tienda-online' : 'home'}
       />
 
       <main className="main-content" aria-label="Contenido principal">
@@ -548,6 +554,8 @@ function App() {
           <Nosotros />
         ) : isSitiosWebPage ? (
           <SitiosWeb />
+        ) : isTiendaOnlinePage ? (
+          <TiendaOnline />
         ) : (
           <>
         <div className="hero-services-stage">
@@ -633,8 +641,8 @@ function App() {
                     featureCards={service.featureCards}
                     isActive={activeCard === index}
                     onSelect={() => handleCardSelect(index)}
-                    onButtonClick={index === 0 ? undefined : () => handleCardSelect(index)}
-                    buttonHref={index === 0 ? '/sitios-web' : '#contacto'}
+                    onButtonClick={index === 0 || index === 1 ? undefined : () => handleCardSelect(index)}
+                    buttonHref={index === 0 ? '/sitios-web' : index === 1 ? '/tienda-online' : '#contacto'}
                   />
                 ))}
               </div>

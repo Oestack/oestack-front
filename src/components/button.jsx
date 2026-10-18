@@ -5,6 +5,7 @@ function Button({
   href = '#contacto',
   icon: Icon,
   trailingIcon: TrailingIcon = ArrowRight,
+  showTrailingIcon = true,
   children = 'Contactanos',
   onClick,
   target,
@@ -20,7 +21,7 @@ function Button({
     >
       {Icon && <Icon className="action-button-leading-icon" size={20} strokeWidth={2} aria-hidden="true" />}
       <span>{children}</span>
-      <TrailingIcon className="action-button-icon" size={32} strokeWidth={2} aria-hidden="true" />
+      {showTrailingIcon && <TrailingIcon className="action-button-icon" size={32} strokeWidth={2} aria-hidden="true" />}
     </a>
   )
 }

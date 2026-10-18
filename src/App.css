@@ -1570,7 +1570,15 @@
 }
 
 .sitios-web-subtitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 10px;
   margin-bottom: 36px;
+}
+
+.sitios-web-subtitle span {
+  display: inline;
 }
 
 .website-benefits {
@@ -1794,7 +1802,13 @@
 
 .sitios-web-plan > .action-button .action-button-icon {
   position: absolute;
-  right: 10px;
+  right: 18px;
+}
+
+.sitios-web-plan > .action-button > span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(calc(-50% - 6px));
 }
 
 .projects-container {

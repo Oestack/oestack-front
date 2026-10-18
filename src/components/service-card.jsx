@@ -1,4 +1,4 @@
-import { ArrowUpRight, Check } from 'lucide-react'
+import { Check } from 'lucide-react'
 import Button from './button.jsx'
 
 function ServiceCard({ service }) {
@@ -41,7 +41,7 @@ function ServiceCard({ service }) {
         href={consultHref}
         target="_blank"
         rel="noreferrer"
-        trailingIcon={ArrowUpRight}
+        showTrailingIcon={false}
       >
         Consultar
       </Button>

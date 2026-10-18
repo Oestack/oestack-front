@@ -13,24 +13,30 @@ function WebsiteBenefits({ benefits, images, primaryAction, secondaryAction }) {
             </div>
           </article>
         ))}
-        <div className="website-benefits-actions">
-          <Button
-            variant={primaryAction.variant ?? 'yellow'}
-            href={primaryAction.href}
-            target={primaryAction.target}
-            rel={primaryAction.rel}
-          >
-            {primaryAction.label}
-          </Button>
-          <Button
-            variant={secondaryAction.variant ?? 'dark'}
-            href={secondaryAction.href}
-            target={secondaryAction.target}
-            rel={secondaryAction.rel}
-          >
-            {secondaryAction.label}
-          </Button>
-        </div>
+        {(primaryAction || secondaryAction) && (
+          <div className="website-benefits-actions">
+            {primaryAction && (
+              <Button
+                variant={primaryAction.variant ?? 'yellow'}
+                href={primaryAction.href}
+                target={primaryAction.target}
+                rel={primaryAction.rel}
+              >
+                {primaryAction.label}
+              </Button>
+            )}
+            {secondaryAction && (
+              <Button
+                variant={secondaryAction.variant ?? 'dark'}
+                href={secondaryAction.href}
+                target={secondaryAction.target}
+                rel={secondaryAction.rel}
+              >
+                {secondaryAction.label}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
       <div
         className="website-benefits-image"

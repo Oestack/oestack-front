@@ -1869,13 +1869,24 @@
   justify-content: center;
 }
 
-.menu-digital-plans > .sitios-web-plan {
+.invitaciones-plans {
+  position: relative;
+  left: calc(50% + 16px);
+  width: calc(111.111vw - 267px);
+  transform: translateX(-50%);
+  grid-template-columns: repeat(3, minmax(0, 340px));
+  justify-content: center;
+}
+
+.menu-digital-plans > .sitios-web-plan,
+.invitaciones-plans > .sitios-web-plan {
   gap: 17px;
   padding: 23px;
 }
 
 @media (max-width: 1100px) {
-  .menu-digital-plans {
+  .menu-digital-plans,
+  .invitaciones-plans {
     left: auto;
     width: 100%;
     transform: none;
@@ -3146,6 +3157,10 @@
   }
 
   .nosotros-profile--magali {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .invitaciones-plans {
     grid-template-columns: minmax(0, 1fr);
   }
 

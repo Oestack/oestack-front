@@ -22,6 +22,7 @@ import SitiosWeb from './pages/sitios-web.jsx'
 import TiendaOnline from './pages/tienda-online.jsx'
 import SistemasAMedida from './pages/sistemas-a-medida.jsx'
 import MenuDigital from './pages/menu.jsx'
+import Invitaciones from './pages/invitaciones.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
@@ -111,7 +112,7 @@ const servicesData = [
     title: 'Invitaciones',
     description: 'Invitaciones digitales únicas para celebrar tus momentos importantes con una experiencia hecha a tu medida.',
     image: img1,
-    href: '#contacto',
+    href: '/invitaciones',
     featureCards: [
       {
         title: 'Diseño Personalizado',
@@ -175,6 +176,7 @@ function App() {
   const isTiendaOnlinePage = window.location.pathname.replace(/\/+$/, '') === '/tienda-online'
   const isSistemasAMedidaPage = window.location.pathname.replace(/\/+$/, '') === '/sistemas-a-medida'
   const isMenuDigitalPage = window.location.pathname.replace(/\/+$/, '') === '/menu-digital'
+  const isInvitacionesPage = window.location.pathname.replace(/\/+$/, '') === '/invitaciones'
 
   // Servicios Carousel State
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -513,6 +515,10 @@ function App() {
       window.location.assign('/menu-digital')
       return
     }
+    if (index === 4) {
+      window.location.assign('/invitaciones')
+      return
+    }
     setActiveCard(index)
     const track = servicesTrackRef.current
     if (!track) return
@@ -576,6 +582,8 @@ function App() {
                   ? 'sistemas-a-medida'
                   : isMenuDigitalPage
                     ? 'menu-digital'
+                    : isInvitacionesPage
+                      ? 'invitaciones'
                   : 'home'
         }
       />
@@ -591,6 +599,8 @@ function App() {
           <SistemasAMedida />
         ) : isMenuDigitalPage ? (
           <MenuDigital />
+        ) : isInvitacionesPage ? (
+          <Invitaciones />
         ) : (
           <>
         <div className="hero-services-stage">
@@ -685,6 +695,8 @@ function App() {
                             ? '/sistemas-a-medida'
                             : index === 3
                               ? '/menu-digital'
+                              : index === 4
+                                ? '/invitaciones'
                             : '#contacto'
                     }
                   />

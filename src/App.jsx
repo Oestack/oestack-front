@@ -943,7 +943,7 @@ function App() {
           <span className="page-footer-dot" aria-hidden="true">•</span>
           <span className="page-footer-location">Buenos Aires, Argentina</span>
           <span className="page-footer-dot" aria-hidden="true">•</span>
-          <span className="page-footer-copy">© 2025</span>
+          <span className="page-footer-copy">© 2026</span>
         </div>
         <div className="page-footer-social">
           <a

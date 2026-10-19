@@ -232,7 +232,7 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
           </nav>
           <p className="sidebar-footer-brand">OESTACK</p>
           <p>Buenos Aires, Argentina</p>
-          <p>© 2025</p>
+          <p>© 2026</p>
         </footer>
       </div>
     </aside>

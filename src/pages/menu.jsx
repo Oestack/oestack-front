@@ -4,6 +4,7 @@ import menuImage from '../assets/menu.png'
 import menuImageTwo from '../assets/menu2.png'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
+import Faq from '../components/faq.jsx'
 
 const digitalMenuBenefits = [
   {
@@ -80,6 +81,29 @@ const digitalMenuPlans = [
   },
 ]
 
+const digitalMenuFaqQuestions = [
+  {
+    question: '¿El cliente debe descargar alguna aplicación para ver la carta?',
+    description: 'No. El menú funciona como una Web App ultra rápida. El cliente simplemente escanea el código QR de la mesa con la cámara de su celular y el menú se abre al instante en el navegador, sin necesidad de descargas ni registros previos.',
+  },
+  {
+    question: '¿Es posible configurar el menú digital en varios idiomas (multilenguaje)?',
+    description: 'Sí. Podemos programar la carta digital para que detecte automáticamente el idioma predeterminado del teléfono del cliente (por ejemplo, Inglés o Portugués) o le permita cambiar de idioma mediante un botón visible, facilitando enormemente la atención a turistas y clientes internacionales.',
+  },
+  {
+    question: '¿El menú digital permite recibir pedidos para Delivery o Take Away además de la atención en mesa?',
+    description: 'Sí, totalmente. El sistema se puede configurar para ofrecer tres modalidades según el caso: consumo en el local (seleccionando el número de mesa), retiro por el local (Take Away) o envío a domicilio (Delivery), solicitando en este último caso la dirección y los datos de envío correspondientes.',
+  },
+  {
+    question: '¿Podemos incluir fotos, alérgenos y filtros por tipo de dieta?',
+    description: 'Totalmente. Diseñamos la experiencia de usuario (UX) para destacar imágenes tentadoras de tus productos, incluir etiquetas claras (Apto Celíacos/Sin TACC, Vegano, Vegetariano) e integrar filtros de búsqueda rápida por categorías o ingredientes.',
+  },
+  {
+    question: '¿Qué sucede si hay mala conexión a internet o Wi-Fi en el establecimiento?',
+    description: 'Optimizamos el menú digital con tecnologías PWA (Progressive Web App) y código liviano para que cargue consumiendo un mínimo de datos móviles, incluso con señal débil o intermitente.',
+  },
+]
+
 function MenuDigital() {
   const [billingPeriod, setBillingPeriod] = useState('monthly')
   const isAnnual = billingPeriod === 'annual'
@@ -143,6 +167,7 @@ function MenuDigital() {
       <section className="sitios-web-plans menu-digital-plans" aria-label="Planes de menú digital">
         {plans.map((service) => <ServiceCard key={service.title} service={service} />)}
       </section>
+      <Faq id="preguntas-frecuentes-menu-digital" questions={digitalMenuFaqQuestions} animateOnView />
     </section>
   )
 }

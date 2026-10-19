@@ -3,6 +3,7 @@ import ecommerceImage from '../assets/e-commerce.png'
 import ecommerceImageTwo from '../assets/e-commerce2.png'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
+import Faq from '../components/faq.jsx'
 
 const ecommerceBenefits = [
   {
@@ -61,6 +62,29 @@ const ecommercePlans = [
   },
 ]
 
+const ecommerceFaqQuestions = [
+  {
+    question: '¿Qué medios de pago y pasarelas podemos integrar en la tienda?',
+    description: 'Integramos pasarelas líderes como Mercado Pago, MODO, Stripe o PayPal, permitiendo cobros con tarjeta de crédito, débito, dinero en cuenta o cuotas. También configuramos opciones para transferencias bancarias directas (con descuento automático si lo deseas) o pago contra entrega.',
+  },
+  {
+    question: '¿Cómo se gestionan los envíos e integración con logística?',
+    description: 'Automatizamos el cálculo de envíos vinculando la tienda con servicios de logística como Correo Argentino, Andreani, OCA, Shipnow o servicios de mensajería privada. El cliente ingresa su código postal durante el checkout y el sistema calcula el costo final automáticamente.',
+  },
+  {
+    question: '¿Existe un límite de productos o categorías para cargar en la tienda?',
+    description: 'No hay límites técnicos impuestos por nuestra parte. La base de datos y la arquitectura están preparadas para escalar desde decenas hasta miles de productos con variantes (talles, colores, materiales). Te capacitamos para que agregues, edites o desactives productos fácilmente.',
+  },
+  {
+    question: '¿Cómo me entero cuando ingresa una nueva venta?',
+    description: 'El sistema emite notificaciones automáticas en tiempo real vía correo electrónico tanto para vos como para el comprador. Adicionalmente, podemos integrar avisos directos por WhatsApp Business o conectar la tienda con un panel para el seguimiento de estados de pedidos (Pendiente, En preparación, Enviado).',
+  },
+  {
+    question: '¿Qué medidas de seguridad implementan para proteger las transacciones?',
+    description: 'Aplicamos estándares de ciberseguridad exigidos en la industria IT: certificado de encriptación SSL (HTTPS), sanitización de datos contra inyecciones de código, manejo seguro de tokens con las pasarelas de pago y cumplimiento de normas de resguardo de datos personales.',
+  },
+]
+
 function TiendaOnline() {
   return (
     <section className="projects-section projects-section--visible sitios-web-page" aria-labelledby="tienda-online-title">
@@ -90,11 +114,11 @@ function TiendaOnline() {
           href: '#planes-tienda-online',
           variant: 'yellow',
         }}
-        secondaryAction={{ label: 'Contactanos', href: '/#contacto' }}
       />
       <section className="sitios-web-plans" id="planes-tienda-online" aria-label="Planes de tienda online">
         {ecommercePlans.map((service) => <ServiceCard key={service.title} service={service} />)}
       </section>
+      <Faq id="preguntas-frecuentes-tienda-online" questions={ecommerceFaqQuestions} animateOnView />
     </section>
   )
 }

@@ -131,7 +131,7 @@ const servicesData = [
     title: 'Mantenimiento y Optimización',
     description: 'Mejoras, ajustes y soporte técnico para mantener tu producto actualizado, rápido y funcionando de forma confiable.',
     image: img2,
-    href: '#contacto',
+    href: `https://wa.me/5491164889873?text=${encodeURIComponent('Buenas equipo de Oestack, quisiera consultar por el servicio de mantenimiento y optimización...')}`,
     featureCards: [
       {
         title: 'Mantenimiento',
@@ -697,8 +697,10 @@ function App() {
                               ? '/menu-digital'
                               : index === 4
                                 ? '/invitaciones'
-                            : '#contacto'
+                                : service.href
                     }
+                    target={index === 5 ? '_blank' : undefined}
+                    rel={index === 5 ? 'noreferrer' : undefined}
                   />
                 ))}
               </div>

@@ -24,6 +24,7 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
   })
   const navRef = useRef(null)
   const itemRefs = useRef({})
+  const activeSectionRef = useRef(activeSection)
 
   const updateIndicator = useCallback((sectionId) => {
     const activeEl = itemRefs.current[sectionId]
@@ -66,6 +67,7 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
   }, [])
 
   useEffect(() => {
+    activeSectionRef.current = activeSection
     const id = requestAnimationFrame(() => {
       updateIndicator(activeSection)
     })
@@ -84,40 +86,48 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
 
       // Llegó abajo de todo en la página -> activar Contacto
       if (scrollY + innerHeight >= scrollHeight - 70) {
-        setActiveSection('contacto')
+        if (activeSectionRef.current !== 'contacto') {
+          activeSectionRef.current = 'contacto'
+          setActiveSection('contacto')
+        }
         return
       }
 
       // Arriba de todo -> activar Inicio
       if (scrollY < 80) {
-        setActiveSection('inicio')
+        if (activeSectionRef.current !== 'inicio') {
+          activeSectionRef.current = 'inicio'
+          setActiveSection('inicio')
+        }
         return
       }
 
-      // Medir posición de cada sección respecto a la ventana
+      // Use document coordinates so visual hover transforms cannot change the active item.
       const triggerPoint = innerHeight * 0.35
+      const triggerDocumentPosition = scrollY + triggerPoint
       let currentSection = 'inicio'
 
       for (let i = 0; i < sectionIds.length; i++) {
         const el = document.getElementById(sectionIds[i])
         if (!el) continue
         const rect = el.getBoundingClientRect()
+        const sectionTop = rect.top + scrollY
 
-        if (rect.top <= triggerPoint && rect.bottom > triggerPoint) {
-          currentSection = sectionIds[i]
-          break
-        } else if (rect.top <= triggerPoint) {
+        if (sectionTop <= triggerDocumentPosition) {
           currentSection = sectionIds[i]
         }
       }
 
-      setActiveSection(currentSection)
+      if (activeSectionRef.current !== currentSection) {
+        activeSectionRef.current = currentSection
+        setActiveSection(currentSection)
+      }
     }
 
     const handleResize = () => {
       handleScroll()
       requestAnimationFrame(() => {
-        updateIndicator(activeSection)
+        updateIndicator(activeSectionRef.current)
       })
     }
 
@@ -129,9 +139,10 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
     }
-  }, [activeSection, currentPage, updateIndicator])
+  }, [currentPage, updateIndicator])
 
   const handleItemClick = (id, event) => {
+    activeSectionRef.current = id
     setActiveSection(id)
     updateIndicator(id)
 

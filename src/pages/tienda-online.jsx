@@ -43,7 +43,7 @@ const ecommercePlans = [
     ],
   },
   {
-    title: 'Tienda Online Completa',
+    title: 'Tienda Online Premium',
     description: 'Ideal para negocios que necesitan un catálogo más amplio y herramientas adicionales para facilitar la búsqueda de productos y gestionar sus ventas.',
     price: '$600.000',
     featured: true,

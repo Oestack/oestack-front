@@ -47,7 +47,7 @@ const digitalMenuPlans = [
     ],
   },
   {
-    title: 'Carta completa',
+    title: 'Carta Premium',
     description: 'Una carta más visual y personalizada para destacar tus productos y la identidad de tu negocio.',
     monthlyPrice: '$26.000',
     annualPrice: '$250.000',

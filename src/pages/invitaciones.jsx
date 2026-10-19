@@ -66,7 +66,7 @@ const invitationPlans = [
     description: 'Una experiencia digital desarrollada a medida, con herramientas para gestionar invitados y recibir regalos de dinero.',
     price: '$400.000',
     pricePrefix: null,
-    includesTitle: 'Incluye todo lo del plan completo, más:',
+    includesTitle: 'Incluye todo lo del plan premium, más:',
     includes: [
       'Secciones personalizadas según las necesidades del evento.',
       'Registro automático de confirmaciones en una planilla compatible con Excel, para organizar a los invitados.',

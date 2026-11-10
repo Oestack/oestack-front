@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Home, BriefcaseBusiness, Workflow, FolderKanban, Mail, PersonStanding } from 'lucide-react'
+import { FaInstagram, FaWhatsapp } from 'react-icons/fa'
 import SidebarItems from './sidebar-items.jsx'
+import logoFull from '../assets/logo-light.png'
+import logoIcon from '../assets/pilas-light.png'
 
 const mainNavigationItems = [
   { icon: Home, label: 'Inicio', href: '#inicio', id: 'inicio' },
@@ -22,6 +25,7 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
     opacity: 0,
     isHorizontal: false,
   })
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const navRef = useRef(null)
   const itemRefs = useRef({})
   const activeSectionRef = useRef(activeSection)
@@ -75,7 +79,9 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
   }, [activeSection, updateIndicator])
 
   useEffect(() => {
-    if (currentPage === 'nosotros') return undefined
+    // Las secciones (inicio, servicios, etc.) solo existen en la home:
+    // en las páginas internas no se sigue el scroll para no marcar "Contacto" al llegar al fondo.
+    if (currentPage !== 'home') return undefined
 
     const sectionIds = ['inicio', 'servicios', 'proceso', 'proyectos', 'contacto']
 
@@ -141,10 +147,31 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
     }
   }, [currentPage, updateIndicator])
 
+  // Menú hamburguesa: se cierra con Escape o si la pantalla vuelve a tamaño escritorio
+  useEffect(() => {
+    if (!isMenuOpen) return undefined
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsMenuOpen(false)
+    }
+    const handleResize = () => {
+      if (window.innerWidth > 1024) setIsMenuOpen(false)
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('resize', handleResize)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [isMenuOpen])
+
   const handleItemClick = (id, event) => {
     activeSectionRef.current = id
     setActiveSection(id)
     updateIndicator(id)
+
+    setIsMenuOpen(false)
 
     if (id === 'inicio' && currentPage === 'home') {
       event.preventDefault()
@@ -164,22 +191,14 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
             className="sidebar-logo"
             href={currentPage !== 'home' ? '/#inicio' : '#inicio'}
             onClick={(event) => handleItemClick('inicio', event)}
+            aria-label="OESTACK - Ir al inicio"
           >
-            OESTACK
+            {/* Escritorio: logo completo. Responsive: solo las pilas */}
+            <img className="sidebar-logo-img sidebar-logo-img--full" src={logoFull} alt="" width="480" height="340" />
+            <img className="sidebar-logo-img sidebar-logo-img--icon" src={logoIcon} alt="" width="128" height="130" />
           </a>
         </div>
 
-        <a
-          className="sidebar-github"
-          href="https://github.com/"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="OESTACK en GitHub"
-        >
-          <svg className="github-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#ffff" d="M12 .297a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.577v-2.234c-3.338.726-4.043-1.416-4.043-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.303-5.467-1.333-5.467-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.48 11.48 0 0 1 6.004 0c2.29-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.12 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.807 5.624-5.48 5.921.43.37.814 1.103.814 2.222v3.293c0 .32.216.694.825.576A12.002 12.002 0 0 0 12 .297Z" />
-          </svg>
-        </a>
 
         <nav className="sidebar-navigation" ref={navRef}>
           {/* Rail guía vertical / horizontal */}
@@ -230,11 +249,90 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
               active={currentPage === 'nosotros'}
             />
           </nav>
-          <p className="sidebar-footer-brand">OESTACK</p>
+          <div className="sidebar-footer-social">
+            <a
+              className="sidebar-footer-social-link"
+              href="https://www.instagram.com/oestack.solutions/?hl=es"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram de OESTACK"
+            >
+              <FaInstagram size={18} aria-hidden="true" />
+            </a>
+            <a
+              className="sidebar-footer-social-link"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=oestack.solutions@gmail.com"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Enviar un mail a oestack.solutions@gmail.com"
+            >
+              <Mail size={18} strokeWidth={1.8} aria-hidden="true" />
+            </a>
+            <a
+              className="sidebar-footer-social-link"
+              href="https://wa.me/5491178149507"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="WhatsApp +54 9 11 7814-9507"
+            >
+              <FaWhatsapp size={18} aria-hidden="true" />
+            </a>
+          </div>
           <p>Buenos Aires, Argentina</p>
           <p>© 2026</p>
         </footer>
       </div>
+
+      {/* ===== Menú hamburguesa (solo responsive) ===== */}
+      <button
+        type="button"
+        className={`mobile-menu-toggle${isMenuOpen ? ' is-open' : ''}`}
+        aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+        aria-expanded={isMenuOpen}
+        aria-controls="mobile-menu-panel"
+        onClick={() => setIsMenuOpen((open) => !open)}
+      >
+        <span className="mobile-menu-toggle-line" />
+        <span className="mobile-menu-toggle-line" />
+        <span className="mobile-menu-toggle-line" />
+      </button>
+
+      <div
+        className={`mobile-menu-backdrop${isMenuOpen ? ' is-open' : ''}`}
+        aria-hidden="true"
+        onClick={() => setIsMenuOpen(false)}
+      />
+
+      <nav
+        id="mobile-menu-panel"
+        className={`mobile-menu-panel${isMenuOpen ? ' is-open' : ''}`}
+        aria-label="Menú"
+        inert={!isMenuOpen}
+      >
+        <ul className="mobile-menu-list">
+          {[...navigationItems, { icon: PersonStanding, label: 'Nosotros', href: '/nosotros', id: 'nosotros' }].map((item, index) => {
+            const isActive = item.id === 'nosotros' ? currentPage === 'nosotros' : activeSection === item.id
+            const ItemIcon = item.icon
+            return (
+              <li key={item.id} className="mobile-menu-item" style={{ '--item-index': index }}>
+                <a
+                  className={`mobile-menu-link${isActive ? ' is-active' : ''}`}
+                  href={item.href}
+                  aria-current={isActive ? 'page' : undefined}
+                  onClick={(event) => (item.id === 'nosotros' ? setIsMenuOpen(false) : handleItemClick(item.id, event))}
+                >
+                  <ItemIcon className="mobile-menu-link-icon" size={18} strokeWidth={1.7} aria-hidden="true" />
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+
+        <div className="mobile-menu-footer" style={{ '--item-index': navigationItems.length + 1 }}>
+          <p>Buenos Aires, Argentina</p>
+        </div>
+      </nav>
     </aside>
   )
 }

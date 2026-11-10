@@ -4,12 +4,12 @@ import {
   CircleArrowRight,
   ChevronDown,
   FileText,
-  MessageCircle,
   Mail,
   PanelsTopLeft,
   Code2,
   MonitorCheck,
 } from 'lucide-react'
+import { FaInstagram } from 'react-icons/fa'
 import Sidebar from './components/sidebar.jsx'
 import Button from './components/button.jsx'
 import ProjectCard from './components/project-card.jsx'
@@ -17,6 +17,7 @@ import ProcessCard from './components/process-card.jsx'
 import IPhoneCard from './components/iphone-card.jsx'
 import MobileServiceList from './components/mobile-service-list.jsx'
 import Faq from './components/faq.jsx'
+import BackButton from './components/back-button.jsx'
 import Nosotros from './pages/nosotros.jsx'
 import SitiosWeb from './pages/sitios-web.jsx'
 import TiendaOnline from './pages/tienda-online.jsx'
@@ -29,6 +30,7 @@ import img3 from './assets/img3.png'
 import logoOllaVegana from './assets/logo_olla_vegana.png'
 import whatsappIcon from './assets/whatsapp.png'
 import heroImg from './assets/hero.png'
+import footerLogo from './assets/logo-light.png'
 import './App.css'
 
 const servicesData = [
@@ -165,7 +167,7 @@ const processStages = [
     Icon: Code2,
   },
   {
-    title: 'Implementación',
+    title: 'Lanzamiento',
     description: 'Publicamos la solución, verificamos su funcionamiento y te acompañamos con soporte y mejoras.',
     Icon: MonitorCheck,
   },
@@ -178,6 +180,8 @@ function App() {
   const isSistemasAMedidaPage = window.location.pathname.replace(/\/+$/, '') === '/sistemas-a-medida'
   const isMenuDigitalPage = window.location.pathname.replace(/\/+$/, '') === '/menu-digital'
   const isInvitacionesPage = window.location.pathname.replace(/\/+$/, '') === '/invitaciones'
+  const isHomePage = !isNosotrosPage && !isSitiosWebPage && !isTiendaOnlinePage
+    && !isSistemasAMedidaPage && !isMenuDigitalPage && !isInvitacionesPage
 
   // Servicios Carousel State
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -216,6 +220,48 @@ function App() {
     }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  // Home: llevar a la sección del link (/#proyectos) o restaurar el scroll al volver atrás.
+  // El navegador no puede hacerlo solo porque las secciones las dibuja React después de cargar.
+  useEffect(() => {
+    if (!isHomePage) return undefined
+
+    const HOME_SCROLL_KEY = 'oestack-home-scroll'
+    const navigationType = performance.getEntriesByType('navigation')[0]?.type
+    let savedScroll = null
+    try {
+      savedScroll = sessionStorage.getItem(HOME_SCROLL_KEY)
+    } catch { /* storage no disponible */ }
+
+    const scrollToTarget = () => {
+      if (navigationType === 'back_forward' && savedScroll !== null) {
+        window.scrollTo({ top: Number(savedScroll), behavior: 'instant' })
+        return
+      }
+      const sectionId = decodeURIComponent(window.location.hash.slice(1))
+      const section = sectionId && document.getElementById(sectionId)
+      if (section) section.scrollIntoView({ behavior: 'instant', block: 'start' })
+    }
+
+    // Se repite cuando terminan de cargar las imágenes, porque cambian la altura de la página
+    const frame = requestAnimationFrame(scrollToTarget)
+    if (document.readyState !== 'complete') {
+      window.addEventListener('load', scrollToTarget, { once: true })
+    }
+
+    const saveScroll = () => {
+      try {
+        sessionStorage.setItem(HOME_SCROLL_KEY, String(window.scrollY))
+      } catch { /* storage no disponible */ }
+    }
+    window.addEventListener('pagehide', saveScroll)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('load', scrollToTarget)
+      window.removeEventListener('pagehide', saveScroll)
+    }
+  }, [isHomePage])
 
   useEffect(() => {
     const handlePointerDown = (event) => {
@@ -590,6 +636,7 @@ function App() {
       />
 
       <main className="main-content" aria-label="Contenido principal">
+        {!isHomePage && <BackButton />}
         {isNosotrosPage ? (
           <Nosotros />
         ) : isSitiosWebPage ? (
@@ -947,7 +994,9 @@ function App() {
 
       <footer ref={pageFooterRef} className="page-footer" role="contentinfo" aria-label="Pie de página">
         <div className="page-footer-content">
-          <a href="#inicio" className="page-footer-brand">OESTACK</a>
+          <a href={isHomePage ? '#inicio' : '/#inicio'} className="page-footer-brand" aria-label="OESTACK - Ir al inicio">
+            <img className="page-footer-logo" src={footerLogo} alt="" width="480" height="340" />
+          </a>
           <span className="page-footer-dot" aria-hidden="true">•</span>
           <span className="page-footer-location">Buenos Aires, Argentina</span>
           <span className="page-footer-dot" aria-hidden="true">•</span>
@@ -966,13 +1015,13 @@ function App() {
             </svg>
           </a>
           <a
-            href={`https://wa.me/5491178149507?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
+            href="https://www.instagram.com/oestack.solutions/?hl=es"
             target="_blank"
             rel="noreferrer"
-            aria-label="WhatsApp"
+            aria-label="Instagram"
             className="page-footer-icon"
           >
-            <MessageCircle size={16} aria-hidden="true" />
+            <FaInstagram size={16} aria-hidden="true" />
           </a>
           <a
             href="https://mail.google.com/mail/?view=cm&fs=1&to=oestack.solutions@gmail.com"
@@ -993,7 +1042,7 @@ function App() {
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
-        style={isWhatsappStopped ? { bottom: `${whatsappFooterHeight + 24}px` } : undefined}
+        style={isWhatsappStopped ? { '--whatsapp-footer-height': `${whatsappFooterHeight}px` } : undefined}
       >
         <span className="whatsapp-contact-button" aria-hidden="true">
           <img src={whatsappIcon} alt="" />

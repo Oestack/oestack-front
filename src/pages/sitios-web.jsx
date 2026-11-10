@@ -3,6 +3,7 @@ import landingImage from '../assets/landing.png'
 import landingImageTwo from '../assets/landing2.png'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
+import Faq from '../components/faq.jsx'
 
 const websiteBenefits = [
   {
@@ -60,6 +61,25 @@ const websitePlans = [
   },
 ]
 
+const websiteFaqQuestions = [
+  {
+    question: '¿Cuál es la diferencia entre una Landing Page y un Sitio Web Institucional?',
+    description: 'Una Landing Page es una página única diseñada específicamente para una campaña o conversiones directas (captación de contactos o ventas de un servicio puntual). Un sitio web institucional abarca múltiples secciones (Inicio, Nosotros, Servicios, Contacto, Blog) para transmitir la identidad completa de tu marca, su historia y toda su oferta de valor.',
+  },
+  {
+    question: '¿Cuánto tiempo toma el desarrollo y lanzamiento de la web?',
+    description: 'Típicamente, una Landing Page puede estar desplegada (deploy) en 1 a 2 semanas, mientras que una web institucional completa requiere entre 3 y 5 semanas. Trabajamos con sprints semanales o quincenales, por lo que tendrás avances funcionales desde las primeras etapas.',
+  },
+  {
+    question: '¿El sitio web será adaptable a celulares (responsive) y optimizado para Google?',
+    description: 'Sí, absolutamente. Todos nuestros desarrollos siguen buenas prácticas de diseño UX/UI Mobile-First, garantizando una navegación impecable en celulares, tablets y computadoras. Además, estructuramos el código con optimización SEO técnica base (velocidad de carga, metadatos y marcado semántico) para favorecer el posicionamiento orgánico.',
+  },
+  {
+    question: '¿Qué información o recursos necesito entregarles para iniciar?',
+    description: 'Necesitamos tu logotipo (en alta resolución o vectorial), la paleta de colores/manual de marca (si lo tenés), los textos e imágenes que quieras incluir y las credenciales de tu dominio/hosting si ya los adquiriste. Si no contás con alguno de estos elementos, te asesoramos para crearlos o contratarlos.',
+  },
+]
+
 function SitiosWeb() {
   return (
     <section className="projects-section projects-section--visible sitios-web-page" aria-labelledby="sitios-web-title">
@@ -85,11 +105,11 @@ function SitiosWeb() {
           },
         ]}
         primaryAction={{ label: 'Ver precios', href: '#planes-sitios-web', variant: 'yellow' }}
-        secondaryAction={{ label: 'Contactanos', href: '/#contacto' }}
       />
       <section className="sitios-web-plans" id="planes-sitios-web" aria-label="Planes de sitios web">
         {websitePlans.map((service) => <ServiceCard key={service.title} service={service} />)}
       </section>
+      <Faq id="preguntas-frecuentes-sitios-web" questions={websiteFaqQuestions} animateOnView />
     </section>
   )
 }

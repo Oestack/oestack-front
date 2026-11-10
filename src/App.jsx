@@ -132,7 +132,7 @@ const servicesData = [
     title: 'Mantenimiento y Optimización',
     description: 'Mejoras, ajustes y soporte técnico para mantener tu producto actualizado, rápido y funcionando de forma confiable.',
     image: img2,
-    href: '#contacto',
+    href: `https://wa.me/5491178149507?text=${encodeURIComponent('Buenas equipo de Oestack, quisiera consultar por el servicio de mantenimiento y optimización...')}`,
     featureCards: [
       {
         title: 'Mantenimiento',
@@ -698,8 +698,10 @@ function App() {
                               ? '/menu-digital'
                               : index === 4
                                 ? '/invitaciones'
-                            : '#contacto'
+                                : service.href
                     }
+                    target={index === 5 ? '_blank' : undefined}
+                    rel={index === 5 ? 'noreferrer' : undefined}
                   />
                 ))}
               </div>
@@ -949,7 +951,7 @@ function App() {
           <span className="page-footer-dot" aria-hidden="true">•</span>
           <span className="page-footer-location">Buenos Aires, Argentina</span>
           <span className="page-footer-dot" aria-hidden="true">•</span>
-          <span className="page-footer-copy">© 2025</span>
+          <span className="page-footer-copy">© 2026</span>
         </div>
         <div className="page-footer-social">
           <a
@@ -964,7 +966,7 @@ function App() {
             </svg>
           </a>
           <a
-            href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
+            href={`https://wa.me/5491178149507?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
             target="_blank"
             rel="noreferrer"
             aria-label="WhatsApp"
@@ -987,7 +989,7 @@ function App() {
       <a
         ref={whatsappContactRef}
         className={`whatsapp-contact-float${isWhatsappStopped ? ' whatsapp-contact-float--above-footer' : ''}`}
-        href={`https://wa.me/5491164889873?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
+        href={`https://wa.me/5491178149507?text=${encodeURIComponent('Hola quiero consultar por los diferentes paquetes de servicios')}`}
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"

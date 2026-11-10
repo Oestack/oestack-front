@@ -6,6 +6,8 @@ function IPhoneCard({
   logo = null,
   buttonText = 'Conocer más',
   buttonHref = '#contacto',
+  target,
+  rel,
   onButtonClick,
   onSelect,
   isActive = false,
@@ -63,6 +65,8 @@ function IPhoneCard({
         <Button
           variant="yellow"
           href={buttonHref}
+          target={target}
+          rel={rel}
           onClick={handleButtonClick}
         >
           {buttonText}

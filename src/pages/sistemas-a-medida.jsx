@@ -1,9 +1,9 @@
 import { Code2, Database, PanelsTopLeft, TrendingUp } from 'lucide-react'
 import sistemaImage from '../assets/sistema.png'
 import sistemaImageTwo from '../assets/sistema2.png'
-import Button from '../components/button.jsx'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
+import Faq from '../components/faq.jsx'
 
 const customSoftwareBenefits = [
   {
@@ -47,9 +47,30 @@ const customSoftwarePlan = {
   ],
 }
 
-function SistemasAMedida() {
-  const consultationHref = `https://wa.me/5491164889873?text=${encodeURIComponent('Hola, quiero consultar por un desarrollo personalizado')}`
+const customSoftwareFaqQuestions = [
+  {
+    question: '¿Por qué elegir un desarrollo a medida en lugar de un software comercial enlatado?',
+    description: 'Un software enlatado te obliga a adaptar tus procesos de negocio a sus limitaciones o pagar licencias costosas por funciones que no usás. Un desarrollo a medida se programa exactamente según la operativa, flujos y requerimientos de tu empresa, garantizando propiedad intelectual sobre el sistema, flexibilidad total y alta escalabilidad.',
+  },
+  {
+    question: '¿Cómo garantizan que el sistema final cumpla con nuestras expectativas?',
+    description: 'Implementamos metodologías ágiles (Scrum). Antes de escribir código, realizamos un relevamiento profundo y creamos wireframes y prototipos navegables en UX/UI. Luego, desarrollamos en sprints iterativos donde probás módulos funcionales cada 2 semanas y ajustamos sobre la marcha.',
+  },
+  {
+    question: '¿El software puede integrarse con los sistemas que ya utilizamos hoy?',
+    description: 'Sí, desarrollamos e integramos APIs (Application Programming Interfaces) robustas y seguras para conectar tu nuevo software con sistemas existentes como ERPs (SAP, Tango, Zoho), CRMs, facturación electrónica (AFIP / entes fiscales), gateways de pago o bases de datos previas.',
+  },
+  {
+    question: '¿A quién pertenece el código fuente y la propiedad intelectual?',
+    description: 'La propiedad intelectual y el 100% del código fuente son de tu empresa una vez finalizado y abonado el proyecto. Entregamos el repositorio documentado para que no tengas ninguna dependencia forzosa de terceros (vendor lock-in).',
+  },
+  {
+    question: '¿Qué tipo de soporte y mantenimiento brindan post-lanzamiento?',
+    description: 'Ofrecemos un período de garantía post-deploy para corrección de desvíos, seguido de planes de mantenimiento correctivo, preventivo y evolutivo (SLA) para asegurar actualizaciones de seguridad, respaldos de servidor y nuevas funcionalidades a medida que tu negocio crezca.',
+  },
+]
 
+function SistemasAMedida() {
   return (
     <section className="projects-section projects-section--visible sitios-web-page" aria-labelledby="sistemas-title">
       <h1 className="sitios-web-title" id="sistemas-title">
@@ -77,21 +98,7 @@ function SistemasAMedida() {
       <section className="sitios-web-plans sistemas-plan" aria-label="Desarrollo personalizado">
         <ServiceCard service={customSoftwarePlan} />
       </section>
-      <aside className="sistemas-consultation">
-        <div>
-          <h2>Tu idea merece una solución propia.</h2>
-          <p>Contanos qué necesitás resolver y diseñemos una herramienta que se adapte a tu forma de trabajar.</p>
-        </div>
-        <Button
-          variant="yellow"
-          href={consultationHref}
-          target="_blank"
-          rel="noreferrer"
-          showTrailingIcon={false}
-        >
-          Contactanos
-        </Button>
-      </aside>
+      <Faq id="preguntas-frecuentes-sistemas" questions={customSoftwareFaqQuestions} animateOnView />
     </section>
   )
 }

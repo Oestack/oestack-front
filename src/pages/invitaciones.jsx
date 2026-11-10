@@ -3,6 +3,7 @@ import invitacionImage from '../assets/invitacion.png'
 import invitacionImageTwo from '../assets/invitacion2.png'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
+import Faq from '../components/faq.jsx'
 
 const invitationBenefits = [
   {
@@ -65,7 +66,7 @@ const invitationPlans = [
     description: 'Una experiencia digital desarrollada a medida, con herramientas para gestionar invitados y recibir regalos de dinero.',
     price: '$400.000',
     pricePrefix: null,
-    includesTitle: 'Incluye todo lo del plan completo, más:',
+    includesTitle: 'Incluye todo lo del plan premium, más:',
     includes: [
       'Secciones personalizadas según las necesidades del evento.',
       'Registro automático de confirmaciones en una planilla compatible con Excel, para organizar a los invitados.',
@@ -73,6 +74,29 @@ const invitationPlans = [
       'Funcionalidades interactivas adicionales definidas para el proyecto.',
       'Dominio incluido.',
     ],
+  },
+]
+
+const invitationFaqQuestions = [
+  {
+    question: '¿Qué funciones interactivas se pueden incorporar en una invitación digital?',
+    description: 'Podés incluir confirmación de asistencia (RSVP) automática vinculada a WhatsApp o un archivo Excel, contador regresivo en vivo, integración con Google Maps o Waze para llegar al evento, enlace a mesa de regalos o alias bancario, código de vestimenta (dress code), canción de fondo e itinerario del evento.',
+  },
+  {
+    question: '¿Cómo se envían las invitaciones a los invitados?',
+    description: 'Te entregamos un enlace web único personalizado y un código QR estético. Podés compartir el enlace directamente por WhatsApp, mail, Instagram o cualquier red social de forma ilimitada a todos tus invitados.',
+  },
+  {
+    question: '¿Los invitados tienen que pagar o instalar algo para abrir la invitación?',
+    description: 'No, para nada. La invitación abre instantáneamente en cualquier teléfono inteligente, tablet o computadora con solo tocar el link, ofreciendo una experiencia limpia, fluida y sin anuncios molestos.',
+  },
+  {
+    question: '¿Se puede incluir un pase personalizado o código individual por invitado o familia?',
+    description: 'Sí. Si necesitás un control estricto de accesos, podemos programar invitaciones con pases personalizados por persona o grupo familiar (ej: "Familia Pérez - 4 pases"), permitiéndoles confirmar la asistencia exacta de cada integrante.',
+  },
+  {
+    question: '¿Con cuánta anticipación conviene encargar la invitación digital?',
+    description: 'Recomendamos encargarla entre 2 y 3 semanas antes de la fecha en que planeás distribuirla. Esto nos da margen para diseñar los bocetos en base a la temática de tu evento, cargar la información y ajustar cada detalle a tu gusto.',
   },
 ]
 
@@ -104,6 +128,7 @@ function Invitaciones() {
       <section className="sitios-web-plans invitaciones-plans" aria-label="Planes de invitaciones digitales">
         {invitationPlans.map((service) => <ServiceCard key={service.title} service={service} />)}
       </section>
+      <Faq id="preguntas-frecuentes-invitaciones" questions={invitationFaqQuestions} animateOnView />
     </section>
   )
 }

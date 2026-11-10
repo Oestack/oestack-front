@@ -1,6 +1,6 @@
 import magaliPhoto from '../assets/magFoto.jpeg'
 import matiasPhoto from '../assets/mat.jpg'
-import { BriefcaseBusiness, ChevronDown } from 'lucide-react'
+import { BriefcaseBusiness } from 'lucide-react'
 import { FaLinkedin } from 'react-icons/fa'
 import Button from '../components/button.jsx'
 import Faq from '../components/faq.jsx'

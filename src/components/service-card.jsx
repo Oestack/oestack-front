@@ -15,7 +15,7 @@ function ServiceCard({ service }) {
     includesTitle = '¿Qué incluye?',
   } = service
   const consultMessage = `Hola, quiero consultar por el plan ${title}`
-  const consultHref = `https://wa.me/5491164889873?text=${encodeURIComponent(consultMessage)}`
+  const consultHref = `https://wa.me/5491178149507?text=${encodeURIComponent(consultMessage)}`
 
   return (
     <article className={`sitios-web-plan${featured ? ' sitios-web-plan--featured' : ''}`}>

@@ -1,21 +1,59 @@
 import { ArrowRight } from 'lucide-react'
 
 function MobileServiceList({ services }) {
-  const serviceRows = services.flatMap((service) => (
-    service.featureCards?.length
-      ? service.featureCards.map((feature) => ({
-        id: `${service.id}-${feature.title}`,
-        title: feature.title,
-        description: feature.description,
-        href: service.href,
-      }))
-      : [{
-        id: service.id,
-        title: service.title,
+  const serviceRows = services.flatMap((service) => {
+    if (service.id === 'landing') {
+      return [{
+        id: 'sitios-web',
+        title: 'Sitios Web',
         description: service.description,
-        href: service.href,
+        href: '/sitios-web',
       }]
-  ))
+    }
+
+    if (service.id === 'ecommerce') {
+      return [{
+        id: 'tienda-online',
+        title: 'Tienda Online',
+        description: service.description,
+        href: '/tienda-online',
+      }]
+    }
+
+    if (service.id === 'software') {
+      return [{
+        id: 'software-a-medida',
+        title: 'Software a Medida',
+        description: service.description,
+        href: '/sistemas-a-medida',
+      }]
+    }
+
+    if (service.id === 'menu-qr') {
+      return [{
+        id: 'menu-digital',
+        title: 'Menú Digital',
+        description: service.description,
+        href: '/menu-digital',
+      }]
+    }
+
+    if (service.id === 'invitaciones') {
+      return [{
+        id: 'invitaciones-digitales',
+        title: 'Invitaciones Digitales',
+        description: service.description,
+        href: '/invitaciones',
+      }]
+    }
+
+    return [{
+      id: service.id,
+      title: service.title,
+      description: service.description,
+      href: service.href,
+    }]
+  })
 
   return (
     <div className="mobile-service-list" aria-label="Listado de servicios">

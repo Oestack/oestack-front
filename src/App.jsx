@@ -26,6 +26,7 @@ import Invitaciones from './pages/invitaciones.jsx'
 import img1 from './assets/img1.png'
 import img2 from './assets/img2.png'
 import img3 from './assets/img3.png'
+import logoOllaVegana from './assets/logo_olla_vegana.png'
 import whatsappIcon from './assets/whatsapp.png'
 import heroImg from './assets/hero.png'
 import './App.css'
@@ -786,6 +787,7 @@ function App() {
             <ProjectCard
               number="01"
               title="Sistema de gestión clínica"
+              subtitle="Aplicación web"
               description={'Demo clínica con dashboard para gestionar turnos y pacientes.\nUsuario Centro médico: 22222222222 | Contraseña: 123\nUsuario Médico: 11111111111 | Contraseña: 123'}
               image={img1}
               imageAlt="Logo del sistema de gestión clínica"
@@ -795,15 +797,21 @@ function App() {
             />
             <ProjectCard
               number="02"
-              title="Lorem Ipsum"
-              description="Lorem ipsum dolor sit amet consectetur adipiscing elit congue, primis integer aptent dapibus vel platea ornare, mauris nisl ullamcorper blandit fermentum praesent magnis. Tincidunt sollicitudin erat penatibus montes hac convallis justo, vehicula blandit luctus quisque maecenas habitant. Nisi vitae neque."
-              image={img2}
-              imageAlt="Proyecto 02"
+              title="Olla Vegana"
+              subtitle="Web institucional + Tienda online"
+              description="Diseñamos y desarrollamos una plataforma que integra la historia, las campañas solidarias y la tienda online de Olla Vegana en una experiencia moderna, accesible y autogestionable."
+              image={logoOllaVegana}
+              imageAlt="Logo de Olla Vegana"
+              imageContain
+              imageTone="vegan"
+              demoHref="https://ollavegana.org"
+              demoLabel="Ver sitio web"
               reverse
             />
             <ProjectCard
               number="03"
               title="Bohemia Velas"
+              subtitle="Tienda online"
               description={'E-commerce de velas artesanales y cuidado personal, con carrito y panel de administración.\nUsuario administrador: admin@velas.com | Contraseña: 123456'}
               image={img3}
               imageAlt="Logo de Bohemia Velas"

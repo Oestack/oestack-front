@@ -2018,6 +2018,31 @@
   background: radial-gradient(ellipse at center, #55513e 0%, #302e24 55%, #191815 100%);
 }
 
+/* Olla Vegana: base ciruela oscura con brillos del lila de las flores y el rojo de la bufanda */
+.project-card-image-box--vegan {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 28% 72%, rgba(240, 58, 18, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 72% 28%, rgba(194, 123, 239, 0.22) 0%, transparent 52%),
+    radial-gradient(ellipse at center, #3d2536 0%, #271822 55%, #191815 100%);
+}
+
+/* El PNG tiene mucho margen transparente: se agranda para que el dibujo tenga presencia */
+.project-card-image-box--vegan {
+  position: relative;
+}
+
+.project-card-image-box--vegan .project-card-image--contain {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: 150%;
+  max-width: none;
+  translate: -50% -50%;
+}
+
 .project-card:hover .project-card-image-box,
 .project-card--hovered .project-card-image-box {
   transform: translateY(-3px);
@@ -2107,6 +2132,12 @@
   text-wrap: pretty;
   white-space: pre-line;
   transition: color 0.35s ease;
+}
+
+.project-card-subtitle {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .project-card-demo-action {

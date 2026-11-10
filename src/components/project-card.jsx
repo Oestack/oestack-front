@@ -12,6 +12,8 @@ function ProjectCard({
   imageCompact = false,
   imageTone = 'teal',
   demoHref,
+  demoLabel = 'Ver demo',
+  subtitle,
   reverse = false,
 }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -59,11 +61,14 @@ function ProjectCard({
         aria-hidden={!isHovered && !isMobileExpanded}
       >
         <h3 className="project-card-title">{title}</h3>
-        <p className="project-card-description">{description}</p>
+        <p className="project-card-description">
+          {subtitle && <strong className="project-card-subtitle">{subtitle}</strong>}
+          {description}
+        </p>
         {demoHref && (
           <div className="project-card-demo-action">
             <Button variant="yellow" href={demoHref}>
-              Ver demo
+              {demoLabel}
             </Button>
           </div>
         )}

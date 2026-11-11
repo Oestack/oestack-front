@@ -1,6 +1,6 @@
 import { Gauge, MessageCircle, Search, Smartphone } from 'lucide-react'
-import landingImage from '../assets/landing.png'
-import landingImageTwo from '../assets/landing2.png'
+import landingImage from '../assets/landing.webp'
+import landingImageTwo from '../assets/landing2.webp'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
 import Faq from '../components/faq.jsx'

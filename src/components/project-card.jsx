@@ -44,6 +44,8 @@ function ProjectCard({
             alt={imageAlt || title}
             className={`project-card-image${imageContain ? ' project-card-image--contain' : ''}${imageCompact ? ' project-card-image--compact' : ''}`}
             draggable="false"
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <button

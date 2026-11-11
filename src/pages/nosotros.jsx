@@ -1,5 +1,5 @@
-import magaliPhoto from '../assets/magFoto.jpeg'
-import matiasPhoto from '../assets/mat.jpg'
+import magaliPhoto from '../assets/magFoto.webp'
+import matiasPhoto from '../assets/mat.webp'
 import { BriefcaseBusiness } from 'lucide-react'
 import { FaLinkedin } from 'react-icons/fa'
 import Button from '../components/button.jsx'

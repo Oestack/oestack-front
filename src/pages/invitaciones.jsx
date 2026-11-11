@@ -1,6 +1,6 @@
 import { CalendarDays, ClipboardCheck, Palette, Sparkles } from 'lucide-react'
-import invitacionImage from '../assets/invitacion.png'
-import invitacionImageTwo from '../assets/invitacion2.png'
+import invitacionImage from '../assets/invitacion.webp'
+import invitacionImageTwo from '../assets/invitacion2.webp'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
 import Faq from '../components/faq.jsx'

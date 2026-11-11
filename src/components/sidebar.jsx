@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Home, BriefcaseBusiness, Workflow, FolderKanban, Mail, PersonStanding } from 'lucide-react'
 import { FaInstagram, FaWhatsapp } from 'react-icons/fa'
 import SidebarItems from './sidebar-items.jsx'
-import logoFull from '../assets/logo-light.png'
+import logoFull from '../assets/logo-negativo.webp'
 import logoIcon from '../assets/pilas-light.png'
 
 const mainNavigationItems = [
@@ -194,7 +194,7 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
             aria-label="OESTACK - Ir al inicio"
           >
             {/* Escritorio: logo completo. Responsive: solo las pilas */}
-            <img className="sidebar-logo-img sidebar-logo-img--full" src={logoFull} alt="" width="480" height="340" />
+            <img className="sidebar-logo-img sidebar-logo-img--full" src={logoFull} alt="" width="480" height="292" />
             <img className="sidebar-logo-img sidebar-logo-img--icon" src={logoIcon} alt="" width="128" height="130" />
           </a>
         </div>
@@ -252,7 +252,7 @@ function Sidebar({ onNavigateHome, currentPage = 'home' }) {
           <div className="sidebar-footer-social">
             <a
               className="sidebar-footer-social-link"
-              href="https://www.instagram.com/oestack.solutions/?hl=es"
+              href="https://www.instagram.com/oestack_/"
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram de OESTACK"

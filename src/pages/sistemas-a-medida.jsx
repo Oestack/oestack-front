@@ -1,6 +1,6 @@
 import { Code2, Database, PanelsTopLeft, TrendingUp } from 'lucide-react'
-import sistemaImage from '../assets/sistema.png'
-import sistemaImageTwo from '../assets/sistema2.png'
+import sistemaImage from '../assets/sistema.webp'
+import sistemaImageTwo from '../assets/sistema2.webp'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
 import Faq from '../components/faq.jsx'

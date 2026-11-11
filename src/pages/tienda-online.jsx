@@ -1,6 +1,6 @@
 import { CreditCard, ListChecks, Package, ShoppingCart } from 'lucide-react'
-import ecommerceImage from '../assets/e-commerce.png'
-import ecommerceImageTwo from '../assets/e-commerce2.png'
+import ecommerceImage from '../assets/e-commerce.webp'
+import ecommerceImageTwo from '../assets/e-commerce2.webp'
 import ServiceCard from '../components/service-card.jsx'
 import WebsiteBenefits from '../components/website-benefits.jsx'
 import Faq from '../components/faq.jsx'

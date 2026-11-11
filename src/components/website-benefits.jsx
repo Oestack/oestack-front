@@ -44,7 +44,7 @@ function WebsiteBenefits({ benefits, images, primaryAction, secondaryAction }) {
       >
         {images.map(({ src, alt, objectPosition = 'center' }, index) => (
           <div className="website-benefits-image-slot" key={`${src}-${index}`}>
-            <img src={src} alt={alt} style={{ objectPosition }} />
+            <img src={src} alt={alt} style={{ objectPosition }} loading="lazy" decoding="async" />
           </div>
         ))}
       </div>

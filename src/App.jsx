@@ -24,13 +24,13 @@ import TiendaOnline from './pages/tienda-online.jsx'
 import SistemasAMedida from './pages/sistemas-a-medida.jsx'
 import MenuDigital from './pages/menu.jsx'
 import Invitaciones from './pages/invitaciones.jsx'
-import img1 from './assets/img1.png'
+import img1 from './assets/img1.webp'
 import img2 from './assets/img2.png'
-import img3 from './assets/img3.png'
-import logoOllaVegana from './assets/logo_olla_vegana.png'
+import img3 from './assets/img3.webp'
+import logoOllaVegana from './assets/logo_olla_vegana.webp'
 import whatsappIcon from './assets/whatsapp.png'
 import heroImg from './assets/hero.png'
-import footerLogo from './assets/logo-light.png'
+import footerLogo from './assets/logo-negativo.webp'
 import './App.css'
 
 const servicesData = [
@@ -995,7 +995,7 @@ function App() {
       <footer ref={pageFooterRef} className="page-footer" role="contentinfo" aria-label="Pie de página">
         <div className="page-footer-content">
           <a href={isHomePage ? '#inicio' : '/#inicio'} className="page-footer-brand" aria-label="OESTACK - Ir al inicio">
-            <img className="page-footer-logo" src={footerLogo} alt="" width="480" height="340" />
+            <img className="page-footer-logo" src={footerLogo} alt="" width="480" height="292" loading="lazy" decoding="async" />
           </a>
           <span className="page-footer-dot" aria-hidden="true">•</span>
           <span className="page-footer-location">Buenos Aires, Argentina</span>
@@ -1015,7 +1015,7 @@ function App() {
             </svg>
           </a>
           <a
-            href="https://www.instagram.com/oestack.solutions/?hl=es"
+            href="https://www.instagram.com/oestack_/"
             target="_blank"
             rel="noreferrer"
             aria-label="Instagram"

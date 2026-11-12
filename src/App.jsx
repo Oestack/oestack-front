@@ -311,7 +311,10 @@ function App() {
     if (!contactSection) return
 
     const observer = new IntersectionObserver(([entry]) => {
-      setHasContactSectionEntered(entry.isIntersecting)
+      if (entry.isIntersecting) {
+        setHasContactSectionEntered(true)
+        observer.disconnect()
+      }
     }, { threshold: 0.15 })
 
     observer.observe(contactSection)

@@ -12,6 +12,7 @@ const profiles = [
     photo: matiasPhoto,
     portfolio: 'https://matnahuel.github.io/Portfolio/',
     linkedin: 'https://www.linkedin.com/in/matiasncarabajal/',
+    degree: 'Técnico Universitario en Programación',
     description: [
       'Me apasiona profundamente el mundo IT. Disfruto especialmente encarar nuevos desafíos que exigen poner a prueba mi lógica, encontrando en los problemas complejos el impulso para crear soluciones tecnológicas a medida. Me centro en transformar necesidades reales en resultados decisivos, apoyándome en una comunicación fluida y un compromiso constante con la innovación.',
     ],
@@ -22,6 +23,7 @@ const profiles = [
     photo: magaliPhoto,
     portfolio: 'https://portfolio-magali.vercel.app',
     linkedin: 'https://www.linkedin.com/in/magali-orellana-858543217/?isSelfProfile=true',
+    degree: 'Técnica Universitaria en Programación',
     description: [
       'Me interesa especialmente el diseño web y el desarrollo frontend, donde la programación se encuentra con lo visual y lo creativo. Disfruto pensar cada detalle de una interfaz y cómo se combinan los elementos para crear páginas que no solo funcionen bien, sino que también tengan una identidad propia.',
     ],
@@ -76,7 +78,7 @@ function Nosotros() {
               </div>
               <div className="nosotros-profile-content">
                 <h2>{profile.name}</h2>
-                <p className="nosotros-profile-degree">Técnica Universitaria en Programación</p>
+                <p className="nosotros-profile-degree">{profile.degree}</p>
                 <p className="nosotros-profile-university">Universidad Nacional de Hurlingham</p>
                 {profile.description.map((paragraph) => (
                   <p className="nosotros-profile-description" key={paragraph}>
